@@ -7,6 +7,5 @@ export const environment = {
   production: false,
   hmr: true,
   apiUrl: 'http://styletrackdev.styletribute.com',
-  mediaUrl: 'https://mediatest.styletribute.com',
   jwtTokenKey: 'jwt_token_key'
 };

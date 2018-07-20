@@ -25,7 +25,6 @@ import { ProviderService } from './provider/provider.service';
 import { AnalyticService } from './analytic.service';
 import { CurrencyService } from './currency/currency.service';
 import { CourierService } from './courier/courier.service';
-import { BroadcastService } from './broadcast/broadcast.service';
 
 @Injectable()
 export class ApiService {
@@ -54,7 +53,6 @@ export class ApiService {
     public analytic: AnalyticService,
     public currency: CurrencyService,
     public courier: CourierService,
-    public broadcast: BroadcastService,
     public media: MediaService
   ) {}
 }

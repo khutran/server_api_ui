@@ -29,7 +29,6 @@ import { ProviderService } from './provider/provider.service';
 import { CurrencyService } from './currency/currency.service';
 import { CourierService } from './courier/courier.service';
 import { AnalyticService } from './analytic.service';
-import { BroadcastService } from './broadcast/broadcast.service';
 import { MediaService } from './media/media.service';
 @NgModule({
   imports: [CommonModule],
@@ -60,7 +59,6 @@ import { MediaService } from './media/media.service';
     AnalyticService,
     CurrencyService,
     CourierService,
-    BroadcastService,
     MediaService
   ]
 })

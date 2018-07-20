@@ -5,6 +5,5 @@ services:
       context: ./
     volumes:
       - ./:/var/www/app/
-      # - /var/www/app/node_modules
     ports:
-      - "3303:3303"
+      - "3303:4200"

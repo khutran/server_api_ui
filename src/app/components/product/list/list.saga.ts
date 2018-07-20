@@ -56,24 +56,6 @@ function* watchFetchProductsSuccessed() {
   yield takeLatest(FETCH_PRODUCTS_SUCCEEDED, fetchProductImages);
 }
 
-function* broadcast(action) {
-  AppInjector.get(PreloaderService).show();
-  try {
-    let params = action.data;
-    let result = yield AppInjector.get(ApiService)
-      .broadcast.send(params)
-      .toPromise();
-    yield put({ type: BROADCAST_ITEM_SUCCESSED, data: result });
-    AppInjector.get(PreloaderService).hide();
-  } catch (e) {
-    yield put({ type: API_CALL_ERROR, error: e });
-  }
-}
-
-function* watchBroadcastItemRequested() {
-  yield takeEvery(BROADCAST_ITEM_REQUESTED, broadcast);
-}
-
 function* broadcast_product_successed(action) {
   AppInjector.get(NotificationService).show('success', 'new product is added', 3000);
 }
@@ -100,4 +82,4 @@ function* watchUpdateProductStatusRequested() {
   yield takeEvery(UPDATE_PRODUCT_STATUS_REQUESTED, updateProductStatus);
 }
 
-export default [watchFetchProductRequested, watchFetchProductsSuccessed, watchBroadcastItemRequested, watchBroadcastItemSuccessed, watchUpdateProductStatusRequested];
+export default [watchFetchProductRequested, watchFetchProductsSuccessed, watchBroadcastItemSuccessed, watchUpdateProductStatusRequested];

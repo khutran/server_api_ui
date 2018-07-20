@@ -7,7 +7,5 @@ export const environment = {
   production: true,
   hmr: false,
   apiUrl: 'http://api.reflaunt.com',
-  mediaUrl: 'https://media.reflaunt.com',
   jwtTokenKey: 'jwt_token_key',
-  broadcastUrl: 'https://api-dev.styletribute.com/api/v1/reflaunt'
 };
