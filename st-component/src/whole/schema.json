@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "id": "Whole",
+  "title": "Whole",
+  "type": "object",
+  "properties": {
+    "index": {
+      "type": "number",
+      "default": 1
+    },
+    "name": {
+      "type": "string"
+    },
+    "styleext": {
+      "type": "string",
+      "default": "scss"
+    },
+    "path": {
+      "type": "string",
+      "default": "app"
+    },
+    "sourceDir": {
+      "type": "string",
+      "default": "src"
+    }
+  },
+  "required": [
+    "name"
+  ]
+}

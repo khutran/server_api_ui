@@ -1,0 +1,3 @@
+export const PRINT_REQUEST = 'PRINT_REQUEST';
+export const PRINT_RUNNING = 'PRINT_RUNNING';
+export const PRINT_COMPLETED = 'PRINT_COMPLETED';

@@ -1,0 +1,42 @@
+<div class="tab-pane" id="cart" [ngClass]="{'active': activatedRoute.snapshot.url[0].path === 'cart' }" *ngIf="store.getState().Customer.edit.fetched">
+  <div>
+    <app-multi-purpose-search [(actions)]="search_actions"></app-multi-purpose-search>
+  </div>
+
+  <div class="form-inline">
+    <per-page></per-page>
+  </div>
+
+  <table class="table table-striped table-bordered dataTable no-footer">
+    <thead>
+      <tr>
+        <th>Product ID
+          <sort-by-field field="id"></sort-by-field>
+        </th>
+        <th>Product name
+          <sort-by-field field="name"></sort-by-field>
+        </th>
+        <th>SKU
+          <sort-by-field field="sku"></sort-by-field>
+        </th>
+        <th>Qty
+          <sort-by-field field="quantity"></sort-by-field>
+        </th>
+        <th>Price
+          <sort-by-field field="price"></sort-by-field>
+        </th>
+        <th>Total
+          <sort-by-field field="total"></sort-by-field>
+        </th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="text-center" colspan="7">
+          No records found.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

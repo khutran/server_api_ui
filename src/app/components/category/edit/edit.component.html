@@ -1,0 +1,46 @@
+<div class="x_panel">
+  <div class="row">
+    <div class="breadcrumb-section">
+      <ul class="breadcrumb">
+        <li>
+          <a routerLink="/">Home</a>
+        </li>
+        <li>
+          <a routerLink="/category">Categories</a>
+        </li>
+        <li *ngIf="store.getState().Category.edit.fetched">{{ store.getState().Category.edit.item.name }}</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- {{ store.getState().Category.edit | json }} -->
+
+  <div class="row">
+    <div class="x_content" *ngIf="store.getState().Category.edit.fetched">
+      <h3>Create New Category</h3>
+      <form #form="ngForm" (ngSubmit)="onSubmit(form)">
+        <div class="form-group">
+          <label for="">Category Name
+            <span class="required">*</span>
+          </label>
+          <input type="text" class="form-control sm-input" name="name" #name="ngModel" [(ngModel)]="store.getState().Category.edit.item.name"
+            [ngClass]="{'parsley-error':name.invalid && (name.dirty || name.touched) && form.submitted}" required>
+          <ul *ngIf="name.invalid && (name.dirty || name.touched) && form.submitted" class="parsley-errors-list filled">
+            <li class="parsley-required">This field is required.</li>
+          </ul>
+        </div>
+        <div class="form-group">
+          <label for="">Parent Category</label>
+          <select name="category_parent" [(ngModel)]="store.getState().Category.edit.item.parent_id" class="form-control input-sm">
+            <option value="">--select--</option>
+            <option value="{{ cate.getId() }}" *ngFor="let cate of store.getState().Category.list.items">{{ cate.getName() }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <input type="submit" value="Update" class="btn btn-primary">
+        </div>
+      </form>
+    </div>
+  </div>
+
+</div>

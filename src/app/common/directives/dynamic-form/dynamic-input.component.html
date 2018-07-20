@@ -1,0 +1,58 @@
+<!-- <div [formGroup]="form">
+  <label [attr.for]="input.key">{{input.label}}</label>
+
+  <div [ngSwitch]="input.controlType">
+
+    <input *ngSwitchCase="'textbox'" [formControlName]="input.key" [id]="input.key" [type]="input.type">
+
+    <select [id]="input.key" *ngSwitchCase="'dropdown'" [formControlName]="input.key">
+      <option *ngFor="let opt of input.options" [value]="opt.key">{{opt.value}}</option>
+    </select>
+
+  </div>
+
+  <div class="errorMessage" *ngIf="!isValid">{{input.label}} is required</div>
+</div> -->
+
+<div [formGroup]="form">
+  <div [ngSwitch]="input.controlType">
+    <div class="material-group" *ngSwitchCase="'textbox'">
+      <div class="material-addone" *ngIf="input.icon">
+        <i class="{{ input.icon }}"></i>
+      </div>
+      <div class="form-group form-primary">
+        <input class="form-control" [formControlName]="input.key" [type]="input.type">
+        <span class="form-bar"></span>
+        <label class="float-label">{{input.label}}</label>
+        <div class="errorMessage" *ngIf="submitted && !isValid">{{input.label}} is required</div>
+      </div>
+    </div>
+
+    <div class="material-group" *ngSwitchCase="'dropdown'">
+      <div class="material-addone" *ngIf="input.icon">
+        <i class="{{ input.icon }}"></i>
+      </div>
+      <select [formControlName]="input.key" class="form-control">
+        <option *ngFor="let opt of input.options" [value]="opt.key">{{opt.value}}</option>
+      </select>
+    </div>
+
+    <div class="material-group" *ngSwitchCase="'radio'">
+      <div class="material-addone" *ngIf="input.icon">
+        <i class="{{ input.icon }}"></i>
+      </div>
+      <div class="form-group form-primary">
+        <div class="form-radio">
+          <div class="group-add-on">
+            <div class="radio radiofill" *ngFor="let opt of input.options" [ngClass]="{'radio-inline': input.isInlineStyle()}">
+              <label>
+                <input type="radio" [formControlName]="input.key" [value]="opt.value">
+                <i class="helper"></i> {{ opt.key }}
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

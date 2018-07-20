@@ -1,0 +1,67 @@
+<div class="print-container">
+  <p><b>Collection {{value.name}}</b></p>
+  <p><b>Collection Date/Time :</b> {{value.pickup_date | customDate}}</p>
+  <p><b>Name: </b>{{value.user ? value.user.getName() : ''}}</p>
+  <p><b>Contact:</b> {{value.user ? value.user.customer ? value.user.customer.phone : '' : ''}}</p>
+  <ngx-barcode [bc-value]="value.name"
+               [bc-display-value]="false"
+               [bc-margin-top]="0"
+               [bc-margin-bottom]="0"
+               [bc-height]="25"
+               [bc-width]="1.6"
+               [bc-format]="'CODE128'"></ngx-barcode>
+</div>
+<div class="print-container">
+  <p><b>Collection {{value.name}}</b></p>
+  <p><b>Collection Date/Time :</b> {{value.pickup_date | customDate}}</p>
+  <p><b>Name: </b>{{value.user ? value.user.getName() : ''}}</p>
+  <p><b>Contact:</b> {{value.user ? value.user.customer ? value.user.customer.phone : '' : ''}}</p>
+  <ngx-barcode [bc-value]="value.name"
+               [bc-display-value]="false"
+               [bc-margin-top]="0"
+               [bc-margin-bottom]="0"
+               [bc-height]="25"
+               [bc-width]="1.6"
+               [bc-format]="'CODE128'"></ngx-barcode>
+</div>
+<div class="print-container" *ngIf="value.user">
+  <p *ngIf="address">
+    {{(address.first_name ? address.first_name : '') + ' ' + (address.last_name ? address.last_name : '')}}
+    <br/>
+    {{(address.company ? address.company : '')  + ' ' + (address.address_1 ? address.address_1 : '')}}, <br/>
+    {{(address.address_2 ? address.address_2 : '')}}
+    {{(address.city ? address.city : '') + ', ' + (address.state ? address.state : '')}}
+    {{(address.country ? address.country : '') + ' - ' + (address.zipcode ? address.zipcode : '')}}
+    <br/>
+    Tel: {{(address.phone ? address.phone : '-') }}
+    <br/>
+    <b>Collection Date/Time :</b> {{value.pickup_time | customDate}}
+  </p>
+</div>
+<div class="print-container">
+  <p><b>Collection Date/Time :</b> {{value.pickup_date | customDate}}</p>
+  <p><b>Name: </b>{{value.user ? value.user.getName() : ''}}</p>
+  <ngx-barcode [bc-value]="value.name"
+                [bc-display-value]="true"
+                [bc-margin-top]="0"
+                [bc-margin-bottom]="0"
+                [bc-height]="40"
+                [bc-width]="2"
+                [bc-format]="'CODE128'"
+               [bc-font-size]="11"
+               [bc-text-margin]="1"></ngx-barcode>
+</div>
+<div class="print-container" *ngFor="let bag of bags">
+  <p><b>Collection Date/Time :</b> {{value.pickup_date | customDate}}</p>
+  <p><b>Name: </b>{{value.user ? value.user.getName() : ''}}</p>
+  <ngx-barcode [bc-value]="value.name + '-' + bag"
+                [bc-display-value]="true"
+                [bc-margin-top]="0"
+                [bc-margin-bottom]="0"
+                [bc-height]="40"
+                [bc-width]="2"
+                [bc-format]="'CODE128'"
+               [bc-font-size]="11"
+               [bc-text-margin]="1"></ngx-barcode>
+</div>
+

@@ -1,0 +1,81 @@
+<div class="x_panel">
+  <div class="dataTables_wrapper">
+    <div class="x_content">
+
+      <div class="row">
+        <div class="breadcrumb-section">
+          <ul class="breadcrumb">
+            <li>
+              <a routerLink="/">Home</a>
+            </li>
+            <li>Designers</li>
+            <li>All</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="row">
+
+        <div class="form-inline table-meta">
+          <div class="table-actions">
+            <div class="col-left">
+              <per-page></per-page>
+            </div>
+            <div class="col-right search text-right">
+              <a class="link link--underline" routerLink="/designer/create">
+                Create Designer
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- {{ store.getState().Product.list | json }} -->
+
+        <table class="table table-striped table-bordered dataTable no-footer">
+          <thead>
+            <tr>
+              <th>
+                <input type="checkbox" class="ui-input" [(ngModel)]="selectAll" (click)="selectAllLocations()">
+              </th>
+              <th>ID
+                <span class="sorting" [ngClass]="{'sorting_desc': (orders.id === '-'), 'sorting_asc': (orders.id === '')}" (click)="sortBy('id')"></span>
+              </th>
+              <th>Name
+                <span class="sorting" [ngClass]="{'sorting_desc': (orders.name === '-'), 'sorting_asc': (orders.name === '')}" (click)="sortBy('name')"></span>
+              </th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="store.getState().Designer.list.items | hasItem">
+            <tr *ngFor="let item of store.getState().Designer.list.items">
+              <td>
+                <input type="checkbox" class="ui-input" [checked]="selectAll" [(ngModel)]="item.checked">
+              </td>
+              <td>{{ item.id }}</td>
+              <td>{{ item.name }}</td>
+              <td>
+                <a class="btn btn-dark btn-sm" routerLink="/designer/edit/{{ item.id }}">
+                  <i class="fa fa-pencil" aria-hidden="true"></i>
+                </a>
+                <button class="btn btn-danger btn-sm" (click)="deleteItem(item.id)">
+                  <i aria-hidden="true" class="fa fa-trash-o"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+          <tbody *ngIf="!(store.getState().Designer.list.items | hasItem)">
+            <tr>
+              <td colspan="12" style="text-align:center">
+                No Records Found
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- <app-pagination (goPage)="goToPage($event)" (goNext)="onNext()" (goPrev)="onPrev()" [page]="page" [perPage]="limit" [pagesToShow]="pagesToShow"
+        [count]="store.getState().Designer.list.total"></app-pagination> -->
+        <length-aware-paginator [(paginator)]="store.getState().Designer.list.pagination" [alwaysDisplay]="true"></length-aware-paginator>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,112 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col s12">
+      <ul class="breadcrumb-title">
+        <li class="breadcrumb-item">
+          <a routerLink="/">
+            <i class="fa fa-home"></i>
+          </a>
+        </li>
+        <li *ngIf="this.redirectData.pageContain('collection')" class="breadcrumb-item">
+          <a routerLink="/collection">Collection</a>
+        </li>
+        <li *ngIf="this.redirectData.pageContain('collection')" class="breadcrumb-item">
+          <a routerLink="{{this.redirectData.page}}">{{this.redirectData.page.split("/")[2] | titlecase}}</a>
+        </li>
+        <li *ngIf="!this.redirectData.pageContain('collection')" class="breadcrumb-item">
+          <a routerLink="/product">Product</a>
+        </li>
+        <li *ngIf="!this.redirectData.pageContain('collection')" class="breadcrumb-item">
+          <a>{{ store.getState().Product.detail.data.name }}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row">
+    <form class="edit-product-form" #form="ngForm" (ngSubmit)="onSubmit(form)">
+      <div class="row">
+        <div class="col s12">
+          <div class="form-group">
+            <label for="">Sku</label>
+            <input type="text" class="form-control sm-input" value="{{store.getState().Product.detail.data.sku}}" name="sku" disabled="{{true}}">
+          </div>
+          <div class="form-group">
+            <label for="">Name
+              <span class="required">*</span>
+            </label>
+            <input type="text" name="name" #name="ngModel" [(ngModel)]="product.name" [ngClass]="{'parsley-error':name.invalid && form.submitted}" class="form-control" required>
+            <ul *ngIf="name.invalid && form.submitted" class="parsley-errors-list filled">
+              <li class="parsley-required">This field is required.</li>
+            </ul>
+          </div>
+          <div class="form-group">
+            <label for="">Description
+              <span class="required">*</span>
+            </label>
+            <input type="text" name="description" #description="ngModel" [(ngModel)]="product.description" [ngClass]="{'parsley-error':description.invalid && form.submitted}" class="form-control" required>
+            <ul *ngIf="description.invalid && form.submitted" class="parsley-errors-list filled">
+              <li class="parsley-required">This field is required.</li>
+            </ul>
+          </div>
+          <div class="form-group">
+            <label for="">Original Price
+              <span class="required">*</span>
+            </label>
+            <input type="text" name="original_price" #originalPrice="ngModel" [(ngModel)]="product.original_price" [ngClass]="{'parsley-error':name.invalid && form.submitted}" class="form-control" required>
+            <ul *ngIf="originalPrice.invalid && form.submitted" class="parsley-errors-list filled">
+              <li class="parsley-required">This field is required.</li>
+            </ul>
+          </div>
+          <div class="form-group">
+            <label for="">Category
+              <span class="required">*</span>
+            </label>
+            <ng-select name="category" [items]="store.getState().Category.all.items" #category="ngModel" multiple="{{true}}" (change)="checkCategory()" [(ngModel)]="product.categories" bindLabel="full_path" bindValue="id" class="form-control" [ngClass]="{'parsley-error': category.invalid && form.submitted}" required>
+              <ng-template ng-label-tmp let-item="item">
+                <p>{{item.full_path}}</p>
+              </ng-template>
+              <ng-template ng-option-tmp let-item="item">
+                <p [ngStyle]="{'padding-left': (item.level * 10) + 'px'}" [ngClass]="{'ng-option__top-level': !item.last_level, 'ng-option__last-level': item.last_level}">{{item.full_path}}</p>
+              </ng-template>
+            </ng-select>
+            <ul *ngIf="category.invalid && form.submitted" class="parsley-errors-list filled">
+              <li class="parsley-required">This field is required.</li>
+            </ul>
+          </div>
+          <div class="form-group">
+            <label for="">Customer
+              <span class="required">*</span>
+            </label>
+            <ng-select name="customer" [items]="store.getState().Users.listUser.items" #customer [loading]="store.getState().Users.listUser.loading" [typeahead]="userSubject" [(ngModel)]="product.seller_id" bindLabel="email" bindValue="id" class="form-control" [ngClass]="{'parsley-error': customer.invalid && form.submitted}" required disabled="{{this.redirectData.pageContain('collection')}}">
+              <ng-template ng-label-tmp let-item="item">
+                <p>{{item.email}}</p>
+              </ng-template>
+              <ng-template ng-notfound-tmp let-searchTerm="searchTerm">
+                <div class="ng-option">
+                  <a class="btn btn-default btn-md" (click)="newUser(searchTerm)">
+                    <i class="fa fa-plus" aria-hidden="true"></i> Create new one ?
+                  </a>
+                </div>
+              </ng-template>
+            </ng-select>
+            <ul *ngIf="customer.invalid && form.submitted" class="parsley-errors-list filled">
+              <li class="parsley-required">This field is required.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <button class="btn btn-danger btn-sm pull-left icon-only" (click)="deleteItem(store.getState().Product.detail.data.id)">
+            <i aria-hidden="true" class="fa fa-trash-o"></i>
+          </button>
+        </div>
+        <div class="col-md-6">
+          <input class="btn btn-primary pull-right" type="submit" value="Update">
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

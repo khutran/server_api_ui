@@ -1,0 +1,1 @@
+export const ADDRESSES_COMP = 'ADDRESSES_COMP';

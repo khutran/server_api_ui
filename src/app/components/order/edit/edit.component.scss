@@ -1,0 +1,9 @@
+.row {
+  &::before {
+    display: initial;
+  }
+
+  &::after {
+    display: initial;
+  }
+}

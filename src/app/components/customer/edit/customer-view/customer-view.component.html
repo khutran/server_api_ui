@@ -1,0 +1,114 @@
+<div class="tab-pane active" id="customer_view" *ngIf="store.getState().Customer.edit.fetched">
+    <!-- start accordion -->
+    <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+      <div class="panel">
+        <a class="panel-heading" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" href="#personal_info"
+          aria-expanded="true" aria-controls="personal_info">
+          <h4 class="panel-title">Personal Information</h4>
+        </a>
+        <div id="personal_info" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-md-6 col-sm-6 col-12 ">
+                <table class="table">
+                  <tbody>
+                    <tr class="col-no-border">
+                      <th>Last Logged In:</th>
+                      <td>Never (Offline)</td>
+                    </tr>
+                    <tr>
+                      <th>Confirmed email:</th>
+                      <td>Confirmed</td>
+                    </tr>
+                    <tr>
+                      <th>Account Created on:</th>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <th>Account Created on (Asia/Singapore):</th>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <th>Account Created in:</th>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <th>Customer group:</th>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="col-md-6 col-sm-6 col-12 ">
+                Default Billing Address
+                <br>
+                <span>The customer does not have default billing address.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <a class="panel-heading collapsed" role="tab" id="headingTwo" data-toggle="collapse" data-parent="#accordion" href="#sales_statistics"
+          aria-expanded="false" aria-controls="sales_statistics">
+          <h4 class="panel-title">Sales Statistics</h4>
+        </a>
+        <div id="sales_statistics" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Website</th>
+                  <th>Store</th>
+                  <th>Store View</th>
+                  <th>Lifetime Sales</th>
+                  <th>Average Sale</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td colspan="3">All Store Views</td>
+                  <td>S$0</td>
+                  <td>S$0</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <a class="panel-heading collapsed" role="tab" id="headingThree" data-toggle="collapse" data-parent="#accordion" href="#recent_orders"
+          aria-expanded="false" aria-controls="recent_orders">
+          <h4 class="panel-title">Recent Orders</h4>
+        </a>
+        <div id="recent_orders" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            <div class="text-center">No records found.</div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <a class="panel-heading collapsed" role="tab" id="headingFifth" data-toggle="collapse" data-parent="#accordion" href="#shopping_cart"
+          aria-expanded="false" aria-controls="shopping_cart">
+          <h4 class="panel-title">Shopping Cart - 0 item(s)</h4>
+        </a>
+        <div id="shopping_cart" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFourth">
+          <div class="panel-body">
+            <div class="text-center">No records found.</div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <a class="panel-heading collapsed" role="tab" id="headingFifth" data-toggle="collapse" data-parent="#accordion" href="#wishlist"
+          aria-expanded="false" aria-controls="wishlist">
+          <h4 class="panel-title">Wishlist - 0 item(s)</h4>
+        </a>
+        <div id="wishlist" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFifth">
+          <div class="panel-body">
+            <div class="text-center">No records found.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end of accordion -->
+  </div>

@@ -1,0 +1,12 @@
+<div id="wizard" class="form_wizard wizard_horizontal">
+  <ul class="wizard_steps">
+    <li *ngFor="let wizardStep of wizardSteps | arrayKeyValue"  >
+      <a routerLink="{{wizardStep.val.redirect}}" [ngClass]="{'disabled': wizardStep.key !== currentStep, 'done': wizardStep.key === currentStep}">
+        <span class="step_no">{{wizardStep.key + 1}}</span>
+        <span class="step_descr">
+            {{wizardStep.val.name}}
+          </span>
+      </a>
+    </li>
+  </ul>
+</div>

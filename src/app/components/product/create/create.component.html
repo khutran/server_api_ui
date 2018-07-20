@@ -1,0 +1,95 @@
+<div class="create-product">
+  <div class="row mgb-20">
+    <div class="col s12">
+      <ul class="breadcrumb-title">
+        <li class="breadcrumb-item">
+          <a routerLink="/">
+            <i class="fa fa-home"></i>
+          </a>
+        </li>
+        <li class="breadcrumb-item">
+          <a routerLink="/product">Product</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a>Create</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s12">
+      <form #form="ngForm" (ngSubmit)="onSubmit(form)">
+        <div class="form-group">
+          <label for="">Name
+            <span class="required">*</span>
+          </label>
+          <input type="text" name="name" #name="ngModel" [(ngModel)]="product.name" [ngClass]="{'parsley-error':name.invalid && form.submitted}" class="form-control" required>
+          <ul *ngIf="name.invalid && form.submitted" class="parsley-errors-list filled">
+            <li class="parsley-required">This field is required.</li>
+          </ul>
+        </div>
+        <div class="form-group">
+          <label for="">Price
+            <span class="required">*</span>
+          </label>
+          <input type="text" name="price" #price="ngModel" [(ngModel)]="product.price" [ngClass]="{'parsley-error':price.invalid && form.submitted}" class="form-control" required>
+          <ul *ngIf="price.invalid && form.submitted" class="parsley-errors-list filled">
+            <li class="parsley-required">This field is required.</li>
+          </ul>
+        </div>
+        <div class="form-group">
+          <label for="">Original Price</label>
+          <input type="text" class="form-control sm-input" [(ngModel)]="product.original_price" name="original_price">
+        </div>
+        <div class="form-group">
+          <label for="">Category
+            <span class="required">*</span>
+          </label>
+          <select name="category" #category="ngModel" [(ngModel)]="product.category_id" [ngClass]="{'parsley-error':category.invalid && form.submitted}" class="form-control sm-input" required>
+            <option value="">--select--</option>
+            <option value="{{ cate.id }}" *ngFor="let cate of store.getState().Category.list.items">{{ cate.name }}</option>
+          </select>
+          <ul *ngIf="category.invalid && form.submitted" class="parsley-errors-list filled">
+            <li class="parsley-required">This field is required.</li>
+          </ul>
+        </div>
+        <div class="form-group">
+          <label for="">Shoe Size</label>
+          <input type="text" class="form-control sm-input" [(ngModel)]="product.shoesize" name="shoesize">
+        </div>
+        <div class="form-group">
+          <label for="">Heel Height</label>
+          <input type="text" class="form-control sm-input" [(ngModel)]="product.heel_height" name="heel_height">
+        </div>
+        <div class="form-group">
+          <label for="">Dimensions</label>
+          <input type="text" class="form-control sm-input" [(ngModel)]="product.dimensions" name="dimensions">
+        </div>
+        <div class="form-group">
+          <label for="">Kid size cloth</label>
+          <input type="text" class="form-control sm-input" [(ngModel)]="product.kidz_size" name="kidz_size">
+        </div>
+        <div class="form-group">
+          <label for="">Kid size shoe</label>
+          <input type="text" class="form-control sm-input" [(ngModel)]="product.kidz_shoes" name="kidz_shoes">
+        </div>
+        <div class="form-group">
+          <label for="">Color</label>
+          <input type="text" class="form-control sm-input" [(ngModel)]="product.color" name="color">
+        </div>
+        <div class="form-group">
+          <label for="">Material</label>
+          <input type="text" class="form-control sm-input" [(ngModel)]="product.material" name="material">
+        </div>
+        <div class="form-group">
+          <label for="">Description</label>
+          <textarea name="description" [(ngModel)]="product.description" rows=5 class="form-control"></textarea>
+        </div>
+        <div class="form-group">
+          <input class="btn btn-primary" type="submit" value="Create">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

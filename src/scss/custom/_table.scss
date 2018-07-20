@@ -1,0 +1,12 @@
+.table {
+  &.table-no-border-top {
+    thead {
+      tr {
+        td,
+        th {
+          border-top: none;
+        }
+      }
+    }
+  }
+}

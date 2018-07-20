@@ -1,0 +1,87 @@
+<div class="user-create-component">
+  <div class="row mgb-20">
+    <div class="col s12">
+      <ul class="breadcrumb-title">
+        <li class="breadcrumb-item">
+          <a routerLink="/">
+            <i class="fa fa-home"></i>
+          </a>
+        </li>
+        <li class="breadcrumb-item">
+          <a routerLink="/user">User</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a>Create</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s12">
+      <form #form="ngForm" (ngSubmit)="onSubmit(form)">
+        <div class="form-group">
+          <label for="">First name
+            <span class="required">*</span>
+          </label>
+          <input type="text" [ngClass]="{'parsley-error':firstName.invalid && form.submitted}" class="form-control input-sm" name="firstName" #firstName="ngModel" [(ngModel)]="user.first_name" required>
+          <ul *ngIf="firstName.invalid && form.submitted" class="parsley-errors-list filled">
+            <li class="parsley-required">This field is required.</li>
+          </ul>
+        </div>
+        <div class="form-group">
+          <label for="">Last name
+            <span class="required">*</span>
+          </label>
+          <input type="text" [ngClass]="{'parsley-error':lastName.invalid && form.submitted}" class="form-control input-sm" name="lastName" #lastName="ngModel" [(ngModel)]="user.last_name" required>
+          <ul *ngIf="lastName.invalid && form.submitted" class="parsley-errors-list filled">
+            <li class="parsley-required">This field is required.</li>
+          </ul>
+        </div>
+
+        <div class="form-group">
+          <label for="">Email
+            <span class="required">*</span>
+          </label>
+          <input type="text" [ngClass]="{'parsley-error':email.invalid && form.submitted}" class="form-control input-sm" name="email" #email="ngModel" [(ngModel)]="user.email" required>
+          <ul *ngIf="email.invalid && form.submitted" class="parsley-errors-list filled">
+            <li class="parsley-required">This field is required.</li>
+          </ul>
+        </div>
+
+        <div class="form-group">
+          <label for="">Password
+            <span class="required">*</span>
+          </label>
+          <input type="password" [ngClass]="{'parsley-error':password.invalid && form.submitted}" class="form-control input-sm" name="password" #password="ngModel" [(ngModel)]="user.password" required>
+          <ul *ngIf="password.invalid && form.submitted" class="parsley-errors-list filled">
+            <li class="parsley-required">This field is required.</li>
+          </ul>
+        </div>
+
+        <div class="form-group">
+          <label for="">Re-password
+            <span class="required">*</span>
+          </label>
+          <input type="password" [ngClass]="{'parsley-error':repassword.invalid && form.submitted}" class="form-control input-sm" name="repassword" #repassword="ngModel" [(ngModel)]="user.repassword" required>
+          <ul *ngIf="repassword.invalid && form.submitted" class="parsley-errors-list filled">
+            <li class="parsley-required">This field is required.</li>
+          </ul>
+        </div>
+
+        <div class="form-group">
+          <label for="">Role
+            <span class="required">*</span>
+          </label>
+          <select name="role" #role="ngModel" [(ngModel)]="user.role_id" [ngClass]="{'parsley-error':role.invalid && form.submitted}" class="form-control sm-input" required>
+            <option value="">--select--</option>
+            <option value="{{ role.id }}" *ngFor="let role of store.getState().Acl.Roles.commonRoles.items">{{ role.name }}</option>
+          </select>
+          <ul *ngIf="role.invalid && form.submitted" class="parsley-errors-list filled">
+            <li class="parsley-required">This field is required.</li>
+          </ul>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

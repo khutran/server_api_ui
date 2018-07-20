@@ -1,0 +1,35 @@
+<div class="tab-pane" id="wishlists" [ngClass]="{'active': activatedRoute.snapshot.url[0].path === 'wishlist' }" *ngIf="store.getState().Customer.edit.fetched">
+  <div>
+    <app-multi-purpose-search [(actions)]="search_actions"></app-multi-purpose-search>
+  </div>
+
+  <div class="form-inline">
+    <per-page></per-page>
+  </div>
+
+  <table class="table table-striped table-bordered dataTable no-footer">
+    <thead>
+      <tr>
+        <th>Product name
+          <sort-by-field field="id"></sort-by-field>
+        </th>
+        <th>User Description</th>
+        <th>Qty
+          <sort-by-field field="id"></sort-by-field>
+        </th>
+        <th>Date Added
+          <sort-by-field field="id"></sort-by-field>
+        </th>
+        <th>Days in Wishlist
+          <sort-by-field field="id"></sort-by-field>
+        </th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="text-center">
+        <td colspan="6">No records found.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
