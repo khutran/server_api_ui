@@ -6,6 +6,6 @@
 export const environment = {
   production: true,
   hmr: false,
-  apiUrl: 'http://nlocal.reflaunt.com:81',
+  apiUrl: 'http://nlocal.viwebsite.com:81',
   jwtTokenKey: 'jwt_token_key'
 };

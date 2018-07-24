@@ -8,7 +8,7 @@ import { bootstrap } from 'bootstrap';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'Reflaunt';
+  title = 'Viwebsite';
 
   constructor(private router: Router) {}
 
