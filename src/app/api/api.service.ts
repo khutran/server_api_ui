@@ -1,4 +1,3 @@
-import { MediaService } from './media/media.service';
 import { PermissionService } from './permission/permission.service';
 import { CategoryService } from './category/category.service';
 import { Injectable } from '@angular/core';
@@ -15,7 +14,6 @@ export class ApiService {
     public category: CategoryService,
     public role: RoleService,
     public permission: PermissionService,
-    public media: MediaService,
     public project: ProjectService
   ) {}
 }

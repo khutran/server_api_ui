@@ -1,6 +1,5 @@
 import * as _ from 'lodash';
 import Role from './Role';
-import Customer from './Customer';
 import UserBase from './Base/UserBase';
 
 class User extends UserBase {
@@ -9,11 +8,6 @@ class User extends UserBase {
     (this as any).roles = d => {
       return new _.map(d.data, item => new Role(item));
     };
-
-    (this as any).customer = d => {
-      return new Customer(d.data);
-    };
-
     this.bind(options);
   }
 

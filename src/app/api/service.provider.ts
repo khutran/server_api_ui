@@ -1,47 +1,23 @@
-import { Injectable } from '@angular/core';
 import { ApiUrl } from './api-url.service';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { tap, catchError, map } from 'rxjs/operators';
 import * as _ from 'lodash';
 import Category from '../models/Category';
-import Customer from '../models/Customer';
-import Status from '../models/Status';
-import Designer from '../models/Designer';
-import Destination from '../models/Destination';
-import Location from '../models/Location';
-import DestinationType from '../models/DestinationType';
-import CustomerAddress from '../models/CustomerAddress';
 import LengthAwarePaginator from '../models/LengthAwarePaginator';
-import Currency from '../models/Currency';
-import Courier from '../models/Courier';
 import Role from '../models/Role';
 import User from '../models/User';
-import Constant from '../models/Constant';
-import Media from '../models/Media';
 import { AppInjector } from '../app-injector';
 import { PreloaderService } from '../common/services/preloader/preloader.service';
-import CustomerGroup from './../models/CustomerGroup';
 import Project from '../models/Project';
 
 const classes = {
   Project,
   Category,
-  Customer,
-  Status,
-  Designer,
-  Destination,
   Location,
-  DestinationType,
   Event,
-  CustomerAddress,
   Role,
-  Constant,
-  User,
-  CustomerGroup,
-  Currency,
-  Courier,
-  Media
+  User
 };
 
 export class ServiceProvider {
