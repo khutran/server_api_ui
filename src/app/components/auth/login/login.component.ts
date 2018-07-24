@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from '../../../common/services/notification/notification.service';
-import * as Cookies from 'js-cookie';
 import * as _ from 'lodash';
 import { AuthComponent } from '../auth.component';
-import { environment } from '../../../../environments/environment';
 import store from './../../../store/store.module';
-import { LOGIN_REQUESTED, FETCH_LOGIN_DETAIL_REQUESTED } from './login.actions';
+import { LOGIN_REQUESTED } from './login.actions';
 
 @Component({
   selector: 'app-login',

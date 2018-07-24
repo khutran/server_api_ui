@@ -3,7 +3,6 @@ import { API_CALL_ERROR } from './../../../store/action';
 import { AppInjector } from './../../../app-injector';
 import { takeEvery, put, takeLatest } from 'redux-saga/effects';
 import { LOGIN_REQUESTED, LOGIN_SUCCEEDED, FETCH_LOGIN_DETAIL_REQUESTED, FETCH_LOGIN_DETAIL_SUCCEEDED } from './login.actions';
-import { ApiUrl } from '../../../api/api-url.service';
 import { ApiService } from '../../../api/api.service';
 import * as Cookies from 'js-cookie';
 import { environment } from '../../../../environments/environment';
