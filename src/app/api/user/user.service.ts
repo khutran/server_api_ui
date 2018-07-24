@@ -30,7 +30,7 @@ import User from '../../models/User';
 
 @Injectable()
 export class UserService extends ServiceProvider {
-  protected url = '/api/v1/users';
+  protected url = '/api/user';
 
   constructor() {
     super(AppInjector.get(HttpClient), AppInjector.get(ApiUrl), 'User');

@@ -3,7 +3,6 @@ import { AclComponent } from './components/acl/acl.component';
 import { ProductComponent } from './components/product/product.component';
 import { MainComponent } from './components/main.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { AppComponent } from './app.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthComponent } from './components/auth/auth.component';
@@ -16,14 +15,13 @@ import { DesignerComponent } from './components/designer/designer.component';
 import { ProviderComponent } from './components/provider/provider.component';
 import { CurrencyComponent } from './components/currency/currency.component';
 import { CourierComponent } from './components/courier/courier.component';
-import { SettingsComponent } from './components/settings/settings.component';
 
 const appRoutes: Routes = [
   {
     path: '',
     component: MainComponent,
     children: [
-      { path: '', redirectTo: 'product', pathMatch: 'full' },
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       {
         path: 'dashboard',
         component: DashboardComponent
