@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import store from './../../../store/store.module';
+import { Store } from './../../../store/store.module';
 import { CREATE_USER_REQUESTED } from './create.actions';
 import { NotificationService } from '../../../common/services/notification/notification.service';
+import { AppInjector } from '../../../app-injector';
 
 @Component({
   selector: 'app-create',
@@ -9,8 +10,7 @@ import { NotificationService } from '../../../common/services/notification/notif
   styleUrls: ['./create.component.scss']
 })
 export class CreateComponent implements OnInit {
-
-  public store = store;
+  public store;
   public user = {
     email: '',
     password: '',
@@ -19,15 +19,13 @@ export class CreateComponent implements OnInit {
     last_name: ''
   };
 
-  constructor(
-    private notification: NotificationService
-  ) { }
-
-  ngOnInit() {
+  constructor(private notification: NotificationService) {
+    this.store = AppInjector.get(Store).getInstance();
   }
 
+  ngOnInit() {}
+
   onSubmit() {
-    console.log(this.user);
     if (this.user.password !== this.user.re_password) {
       this.notification.show('warning', 'Password does not match', 3000);
     }
@@ -38,7 +36,6 @@ export class CreateComponent implements OnInit {
       first_name: this.user.first_name,
       last_name: this.user.last_name
     };
-    store.dispatch({ type: CREATE_USER_REQUESTED, data: data });
+    this.store.dispatch({ type: CREATE_USER_REQUESTED, data: data });
   }
-
 }

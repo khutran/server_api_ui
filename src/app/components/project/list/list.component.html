@@ -8,12 +8,11 @@
           </a>
         </li>
         <li class="breadcrumb-item">
-          <a href="javascript:">User</a>
+          <a href="javascript:">Projects</a>
         </li>
       </ul>
     </div>
   </div>
-
   <div class="row">
     <div class="col s12">
       <search-form></search-form>
@@ -89,7 +88,7 @@
           <tbody *ngIf="!(store.getState().Project.list.items | hasItem)">
             <tr>
               <td colspan="4" class="text-center">
-                Product not found
+                We don't have any project here
               </td>
             </tr>
           </tbody>

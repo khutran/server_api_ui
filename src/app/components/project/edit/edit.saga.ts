@@ -1,7 +1,7 @@
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FETCH_PROJECTS_REQUESTED } from './../list/list.actions';
-import { DELETE_PROJECT_REQUESTED, GET_PROJECT_REQUESTED, GET_PROJECT_SUCCEEDED, EDIT_PROJECT_REQUESTED } from './edit.actions';
-import { takeEvery, put } from 'redux-saga/effects';
+import { DELETE_PROJECT_REQUESTED, GET_PROJECT_REQUESTED, GET_PROJECT_SUCCEEDED, EDIT_PROJECT_REQUESTED, RENDER_EDIT_PROJECT_FORM_REQUESTED } from './edit.actions';
+import { takeEvery, put, takeLatest } from 'redux-saga/effects';
 import { API_CALL_ERROR } from './../../../store/action';
 import { ApiService } from './../../../api/api.service';
 import { AppInjector } from './../../../app-injector';
@@ -49,4 +49,10 @@ function* watchDeleteProjectRequest() {
   yield takeEvery(DELETE_PROJECT_REQUESTED, deleteProject);
 }
 
-export default [watchEditProjectRequest, watchGetProjectRequest, watchDeleteProjectRequest];
+function* watchRenderProjectDetailFormRequested() {
+  yield takeLatest(RENDER_EDIT_PROJECT_FORM_REQUESTED, function*(action: any) {
+    yield put({ type: GET_PROJECT_REQUESTED, data: action.data.project_id });
+  });
+}
+
+export default [watchEditProjectRequest, watchGetProjectRequest, watchDeleteProjectRequest, watchRenderProjectDetailFormRequested];

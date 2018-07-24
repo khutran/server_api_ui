@@ -3,8 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from '../../../common/services/notification/notification.service';
 import * as _ from 'lodash';
 import { AuthComponent } from '../auth.component';
-import store from './../../../store/store.module';
+import { Store } from './../../../store/store.module';
 import { LOGIN_REQUESTED } from './login.actions';
+import { AppInjector } from '../../../app-injector';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,7 @@ import { LOGIN_REQUESTED } from './login.actions';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent extends AuthComponent implements OnInit {
-  public store = store;
+  public store;
   public redirectUrl = 'product';
   user = {
     email: '',
@@ -20,6 +21,7 @@ export class LoginComponent extends AuthComponent implements OnInit {
   };
   constructor(private router: Router, private _activatedRoute: ActivatedRoute, private notification: NotificationService) {
     super();
+    this.store = AppInjector.get(Store).getInstance();
     _activatedRoute.queryParams.subscribe(params => {
       if (!_.isUndefined(params.url)) {
         this.redirectUrl = params.url;
@@ -34,6 +36,6 @@ export class LoginComponent extends AuthComponent implements OnInit {
       email: this.user.email,
       password: this.user.password
     };
-    store.dispatch({ type: LOGIN_REQUESTED, data: data });
+    this.store.dispatch({ type: LOGIN_REQUESTED, data: data });
   }
 }

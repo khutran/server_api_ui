@@ -1,10 +1,11 @@
 import { DELETE_PROJECT_REQUESTED } from './../edit/edit.actions';
 import { FETCH_PROJECTS_REQUESTED } from './list.actions';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import store from './../../../store/store.module';
+import { Store } from './../../../store/store.module';
 import * as _ from 'lodash';
 import { NotificationService } from '../../../common/services/notification/notification.service';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { AppInjector } from '../../../app-injector';
 
 @Component({
   selector: 'app-list',
@@ -14,20 +15,21 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 export class ListComponent implements OnInit, OnDestroy {
   protected navigationSubscription: any;
   protected router: any;
-  private store = store;
+  public store;
 
   constructor(private notification: NotificationService, private activeRouter: ActivatedRoute, router: Router) {
+    this.store = AppInjector.get(Store).getInstance();
     this.activeRouter = activeRouter;
     this.router = router;
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       if (e instanceof NavigationEnd) {
-        store.dispatch({ type: FETCH_PROJECTS_REQUESTED, data: this.getQuery() });
+        this.store.dispatch({ type: FETCH_PROJECTS_REQUESTED, data: this.getQuery() });
       }
     });
   }
 
   ngOnInit() {
-    store.dispatch({ type: FETCH_PROJECTS_REQUESTED });
+    this.store.dispatch({ type: FETCH_PROJECTS_REQUESTED });
   }
 
   ngOnDestroy() {
@@ -46,7 +48,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
   deleteItem(id) {
     if (confirm('Do you want to delete this project?')) {
-      store.dispatch({ type: DELETE_PROJECT_REQUESTED, data: id });
+      this.store.dispatch({ type: DELETE_PROJECT_REQUESTED, data: id });
     }
   }
 }

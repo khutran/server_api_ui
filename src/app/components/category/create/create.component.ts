@@ -1,7 +1,8 @@
 import { FETCH_CATEGORIES_REQUESTED } from './../list/list.actions';
 import { Component, OnInit } from '@angular/core';
-import store from './../../../store/store.module';
+import { Store } from './../../../store/store.module';
 import { CREATE_CATEGORY_REQUESTED } from './create.actions';
+import { AppInjector } from '../../../app-injector';
 
 @Component({
   selector: 'app-create',
@@ -9,8 +10,7 @@ import { CREATE_CATEGORY_REQUESTED } from './create.actions';
   styleUrls: ['./create.component.scss']
 })
 export class CreateComponent implements OnInit {
-
-  public store = store;
+  public store;
 
   public category = {
     id: 0,
@@ -18,16 +18,17 @@ export class CreateComponent implements OnInit {
     parent_id: ''
   };
 
-  constructor() { }
+  constructor() {
+    this.store = AppInjector.get(Store).getInstance();
+  }
 
   ngOnInit() {
-    store.dispatch({ type: FETCH_CATEGORIES_REQUESTED });
+    this.store.dispatch({ type: FETCH_CATEGORIES_REQUESTED });
   }
 
   onSubmit(form) {
     if (form.valid) {
-      store.dispatch({ type: CREATE_CATEGORY_REQUESTED, data: this.category });
+      this.store.dispatch({ type: CREATE_CATEGORY_REQUESTED, data: this.category });
     }
   }
-
 }
