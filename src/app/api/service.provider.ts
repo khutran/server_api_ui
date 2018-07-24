@@ -4,13 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { tap, catchError, map } from 'rxjs/operators';
 import * as _ from 'lodash';
-import ProcessType from '../models/ProcessType';
-import ProcessStatus from '../models/ProcessStatus';
 import Category from '../models/Category';
-import ProcessTransition from '../models/ProcessTransition';
 import Customer from '../models/Customer';
-import Size from '../models/Size';
-import Style from '../models/Style';
 import Status from '../models/Status';
 import Designer from '../models/Designer';
 import Destination from '../models/Destination';
@@ -23,20 +18,16 @@ import Courier from '../models/Courier';
 import Role from '../models/Role';
 import User from '../models/User';
 import Constant from '../models/Constant';
-import Provider from '../models/Provider';
 import Media from '../models/Media';
 import { AppInjector } from '../app-injector';
 import { PreloaderService } from '../common/services/preloader/preloader.service';
 import CustomerGroup from './../models/CustomerGroup';
+import Project from '../models/Project';
 
 const classes = {
-  ProcessType,
-  ProcessStatus,
+  Project,
   Category,
-  ProcessTransition,
   Customer,
-  Size,
-  Style,
   Status,
   Designer,
   Destination,
@@ -46,7 +37,6 @@ const classes = {
   CustomerAddress,
   Role,
   Constant,
-  Provider,
   User,
   CustomerGroup,
   Currency,

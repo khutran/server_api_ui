@@ -8,6 +8,7 @@ import { NotificationService } from '../common/services/notification/notificatio
 import aclSaga from '../components/acl/acl.saga';
 import userSaga from '../components/user/user.saga';
 import profileSaga from '../components/profile/profile.saga';
+import projectSaga from './../components/project/project.saga';
 
 function* watchApiCallError() {
   yield takeEvery(API_CALL_ERROR, function*(action) {
@@ -21,5 +22,5 @@ function* watchApiCallError() {
 }
 
 export default function* sagas() {
-  yield [...[fork(watchApiCallError)], ...main, ...auth, ...aclSaga, ...userSaga, ...profileSaga];
+  yield [...[fork(watchApiCallError)], ...projectSaga, ...main, ...auth, ...aclSaga, ...userSaga, ...profileSaga];
 }

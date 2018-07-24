@@ -6,6 +6,7 @@ import { Users } from './../components/user/user.reducer';
 import { environment } from '../../environments/environment';
 import { Print } from './print/print.reducer';
 import { Profile } from '../components/profile/profile.reducer';
+import { Project } from './../components/project/project.reducer';
 
 const RootReducer = (state = { config: environment }, action) => {
   switch (action.type) {
@@ -15,11 +16,12 @@ const RootReducer = (state = { config: environment }, action) => {
 };
 
 export default combineReducers({
-  RootReducer,
+  Project,
   Auth,
   Category,
   Acl,
   Users,
   Print,
-  Profile
+  Profile,
+  RootReducer
 });

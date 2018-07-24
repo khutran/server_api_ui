@@ -18,10 +18,34 @@ import { SharedModule } from '../template/shared/shared.module';
 import { BreadcrumbsComponent } from '../template/layout/admin/breadcrumbs/breadcrumbs.component';
 import { AppMenuItems } from '../template/shared/app-menu-items/app-menu-items';
 import { SettingsModule } from './settings/settings.module';
+import { ProjectModule } from './project/project.module';
+import { ProjectComponent } from './project/project.component';
 
 @NgModule({
-  declarations: [PageNotFoundComponent, DashboardComponent, MainComponent, ProfileComponent, CategoryComponent, AclComponent, UserComponent, BreadcrumbsComponent],
-  imports: [CommonModule, SharedModule, RouterModule, FormsModule, AuthModule, ProfileModule, UserModule, SweetAlert2Module, BrowserAnimationsModule, SettingsModule],
+  declarations: [
+    PageNotFoundComponent,
+    DashboardComponent,
+    MainComponent,
+    ProfileComponent,
+    CategoryComponent,
+    AclComponent,
+    UserComponent,
+    BreadcrumbsComponent,
+    ProjectComponent
+  ],
+  imports: [
+    CommonModule,
+    SharedModule,
+    RouterModule,
+    FormsModule,
+    AuthModule,
+    ProfileModule,
+    UserModule,
+    SweetAlert2Module,
+    BrowserAnimationsModule,
+    SettingsModule,
+    ProjectModule
+  ],
   providers: [AppMenuItems],
   exports: []
 })

@@ -51,11 +51,7 @@ function* redirect(action) {
       let queryParams = parseQuery(activatedRouter.snapshot.queryParams.search);
       router.navigateByUrl(decodeURIComponent(activatedRouter.snapshot.queryParams.redirect), { queryParams });
     } else {
-      if (action.data.isRole('customer')) {
-        router.navigate(['dashboard']);
-      } else {
-        router.navigate(['product']);
-      }
+      router.navigate(['dashboard']);
     }
   }
 }

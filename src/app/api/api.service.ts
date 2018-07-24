@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 import { AuthService } from './auth/auth.service';
 import { UserService } from './user/user.service';
 import { RoleService } from './role/role.service';
+import { ProjectService } from './project/project.service';
 
 @Injectable()
 export class ApiService {
@@ -14,6 +15,7 @@ export class ApiService {
     public category: CategoryService,
     public role: RoleService,
     public permission: PermissionService,
-    public media: MediaService
+    public media: MediaService,
+    public project: ProjectService
   ) {}
 }

@@ -35,18 +35,30 @@ const MENUITEMS = [
     label: 'User',
     main: [
       {
-        state: 'user',
+        state: 'users',
         short_label: 'U',
         name: 'User',
         type: 'link',
         icon: 'fa fa-users'
-      },
+      }
+    ]
+  },
+  {
+    label: 'Project',
+    main: [
       {
         state: 'category',
         short_label: 'C',
         name: 'Category',
         type: 'link',
         icon: 'fa fa-list'
+      },
+      {
+        state: 'projects',
+        short_label: 'P',
+        name: 'Projects',
+        type: 'link',
+        icon: 'fa fa-tags'
       }
     ]
   },

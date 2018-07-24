@@ -8,6 +8,7 @@ import { AuthComponent } from './components/auth/auth.component';
 import { AuthGuardService } from './auth/auth-guard.service';
 import { ProfileComponent } from './components/profile/profile.component';
 import { CategoryComponent } from './components/category/category.component';
+import { ProjectComponent } from './components/project/project.component';
 
 const appRoutes: Routes = [
   {
@@ -30,12 +31,17 @@ const appRoutes: Routes = [
         loadChildren: './components/category/category.module#CategoryModule'
       },
       {
+        path: 'projects',
+        component: ProjectComponent,
+        loadChildren: './components/project/project.module#ProjectModule'
+      },
+      {
         path: 'acl',
         component: AclComponent,
         loadChildren: './components/acl/acl.module#AclModule'
       },
       {
-        path: 'user',
+        path: 'users',
         component: UserComponent,
         loadChildren: './components/user/user.module#UserModule'
       },

@@ -1,10 +1,10 @@
 import Model from "./Model";
 
-class Size extends Model {
+class Host extends Model {
   constructor(options) {
     super();
     this.bind(options);
   }
 }
 
-export default Size;
+export default Host;
