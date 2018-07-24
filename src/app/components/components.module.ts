@@ -14,39 +14,14 @@ import { CategoryComponent } from './category/category.component';
 import { AclComponent } from './acl/acl.component';
 import { UserModule } from './user/user.module';
 import { UserComponent } from './user/user.component';
-import { CollectionBarcodeComponent } from '../common/print-template/collection-barcode/collection-barcode.component';
-import { BarcodeComponent } from '../common/print-template/product-barcode/barcode.component';
-import { PrintTemplateModule } from '../common/print-template/print-template.module';
 import { SharedModule } from '../template/shared/shared.module';
 import { BreadcrumbsComponent } from '../template/layout/admin/breadcrumbs/breadcrumbs.component';
 import { AppMenuItems } from '../template/shared/app-menu-items/app-menu-items';
 import { SettingsModule } from './settings/settings.module';
 
 @NgModule({
-  declarations: [
-    PageNotFoundComponent,
-    DashboardComponent,
-    MainComponent,
-    ProfileComponent,
-    CategoryComponent,
-    AclComponent,
-    UserComponent,
-    BreadcrumbsComponent
-  ],
-  imports: [
-    CommonModule,
-    SharedModule,
-    RouterModule,
-    FormsModule,
-    AuthModule,
-    ProfileModule,
-    UserModule,
-    SweetAlert2Module,
-    PrintTemplateModule,
-    BrowserAnimationsModule,
-    SettingsModule
-  ],
-  entryComponents: [BarcodeComponent, CollectionBarcodeComponent],
+  declarations: [PageNotFoundComponent, DashboardComponent, MainComponent, ProfileComponent, CategoryComponent, AclComponent, UserComponent, BreadcrumbsComponent],
+  imports: [CommonModule, SharedModule, RouterModule, FormsModule, AuthModule, ProfileModule, UserModule, SweetAlert2Module, BrowserAnimationsModule, SettingsModule],
   providers: [AppMenuItems],
   exports: []
 })

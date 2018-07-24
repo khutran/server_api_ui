@@ -42,11 +42,11 @@ const MENUITEMS = [
         icon: 'fa fa-users'
       },
       {
-        state: 'customer',
+        state: 'category',
         short_label: 'C',
-        name: 'Customer',
+        name: 'Category',
         type: 'link',
-        icon: 'fa fa-user'
+        icon: 'fa fa-list'
       }
     ]
   },
