@@ -1,6 +1,5 @@
 import { UserComponent } from './components/user/user.component';
 import { AclComponent } from './components/acl/acl.component';
-import { ProductComponent } from './components/product/product.component';
 import { MainComponent } from './components/main.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { NgModule } from '@angular/core';
@@ -30,11 +29,6 @@ const appRoutes: Routes = [
         path: 'profile',
         component: ProfileComponent,
         loadChildren: 'app/components/profile/profile.module#ProfileModule'
-      },
-      {
-        path: 'product',
-        component: ProductComponent,
-        loadChildren: './components/product/product.module#ProductModule'
       },
       {
         path: 'customer',

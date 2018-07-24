@@ -2,7 +2,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
 import { DesignerModule } from './designer/designer.module';
 import { CustomerModule } from './customer/customer.module';
-import { ProductModule } from './product/product.module';
 import { CurrencyModule } from './currency/currency.module';
 import { CourierModule } from './courier/courier.module';
 import { AuthModule } from './auth/auth.module';
@@ -15,7 +14,6 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { MainComponent } from './main.component';
 import { ProfileModule } from './profile/profile.module';
 import { ProfileComponent } from './profile/profile.component';
-import { ProductComponent } from './product/product.component';
 import { CustomerComponent } from './customer/customer.component';
 import { OrderComponent } from './order/order.component';
 import { CategoryComponent } from './category/category.component';
@@ -29,7 +27,6 @@ import { UserComponent } from './user/user.component';
 import { CollectionBarcodeComponent } from '../common/print-template/collection-barcode/collection-barcode.component';
 import { BarcodeComponent } from '../common/print-template/product-barcode/barcode.component';
 import { PrintTemplateModule } from '../common/print-template/print-template.module';
-import * as _ from 'lodash';
 import { SharedModule } from '../template/shared/shared.module';
 import { BreadcrumbsComponent } from '../template/layout/admin/breadcrumbs/breadcrumbs.component';
 import { AppMenuItems } from '../template/shared/app-menu-items/app-menu-items';
@@ -41,7 +38,6 @@ import { SettingsModule } from './settings/settings.module';
     DashboardComponent,
     MainComponent,
     ProfileComponent,
-    ProductComponent,
     CustomerComponent,
     OrderComponent,
     CategoryComponent,
@@ -60,7 +56,6 @@ import { SettingsModule } from './settings/settings.module';
     FormsModule,
     AuthModule,
     ProfileModule,
-    ProductModule,
     CustomerModule,
     DesignerModule,
     UserModule,

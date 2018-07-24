@@ -13,16 +13,11 @@ import Size from '../models/Size';
 import Style from '../models/Style';
 import Status from '../models/Status';
 import Designer from '../models/Designer';
-import Order from '../models/Order';
-import Inventory from '../models/Inventory';
 import Destination from '../models/Destination';
 import Location from '../models/Location';
 import DestinationType from '../models/DestinationType';
-import Event from './../models/Event';
 import CustomerAddress from '../models/CustomerAddress';
-import Product from '../models/Product';
 import LengthAwarePaginator from '../models/LengthAwarePaginator';
-import Track from '../models/Track';
 import Currency from '../models/Currency';
 import Courier from '../models/Courier';
 import Role from '../models/Role';
@@ -44,15 +39,11 @@ const classes = {
   Style,
   Status,
   Designer,
-  Order,
-  Inventory,
   Destination,
   Location,
   DestinationType,
   Event,
   CustomerAddress,
-  Product,
-  Track,
   Role,
   Constant,
   Provider,

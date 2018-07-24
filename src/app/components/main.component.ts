@@ -5,13 +5,9 @@ import { AppMenuItems } from '../template/shared/app-menu-items/app-menu-items';
 import { NotificationService } from '../common/services/notification/notification.service';
 import store from '../store/store.module';
 import { FETCH_LOGIN_DETAIL_REQUESTED } from './auth/login/login.actions';
-import { AvailablePermissions } from './../app.const';
 import { environment } from './../../environments/environment';
 import { Router } from '@angular/router';
 import * as Cookies from 'js-cookie';
-import * as $ from 'jquery';
-import MenuItem from '../models/MenuItem';
-import * as _ from 'lodash';
 
 @Component({
   selector: 'app-main',

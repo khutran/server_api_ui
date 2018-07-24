@@ -11,10 +11,9 @@ import { SumByPipe } from './sum-by/sum-by.pipe';
 import { FlatMapPipe } from './flat-map/flat-map.pipe';
 import { ArrayKeyValue } from './array-key-value/array-key-value.pipe';
 import { ConvertToTree } from './convert-to-tree/convert-to-tree.pipe';
-import { GroupByBulkPipe } from './group-by-bulk/group-by-bulk.pipe';
 @NgModule({
   imports: [CommonModule],
-  exports: [HasItemPipe, CustomDatePipe, LengthPipe, FilterByPipe, IsArrayPipe, OrderByPipe, SumByPipe, FlatMapPipe, ArrayKeyValue, ConvertToTree, GroupByBulkPipe, FindByPipe],
-  declarations: [HasItemPipe, CustomDatePipe, LengthPipe, FilterByPipe, IsArrayPipe, OrderByPipe, SumByPipe, FlatMapPipe, ArrayKeyValue, ConvertToTree, GroupByBulkPipe, FindByPipe]
+  exports: [HasItemPipe, CustomDatePipe, LengthPipe, FilterByPipe, IsArrayPipe, OrderByPipe, SumByPipe, FlatMapPipe, ArrayKeyValue, ConvertToTree, FindByPipe],
+  declarations: [HasItemPipe, CustomDatePipe, LengthPipe, FilterByPipe, IsArrayPipe, OrderByPipe, SumByPipe, FlatMapPipe, ArrayKeyValue, ConvertToTree, FindByPipe]
 })
 export class PipesModule {}

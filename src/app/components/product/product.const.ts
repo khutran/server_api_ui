@@ -1,5 +1,0 @@
-export const PRODUCT_COMP = 'PRODUCT_COMP';
-export const PRODUCT_STATUS_PENDING = 1;
-export const PRODUCT_STATUS_SELLING = 2;
-export const PRODUCT_STATUS_SOLD = 3;
-export const PRODUCT_STATUS_CANCELED = 4;

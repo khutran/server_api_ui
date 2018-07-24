@@ -2,7 +2,6 @@ import { Router } from '@angular/router';
 import { API_CALL_ERROR } from './../../../store/action';
 import { PreloaderService } from './../../../common/services/preloader/preloader.service';
 import { USER_COMP } from './../user.const';
-import { PRODUCT_COMP } from '../../product/product.const';
 import { AppInjector } from './../../../app-injector';
 import {
   FETCH_ALL_USER_REQUESTED,
@@ -31,13 +30,6 @@ function* getUsers(action) {
             type: FETCH_ALL_USER_SUCCEEDED,
             data: results,
             com: USER_COMP
-          });
-          break;
-        case PRODUCT_COMP:
-          yield put({
-            type: FILTER_USERS_SUCCEEDED,
-            data: results,
-            com: PRODUCT_COMP
           });
           break;
         default:
@@ -127,13 +119,6 @@ function* filterUsers(action) {
             type: FILTER_USERS_SUCCEEDED,
             data: results,
             com: USER_COMP
-          });
-          break;
-        case PRODUCT_COMP:
-          yield put({
-            type: FILTER_USERS_SUCCEEDED,
-            data: results,
-            com: PRODUCT_COMP
           });
           break;
         default:

@@ -32,32 +32,6 @@ export interface Menu {
 
 const MENUITEMS = [
   {
-    label: 'Product',
-    main: [
-      {
-        state: 'product',
-        short_label: 'P',
-        name: 'Product',
-        type: 'link',
-        icon: 'fa fa-shopping-bag'
-      },
-      {
-        state: 'category',
-        short_label: 'C',
-        name: 'Category',
-        type: 'link',
-        icon: 'fa fa-bars'
-      },
-      {
-        state: 'currency',
-        short_label: '$',
-        name: 'Currency',
-        type: 'link',
-        icon: 'fa fa-money'
-      }
-    ]
-  },
-  {
     label: 'User',
     main: [
       {
