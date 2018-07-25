@@ -23,7 +23,7 @@ export class ListComponent implements OnInit, OnDestroy {
     this.router = router;
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       if (e instanceof NavigationEnd) {
-        this.store.dispatch({ type: FETCH_PROJECTS_REQUESTED, data: this.getQuery() });
+        this.store.dispatch({ type: FETCH_PROJECTS_REQUESTED, data: this.parseQuery() });
       }
     });
   }
@@ -38,12 +38,21 @@ export class ListComponent implements OnInit, OnDestroy {
     }
   }
 
-  private getQuery(): object {
-    let page = 1;
+  private parseQuery(): object {
+    let params = {
+      page: 1,
+      per_page: 20
+    };
     if (!_.isUndefined(this.activeRouter.snapshot.queryParams.page)) {
-      page = this.activeRouter.snapshot.queryParams.page;
+      params = _.assign(params, { page: this.activeRouter.snapshot.queryParams.page });
     }
-    return _.assign({}, { page: page });
+    if (!_.isUndefined(this.activeRouter.snapshot.queryParams.search)) {
+      params = _.assign(params, { search: this.activeRouter.snapshot.queryParams.search });
+    }
+    if (!_.isUndefined(this.activeRouter.snapshot.queryParams.order_by)) {
+      params = _.assign(params, { orderBy: this.activeRouter.snapshot.queryParams.order_by });
+    }
+    return params;
   }
 
   deleteItem(id) {
