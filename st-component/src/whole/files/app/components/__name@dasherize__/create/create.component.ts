@@ -15,7 +15,7 @@ export class CreateComponent implements OnInit {
     name: ''
   };
 
-  constructor() {
+  constructor(store: Store) {
     this.store = AppInjector.get(Store).getInstance();
   }
 
@@ -24,7 +24,7 @@ export class CreateComponent implements OnInit {
 
   onSubmit(form) {
     if (form.valid) {
-      store.dispatch({ type: CREATE_<%= underscore(name).toUpperCase() %>_REQUESTED, data: this.<%= camelize(name) %> });
+      this.store.dispatch({ type: CREATE_<%= underscore(name).toUpperCase() %>_REQUESTED, data: this.<%= camelize(name) %> });
     }
   }
 
