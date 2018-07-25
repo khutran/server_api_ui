@@ -1,24 +1,31 @@
 import { Router } from '@angular/router';
 import { FETCH_PROJECTS_REQUESTED } from './../list/list.actions';
-import { DELETE_PROJECT_REQUESTED, GET_PROJECT_REQUESTED, GET_PROJECT_SUCCEEDED, EDIT_PROJECT_REQUESTED, RENDER_EDIT_PROJECT_FORM_REQUESTED } from './edit.actions';
+import {
+  DELETE_PROJECT_REQUESTED,
+  GET_PROJECT_REQUESTED,
+  GET_PROJECT_SUCCEEDED,
+  EDIT_PROJECT_REQUESTED,
+  RENDER_EDIT_PROJECT_FORM_REQUESTED,
+  FILL_PROJECT_DETAIL_FORM
+} from './edit.actions';
 import { takeEvery, put, takeLatest } from 'redux-saga/effects';
 import { API_CALL_ERROR } from './../../../store/action';
 import { ApiService } from './../../../api/api.service';
 import { AppInjector } from './../../../app-injector';
 
-function* editProject(action) {
+function* edit(action) {
   const api = AppInjector.get(ApiService);
   const router = AppInjector.get(Router);
   try {
     let result = yield api.project.update(action.data).toPromise();
-    router.navigate(['project']);
+    router.navigate(['projects']);
   } catch (e) {
     yield put({ type: API_CALL_ERROR, error: e });
   }
 }
 
 function* watchEditProjectRequest() {
-  yield takeEvery(EDIT_PROJECT_REQUESTED, editProject);
+  yield takeEvery(EDIT_PROJECT_REQUESTED, edit);
 }
 
 function* getProject(action) {
@@ -55,4 +62,20 @@ function* watchRenderProjectDetailFormRequested() {
   });
 }
 
-export default [watchEditProjectRequest, watchGetProjectRequest, watchDeleteProjectRequest, watchRenderProjectDetailFormRequested];
+function* fillProjectDetailForm(action) {
+  const data = {
+    name: action.data.name,
+    git_remote: action.data.git_remote,
+    git_branch: action.data.git_branch,
+    git_application_key: action.data.git_application_key,
+    git_application_secret: action.data.git_application_secret,
+    database: action.data.database
+  };
+  yield put({ type: FILL_PROJECT_DETAIL_FORM, data: data });
+}
+
+function* watchFetchProjectDetailSuccessed() {
+  yield takeLatest(GET_PROJECT_SUCCEEDED, fillProjectDetailForm);
+}
+
+export default [watchEditProjectRequest, watchGetProjectRequest, watchDeleteProjectRequest, watchRenderProjectDetailFormRequested, watchFetchProjectDetailSuccessed];
