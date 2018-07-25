@@ -3,7 +3,7 @@ import { Component, OnInit, AfterViewInit, ComponentFactoryResolver, ViewContain
 import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
 import { AppMenuItems } from '../template/shared/app-menu-items/app-menu-items';
 import { NotificationService } from '../common/services/notification/notification.service';
-import store from '../store/store.module';
+import { Store } from '../store/store.module';
 import { FETCH_LOGIN_DETAIL_REQUESTED } from './auth/login/login.actions';
 import { environment } from './../../environments/environment';
 import { Router } from '@angular/router';
@@ -88,7 +88,7 @@ import * as Cookies from 'js-cookie';
   ]
 })
 export class MainComponent implements OnInit {
-  public store = store;
+  public store;
   public navType: string;
   public themeLayout: string;
   public verticalPlacement: string;
@@ -166,6 +166,7 @@ export class MainComponent implements OnInit {
   };
 
   constructor(public menuItems: AppMenuItems, private route: Router, private notification: NotificationService, private componentFactoryResolver: ComponentFactoryResolver) {
+    this.store = AppInjector.get(Store).getInstance();
     this.navType = 'st2';
     this.themeLayout = 'vertical';
     this.verticalPlacement = 'left';
@@ -239,7 +240,7 @@ export class MainComponent implements OnInit {
 
   ngOnInit() {
     this.setBackgroundPattern('theme1');
-    store.dispatch({ type: FETCH_LOGIN_DETAIL_REQUESTED });
+    this.store.dispatch({ type: FETCH_LOGIN_DETAIL_REQUESTED });
   }
 
   onResize(event) {

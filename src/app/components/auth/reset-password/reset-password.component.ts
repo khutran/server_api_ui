@@ -1,10 +1,11 @@
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import store from './../../../store/store.module';
+import { Store } from './../../../store/store.module';
 import { RESET_PASSWORD_REQUESTED } from './reset-password.actions';
 import { NotificationService } from '../../../common/services/notification/notification.service';
 import * as _ from 'lodash';
+import { AppInjector } from '../../../app-injector';
 
 @Component({
   selector: 'app-reset-password',
@@ -12,25 +13,19 @@ import * as _ from 'lodash';
   styleUrls: ['./reset-password.component.scss']
 })
 export class ResetPasswordComponent implements OnInit {
-
-  public store = store;
+  public store;
   public user = {
     password: '',
-    re_password: '',
+    re_password: ''
   };
 
-  constructor(
-    private notification: NotificationService,
-    private route: ActivatedRoute
-  ) { }
-
-  ngOnInit() {
+  constructor(private notification: NotificationService, private route: ActivatedRoute) {
+    this.store = AppInjector.get(Store).getInstance();
   }
 
+  ngOnInit() {}
+
   onSubmit() {
-
-    //console.log(this.route.queryParams);
-
     this.route.queryParams.subscribe(params => {
       let token = params.token;
 
@@ -53,10 +48,7 @@ export class ResetPasswordComponent implements OnInit {
         password: this.user.password,
         reset_token: token
       };
-      store.dispatch({ type: RESET_PASSWORD_REQUESTED, data: data });
+      this.store.dispatch({ type: RESET_PASSWORD_REQUESTED, data: data });
     });
-
-
   }
-
 }

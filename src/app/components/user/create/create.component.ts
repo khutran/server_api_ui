@@ -4,10 +4,11 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { NotificationService } from './../../../common/services/notification/notification.service';
 import { USER_COMP } from './../user.const';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import store from './../../../store/store.module';
+import { Store } from './../../../store/store.module';
 import { CREATE_USER_REQUESTED } from './create.actions';
-import { UtilityService } from "../../../common/services/utility/utility.service";
+import { UtilityService } from '../../../common/services/utility/utility.service';
 import * as _ from 'lodash';
+import { AppInjector } from '../../../app-injector';
 
 @Component({
   selector: 'app-create',
@@ -15,7 +16,7 @@ import * as _ from 'lodash';
   styleUrls: ['./create.component.scss']
 })
 export class CreateComponent implements OnInit, OnDestroy {
-  public store = store;
+  public store;
   protected navigationSupscription: Subscription;
   public user = {
     email: '',
@@ -28,9 +29,10 @@ export class CreateComponent implements OnInit, OnDestroy {
   };
   public redirectData;
   constructor(private notification: NotificationService, private activatedRoute: ActivatedRoute, private router: Router, private utilityService: UtilityService) {
+    this.store = AppInjector.get(Store).getInstance();
     this.navigationSupscription = this.router.events.subscribe((e: any) => {
       if (e instanceof NavigationEnd) {
-        store.dispatch({
+        this.store.dispatch({
           type: FETCH_ALL_ROLE_REQUESTED,
           com: USER_COMP
         });
@@ -56,7 +58,7 @@ export class CreateComponent implements OnInit, OnDestroy {
 
   onSubmit(form) {
     if (form.valid) {
-      store.dispatch({
+      this.store.dispatch({
         type: CREATE_USER_REQUESTED,
         data: this.user,
         com: USER_COMP,

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import * as _ from 'lodash';
-import store from './../../../../store/store.module';
+import { Store } from './../../../../store/store.module';
 import { CREATE_ROLE_REQUESTED } from './create.actions';
+import { AppInjector } from '../../../../app-injector';
 
 @Component({
   selector: 'app-create',
@@ -9,23 +9,22 @@ import { CREATE_ROLE_REQUESTED } from './create.actions';
   styleUrls: ['./create.component.scss']
 })
 export class CreateComponent implements OnInit {
-
-  public store = store;
+  public store;
 
   public role = {
     name: '',
-    level: 1,
+    level: 1
   };
 
-  constructor() { }
-
-  ngOnInit() {
+  constructor() {
+    this.store = AppInjector.get(Store).getInstance();
   }
+
+  ngOnInit() {}
 
   onSubmit(form) {
     if (form.valid) {
-      store.dispatch({ type: CREATE_ROLE_REQUESTED, data: this.role });
+      this.store.dispatch({ type: CREATE_ROLE_REQUESTED, data: this.role });
     }
   }
-
 }

@@ -1,6 +1,7 @@
 import { CREATE_PROJECT_REQUESTED } from './create.actions';
 import { Component, OnInit } from '@angular/core';
-import store from './../../../store/store.module';
+import { Store } from './../../../store/store.module';
+import { AppInjector } from '../../../app-injector';
 
 @Component({
   selector: 'app-create',
@@ -8,21 +9,20 @@ import store from './../../../store/store.module';
   styleUrls: ['./create.component.scss']
 })
 export class CreateComponent implements OnInit {
-
-  private store = store;
+  private store;
   private project = {
     name: ''
   };
 
-  constructor() { }
-
-  ngOnInit() {
+  constructor() {
+    this.store = AppInjector.get(Store).getInstance();
   }
+
+  ngOnInit() {}
 
   onSubmit(form) {
     if (form.valid) {
-      store.dispatch({ type: CREATE_PROJECT_REQUESTED, data: this.project });
+      this.store.dispatch({ type: CREATE_PROJECT_REQUESTED, data: this.project });
     }
   }
-
 }

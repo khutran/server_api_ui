@@ -1,7 +1,8 @@
 import { GET_<%= underscore(name).toUpperCase() %>_REQUESTED, EDIT_<%= underscore(name).toUpperCase() %>_REQUESTED } from './edit.actions';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import store from './../../../store/store.module';
+import { Store } from './../../../store/store.module';
+import { AppInjector } from './../../../app-injector';
 
 @Component({
   selector: 'app-edit',
@@ -10,19 +11,21 @@ import store from './../../../store/store.module';
 })
 export class EditComponent implements OnInit {
 
-  private store = store;
+  private store;
 
   constructor(
     private route: ActivatedRoute
-  ) { }
+  ) {
+    this.store = AppInjector.get(Store).getInstance();
+  }
 
   ngOnInit() {
-    store.dispatch({ type: GET_<%= underscore(name).toUpperCase() %>_REQUESTED, data: this.getItemId() });
+    this.store.dispatch({ type: GET_<%= underscore(name).toUpperCase() %>_REQUESTED, data: this.getItemId() });
   }
 
   onSubmit(form) {
     if (form.valid) {
-      store.dispatch({ type: EDIT_<%= underscore(name).toUpperCase() %>_REQUESTED, data: (store as any).getState().<%= classify(name) %>.edit.item });
+      this.store.dispatch({ type: EDIT_<%= underscore(name).toUpperCase() %>_REQUESTED, data: (store as any).getState().<%= classify(name) %>.edit.item });
     }
   }
 

@@ -4,10 +4,21 @@ import logger from 'redux-logger';
 
 import reducer from './reducers';
 import sagas from './sagas';
-const composeEnhancers = compose;
-const sagaMiddleware = createSagaMiddleware();
-const store: any = createStore(reducer, applyMiddleware(sagaMiddleware, logger));
+import { NgModule } from '../../../node_modules/@angular/core';
 
-sagaMiddleware.run(sagas);
-
-export default store;
+@NgModule({
+  imports: [],
+  exports: [],
+  declarations: []
+})
+export class Store {
+  public store;
+  constructor() {
+    const sagaMiddleware = createSagaMiddleware();
+    this.store = createStore(reducer, applyMiddleware(sagaMiddleware, logger));
+    sagaMiddleware.run(sagas);
+  }
+  getInstance() {
+    return this.store;
+  }
+}

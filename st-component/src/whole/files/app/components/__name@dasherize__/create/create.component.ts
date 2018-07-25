@@ -1,6 +1,7 @@
 import { CREATE_<%= underscore(name).toUpperCase() %>_REQUESTED } from './create.actions';
 import { Component, OnInit } from '@angular/core';
-import store from './../../../store/store.module';
+import { Store } from './../../../store/store.module';
+import { AppInjector } from '../../../app-injector';
 
 @Component({
   selector: 'app-create',
@@ -9,12 +10,14 @@ import store from './../../../store/store.module';
 })
 export class CreateComponent implements OnInit {
 
-  private store = store;
+  public store;
   private <%= camelize(name) %> = {
     name: ''
   };
 
-  constructor() { }
+  constructor() {
+    this.store = AppInjector.get(Store).getInstance();
+  }
 
   ngOnInit() {
   }

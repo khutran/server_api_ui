@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import store from './../../../store/store.module';
-import { FETCH_LOGIN_DETAIL_REQUESTED } from '../../auth/login/login.actions';
+import { Store } from './../../../store/store.module';
 import { InputBase } from '../../../common/directives/dynamic-form/Input/InputBase';
-import { Dropdown } from '../../../common/directives/dynamic-form/Input/DropDown';
 import { TextBox } from '../../../common/directives/dynamic-form/Input/TextBox';
 import { Radio } from '../../../common/directives/dynamic-form/Input/Radio';
 import { RENDER_PROFILE_DETAIL_FORM } from './detail.action';
+import { AppInjector } from '../../../app-injector';
 
 @Component({
   selector: 'app-detail',
@@ -13,9 +12,11 @@ import { RENDER_PROFILE_DETAIL_FORM } from './detail.action';
   styleUrls: ['./detail.component.scss']
 })
 export class DetailComponent implements OnInit {
-  public store = store;
+  public store;
 
-  constructor() {}
+  constructor() {
+    this.store = AppInjector.get(Store).getInstance();
+  }
 
   ngOnInit() {
     let inputs: InputBase<any>[] = [
@@ -105,7 +106,7 @@ export class DetailComponent implements OnInit {
         order: 8
       })
     ];
-    store.dispatch({ type: RENDER_PROFILE_DETAIL_FORM, data: inputs });
+    this.store.dispatch({ type: RENDER_PROFILE_DETAIL_FORM, data: inputs });
   }
 
   onSubmit(form) {
