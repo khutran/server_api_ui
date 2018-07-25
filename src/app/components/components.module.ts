@@ -20,9 +20,12 @@ import { AppMenuItems } from '../template/shared/app-menu-items/app-menu-items';
 import { SettingsModule } from './settings/settings.module';
 import { ProjectModule } from './project/project.module';
 import { ProjectComponent } from './project/project.component';
+import { StatusComponent } from './status/status.component';
+import { StatusModule } from './status/status.module';
 
 @NgModule({
   declarations: [
+    StatusComponent,
     PageNotFoundComponent,
     DashboardComponent,
     MainComponent,
@@ -34,6 +37,7 @@ import { ProjectComponent } from './project/project.component';
     ProjectComponent
   ],
   imports: [
+    StatusModule,
     CommonModule,
     SharedModule,
     RouterModule,

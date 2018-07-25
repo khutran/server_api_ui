@@ -9,6 +9,7 @@ import { AuthGuardService } from './auth/auth-guard.service';
 import { ProfileComponent } from './components/profile/profile.component';
 import { CategoryComponent } from './components/category/category.component';
 import { ProjectComponent } from './components/project/project.component';
+import { StatusComponent } from './components/status/status.component';
 
 const appRoutes: Routes = [
   {
@@ -29,6 +30,11 @@ const appRoutes: Routes = [
         path: 'category',
         component: CategoryComponent,
         loadChildren: './components/category/category.module#CategoryModule'
+      },
+      {
+        path: 'status',
+        component: StatusComponent,
+        loadChildren: './components/status/status.module#StatusModule'
       },
       {
         path: 'projects',

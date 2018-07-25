@@ -10,8 +10,10 @@ import User from '../models/User';
 import { AppInjector } from '../app-injector';
 import { PreloaderService } from '../common/services/preloader/preloader.service';
 import Project from '../models/Project';
+import Status from '../models/Status';
 
 const classes = {
+  Status,
   Project,
   Category,
   Location,

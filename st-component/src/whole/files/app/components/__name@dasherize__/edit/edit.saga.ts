@@ -24,11 +24,11 @@ function* edit(action) {
   }
 }
 
-function* watchEdit<%= dasherize(name).toUpperCase() %>Request() {
+function* watchEdit<%= classify(name) %>Request() {
   yield takeEvery(EDIT_<%= underscore(name).toUpperCase() %>_REQUESTED, edit);
 }
 
-function* get<%= dasherize(name).toUpperCase() %>(action) {
+function* get<%= classify(name) %>(action) {
   const api = AppInjector.get(ApiService);
   try {
     let result = yield api.<%= camelize(name) %>.getItemById(action.data).toPromise();
@@ -38,11 +38,11 @@ function* get<%= dasherize(name).toUpperCase() %>(action) {
   }
 }
 
-function* watchGet<%= dasherize(name).toUpperCase() %>Request() {
-  yield takeEvery(GET_<%= underscore(name).toUpperCase() %>_REQUESTED, get<%= dasherize(name).toUpperCase() %>);
+function* watchGet<%= classify(name) %>Request() {
+  yield takeEvery(GET_<%= underscore(name).toUpperCase() %>_REQUESTED, get<%= classify(name) %>);
 }
 
-function* delete<%= dasherize(name).toUpperCase() %>(action) {
+function* delete<%= classify(name) %>(action) {
   const api = AppInjector.get(ApiService);
   try {
     yield api.<%= camelize(name) %>.delete(action.data).toPromise();
@@ -52,22 +52,22 @@ function* delete<%= dasherize(name).toUpperCase() %>(action) {
   }
 }
 
-function* watchDelete<%= dasherize(name).toUpperCase() %>Request() {
-  yield takeEvery(DELETE_<%= underscore(name).toUpperCase() %>_REQUESTED, delete<%= dasherize(name).toUpperCase() %>);
+function* watchDelete<%= classify(name) %>Request() {
+  yield takeEvery(DELETE_<%= underscore(name).toUpperCase() %>_REQUESTED, delete<%= classify(name) %>);
 }
 
-function* watchRender<%= dasherize(name).toUpperCase() %>DetailFormRequested() {
+function* watchRender<%= classify(name) %>DetailFormRequested() {
   yield takeLatest(RENDER_EDIT_<%= underscore(name).toUpperCase() %>_FORM_REQUESTED, function*(action: any) {
     yield put({ type: GET_<%= underscore(name).toUpperCase() %>_REQUESTED, data: action.data.id });
   });
 }
 
-function* fill<%= dasherize(name).toUpperCase() %>DetailForm(action) {
+function* fill<%= classify(name) %>DetailForm(action) {
   yield put({ type: FILL_<%= underscore(name).toUpperCase() %>_DETAIL_FORM, data: action.data });
 }
 
-function* watchFetch<%= dasherize(name).toUpperCase() %>DetailSuccessed() {
-  yield takeLatest(GET_<%= underscore(name).toUpperCase() %>_SUCCEEDED, fill<%= dasherize(name).toUpperCase() %>DetailForm);
+function* watchFetch<%= classify(name) %>DetailSuccessed() {
+  yield takeLatest(GET_<%= underscore(name).toUpperCase() %>_SUCCEEDED, fill<%= classify(name) %>DetailForm);
 }
 
-export default [watchEdit<%= dasherize(name).toUpperCase() %>Request, watchGet<%= dasherize(name).toUpperCase() %>Request, watchDelete<%= dasherize(name).toUpperCase() %>Request, watchRender<%= dasherize(name).toUpperCase() %>DetailFormRequested, watchFetch<%= dasherize(name).toUpperCase() %>DetailSuccessed];
+export default [watchEdit<%= classify(name) %>Request, watchGet<%= dasherize(name).toUpperCase() %>Request, watchDelete<%= dasherize(name).toUpperCase() %>Request, watchRender<%= dasherize(name).toUpperCase() %>DetailFormRequested, watchFetch<%= dasherize(name).toUpperCase() %>DetailSuccessed];

@@ -7,6 +7,7 @@ import { environment } from '../../environments/environment';
 import { Print } from './print/print.reducer';
 import { Profile } from '../components/profile/profile.reducer';
 import { Project } from './../components/project/project.reducer';
+import { Status } from './../components/status/status.reducer';
 
 const RootReducer = (state = { config: environment }, action) => {
   switch (action.type) {
@@ -16,6 +17,7 @@ const RootReducer = (state = { config: environment }, action) => {
 };
 
 export default combineReducers({
+  Status,
   Project,
   Auth,
   Category,
