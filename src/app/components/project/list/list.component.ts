@@ -29,7 +29,7 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.store.dispatch({ type: FETCH_PROJECTS_REQUESTED });
+    // this.store.dispatch({ type: FETCH_PROJECTS_REQUESTED });
   }
 
   ngOnDestroy() {
@@ -47,8 +47,6 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   deleteItem(id) {
-    if (confirm('Do you want to delete this project?')) {
-      this.store.dispatch({ type: DELETE_PROJECT_REQUESTED, data: id });
-    }
+    this.store.dispatch({ type: DELETE_PROJECT_REQUESTED, data: id });
   }
 }

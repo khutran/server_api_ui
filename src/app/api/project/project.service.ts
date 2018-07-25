@@ -7,7 +7,7 @@ import { ServiceProvider } from '../service.provider';
 @Injectable()
 export class ProjectService extends ServiceProvider {
 
-  protected url = '/api/project';
+  protected url = '/api/v1/projects';
 
   constructor(
   ) {

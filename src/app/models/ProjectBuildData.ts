@@ -5,7 +5,7 @@ class ProjectBuildData extends Model {
   constructor(options) {
     super();
     (this as any).host = d => {
-      return new Host(d);
+      return new Host(d.data);
     };
     this.bind(options);
   }
