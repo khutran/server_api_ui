@@ -56,18 +56,18 @@
               <td>{{ item.getName() }}</td>
               <td>{{ item.getFramework().name }}</td>
               <td>
-                <ul *ngIf="item.build">
+                <ul>
                   <li>
-                    <strong>URL:</strong> {{ item.getBuild().git }}
+                    <strong>URL:</strong> {{ item.getGitRemote() }}
                   </li>
                   <li>
-                    <strong>Branch:</strong> {{ item.getBuild().git_branch }}
+                    <strong>Branch:</strong> {{ item.getGitBranch() }}
                   </li>
-                  <li *ngIf="item.build.host">
-                    <strong>IP:</strong> {{ item.getBuild().host.ip }}
+                  <li *ngIf="item.host">
+                    <strong>IP:</strong> {{ item.getHost().ip }}
                   </li>
-                  <li *ngIf="item.build.host">
-                    <strong>Hostname:</strong> {{ item.getBuild().host.name }}
+                  <li *ngIf="item.host">
+                    <strong>Hostname:</strong> {{ item.getHost().name }}
                   </li>
                 </ul>
               </td>
