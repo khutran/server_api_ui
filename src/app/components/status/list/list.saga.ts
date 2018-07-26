@@ -1,9 +1,9 @@
 import { FETCH_STATUSS_SUCCEEDED, FETCH_STATUSS_REQUESTED, SORT_STATUSS_REQUESTED, SORT_STATUSS_SUCCEEDED } from './list.actions';
 import { API_CALL_ERROR } from './../../../store/action';
 import { AppInjector } from './../../../app-injector';
-import * as _ from 'lodash';
 import { ApiService } from '../../../api/api.service';
 import { put, takeEvery } from 'redux-saga/effects';
+import { takeLatest } from 'redux-saga';
 
 function* getStatus(action) {
   const api = AppInjector.get(ApiService);
@@ -16,9 +16,7 @@ function* getStatus(action) {
 }
 
 function* watchFetchStatusRequest() {
-  yield takeEvery(FETCH_STATUSS_REQUESTED, getStatus);
+  yield takeLatest(FETCH_STATUSS_REQUESTED, getStatus);
 }
 
-export default [
-  watchFetchStatusRequest
-];
+export default [watchFetchStatusRequest];

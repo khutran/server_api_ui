@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import * as moment from 'moment';
 
-interface ModelInterface {
+export interface ModelInterface {
   _backup(fields: String[]);
   _isChanged(): Boolean;
   getCreated(): moment.Moment;

@@ -1,6 +1,3 @@
-import { AppInjector } from './../../app-injector';
-import { ApiUrl } from './../api-url.service';
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ServiceProvider } from '../service.provider';
 import { catchError, tap, map } from 'rxjs/operators';
@@ -9,11 +6,8 @@ import User from '../../models/User';
 
 @Injectable()
 export class UserService extends ServiceProvider {
-  protected url = '/api/v1/users';
-
-  constructor() {
-    super(AppInjector.get(HttpClient), AppInjector.get(ApiUrl), 'User');
-  }
+  public url = '/api/v1/users';
+  public model = User;
 
   profile(params: {}): Observable<any> {
     const meUrl = '/api/v1/me';
