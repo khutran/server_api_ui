@@ -10,4 +10,4 @@ export const create = (state = { created: false, item: {} }, action) => {
     default:
       return state;
   }
-}
+};

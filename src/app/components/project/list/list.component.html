@@ -71,7 +71,7 @@
                   </li>
                 </ul>
               </td>
-              <td>{{ item.getStatus().name }}</td>
+              <td><span *ngIf="item.status">{{ item.getStatus().name }}</span></td>
               <td>
                 <a routerLink="edit/{{ item.getId() }}" class="btn btn-dark btn-sm icon-only">
                   <i class="fa fa-pencil" aria-hidden="true"></i>

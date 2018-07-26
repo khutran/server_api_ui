@@ -28,7 +28,6 @@ export class ServiceProvider {
    */
   get(params: {}): Observable<any> {
     this.preloader.show();
-    console.log(params);
     const queryParams = new HttpParams({ fromObject: params });
     return this.http.get(this.apiUrl.getApiUrl(this.url), { params: queryParams }).pipe(
       tap(result => {
@@ -133,81 +132,6 @@ export class ServiceProvider {
         this.preloader.hide();
       }),
       map(result => new this.model((result as any).data)),
-      catchError(error => {
-        this.preloader.hide();
-        throw error;
-      })
-    );
-  }
-
-  sort(data): Observable<any> {
-    // tslint:disable-next-line:forin
-    this.preloader.show();
-    let query = [];
-    for (const prop in data) {
-      if (data[prop] !== null) {
-        query.push(data[prop] + prop);
-      }
-    }
-
-    return this.http.get(this.apiUrl.getApiUrl(this.url) + '?sort=' + _.join(query, ',')).pipe(
-      tap(results => {
-        this.preloader.hide();
-      }),
-      map(results =>
-        _.assign(
-          {},
-          {
-            items: (results as any).data.map(item => new this.model(item)),
-            total: (results as any).meta.pagination.total
-          }
-        )
-      ),
-      catchError(error => {
-        this.preloader.hide();
-        throw error;
-      })
-    );
-  }
-
-  filter(query): Observable<any> {
-    this.preloader.show();
-    return this.http.get(this.apiUrl.getApiUrl(this.url) + '?constraints=' + JSON.stringify(query)).pipe(
-      tap(results => {
-        this.preloader.hide();
-      }),
-      // map(results => _.assign({}, { items: (results as any).data.items.map(item => new new this.model(item)), total: (results as any).data.total })),
-      map(results => {
-        return _.assign(
-          {},
-          {
-            items: (results as any).data.map(item => new this.model(item)),
-            total: (results as any).meta.pagination.total
-          }
-        );
-      }),
-      catchError(error => {
-        this.preloader.hide();
-        throw error;
-      })
-    );
-  }
-
-  search(query): Observable<any> {
-    this.preloader.show();
-    return this.http.get(this.apiUrl.getApiUrl(this.url) + '?search=' + query).pipe(
-      tap(results => {
-        this.preloader.hide();
-      }),
-      map(results =>
-        _.assign(
-          {},
-          {
-            items: (results as any).data.map(item => new this.model(item)),
-            total: (results as any).meta.pagination.total
-          }
-        )
-      ),
       catchError(error => {
         this.preloader.hide();
         throw error;

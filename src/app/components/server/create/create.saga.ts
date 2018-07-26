@@ -11,7 +11,7 @@ function* createServer(action) {
   try {
     let result = yield api.server.create(action.data).toPromise();
     yield put({ type: CREATE_SERVER_SUCCEEDED, data: result });
-    router.navigate(['server']);
+    router.navigate(['servers']);
   } catch (e) {
     yield put({ type: API_CALL_ERROR, error: e });
   }

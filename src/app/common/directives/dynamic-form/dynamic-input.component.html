@@ -28,13 +28,14 @@
       </div>
     </div>
 
-    <div class="material-group" *ngSwitchCase="'dropdown'">
+    <div class="material-group flex-row" *ngSwitchCase="'dropdown'">
       <div class="material-addone" *ngIf="input.icon">
         <i class="{{ input.icon }}"></i>
       </div>
       <select [formControlName]="input.key" class="form-control">
-        <option *ngFor="let opt of input.options" [value]="opt.key">{{opt.value}}</option>
+        <option *ngFor="let opt of input.options" [value]="opt">{{opt.value}}</option>
       </select>
+      <div class="errorMessage" *ngIf="submitted && !isValid">{{input.label}} is required</div>
     </div>
 
     <div class="material-group" *ngSwitchCase="'radio'">
