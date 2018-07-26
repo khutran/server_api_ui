@@ -61,7 +61,7 @@ const MENUITEMS = [
         icon: 'fa fa-list'
       },
       {
-        state: 'category',
+        state: 'categories',
         short_label: 'C',
         name: 'Category',
         type: 'link',

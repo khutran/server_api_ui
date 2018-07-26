@@ -29,7 +29,7 @@ const appRoutes: Routes = [
         loadChildren: 'app/components/profile/profile.module#ProfileModule'
       },
       {
-        path: 'category',
+        path: 'categories',
         component: CategoryComponent,
         loadChildren: './components/category/category.module#CategoryModule'
       },

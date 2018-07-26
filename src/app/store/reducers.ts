@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux';
 import { Auth } from '../components/auth/auth.reducer';
-import { Category } from '../components/category/category.reducer';
 import { Acl } from './../components/acl/acl.reducer';
 import { Users } from './../components/user/user.reducer';
 import { environment } from '../../environments/environment';
@@ -10,6 +9,7 @@ import { Project } from './../components/project/project.reducer';
 import { Status } from './../components/status/status.reducer';
 import { Framework } from './../components/framework/framework.reducer';
 import { Server } from './../components/server/server.reducer';
+import { Category } from './../components/category/category.reducer';
 
 const RootReducer = (state = { config: environment }, action) => {
   switch (action.type) {
@@ -19,12 +19,12 @@ const RootReducer = (state = { config: environment }, action) => {
 };
 
 export default combineReducers({
+  Category,
   Server,
   Framework,
   Status,
   Project,
   Auth,
-  Category,
   Acl,
   Users,
   Print,

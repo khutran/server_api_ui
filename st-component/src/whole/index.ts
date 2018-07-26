@@ -80,8 +80,8 @@ function addDeclarationToReducer(options: any): Rule {
             `import { ${strings.classify(options.name)} } from './../components/${options.name}/${options.name}.reducer';`
           );
         }
-        if (str.indexOf('RootReducer,') > -1) {
-          declarationRecorder.insertRight(str.indexOf('RootReducer,') + 'RootReducer,'.length + 1, `${strings.classify(options.name)},`);
+        if (str.indexOf('combineReducers({') > -1) {
+          declarationRecorder.insertRight(str.indexOf('combineReducers({') + 'combineReducers({'.length, `${strings.classify(options.name)},`);
         }
       }
     }
