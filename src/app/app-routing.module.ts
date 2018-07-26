@@ -10,6 +10,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { CategoryComponent } from './components/category/category.component';
 import { ProjectComponent } from './components/project/project.component';
 import { StatusComponent } from './components/status/status.component';
+import { FrameworkComponent } from './components/framework/framework.component';
 
 const appRoutes: Routes = [
   {
@@ -35,6 +36,11 @@ const appRoutes: Routes = [
         path: 'status',
         component: StatusComponent,
         loadChildren: './components/status/status.module#StatusModule'
+      },
+      {
+        path: 'frameworks',
+        component: FrameworkComponent,
+        loadChildren: './components/framework/framework.module#FrameworkModule'
       },
       {
         path: 'projects',

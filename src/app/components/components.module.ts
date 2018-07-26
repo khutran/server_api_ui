@@ -22,9 +22,12 @@ import { ProjectModule } from './project/project.module';
 import { ProjectComponent } from './project/project.component';
 import { StatusComponent } from './status/status.component';
 import { StatusModule } from './status/status.module';
+import { FrameworkComponent } from './framework/framework.component';
+import { FrameworkModule } from './framework/framework.module';
 
 @NgModule({
   declarations: [
+    FrameworkComponent,
     StatusComponent,
     PageNotFoundComponent,
     DashboardComponent,
@@ -37,6 +40,7 @@ import { StatusModule } from './status/status.module';
     ProjectComponent
   ],
   imports: [
+    FrameworkModule,
     StatusModule,
     CommonModule,
     SharedModule,

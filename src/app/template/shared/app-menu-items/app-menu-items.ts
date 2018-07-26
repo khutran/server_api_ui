@@ -47,6 +47,13 @@ const MENUITEMS = [
     label: 'Project',
     main: [
       {
+        state: 'frameworks',
+        short_label: 'F',
+        name: 'Framework',
+        type: 'link',
+        icon: 'fa fa-list'
+      },
+      {
         state: 'status',
         short_label: 'S',
         name: 'Status',
