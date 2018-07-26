@@ -11,7 +11,7 @@ function* createFramework(action) {
   try {
     let result = yield api.framework.create(action.data).toPromise();
     yield put({ type: CREATE_FRAMEWORK_SUCCEEDED, data: result });
-    router.navigate(['framework']);
+    router.navigate(['frameworks']);
   } catch (e) {
     yield put({ type: API_CALL_ERROR, error: e });
   }
