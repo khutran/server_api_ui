@@ -1,39 +1,38 @@
-<div class="x_panel">
-  <div class="row">
-    <div class="breadcrumb-section">
-      <ul class="breadcrumb">
-        <li>
-          <a routeLink="/">Home</a>
+<div class="create-new-item">
+  <div class="row mgb-20">
+    <div class="col s12">
+      <ul class="breadcrumb-title">
+        <li class="breadcrumb-item">
+          <a routerLink="/">
+            <i class="fa fa-home"></i>
+          </a>
         </li>
-        <li>
-          <a routerLink="/project">project</a>
+        <li class="breadcrumb-item">
+          <a routerLink="projects">
+            Projects
+          </a>
         </li>
-        <li *ngIf="project.name">{{ project.name }}</li>
-        <li *ngIf="!project.name">Undefined</li>
+        <li class="breadcrumb-item">
+          <a href="javascript:">Create</a>
+        </li>
       </ul>
     </div>
   </div>
 
-  <!-- {{ store.getState().Size.edit.item.data | json }} -->
-
   <div class="row">
-    <div class="x_content">
-      <h3>Create New project</h3>
-      <form #form="ngForm" (ngSubmit)="onSubmit(form)">
-        <div class="form-group">
-          <label for="">Name
-            <span class="required">*</span>
-          </label>
-          <input type="text" name="name" #name="ngModel" [(ngModel)]="project.name" class="form-control" [ngClass]="{'parsley-error':name.invalid && form.submitted}"
-            required>
-          <ul *ngIf="name.invalid && form.submitted" class="parsley-errors-list filled">
-            <li class="parsley-required">This field is required.</li>
-          </ul>
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header no-box-shadow">
+          <h5 class="card-header-text">Create new server</h5>
         </div>
-        <div class="form-group">
-          <input class="btn btn-primary" type="submit" value="Create">
+        <div class="card-body">
+          <div class="edit-info">
+            <div class="col-12 ">
+              <dynamic-form [(inputs)]="store.getState().Project.create.inputs" [onSubmit]="onSubmit" submitText="Save"></dynamic-form>
+            </div>
+          </div>
         </div>
-      </form>
+      </div>
     </div>
   </div>
 </div>

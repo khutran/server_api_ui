@@ -11,7 +11,7 @@ function* createProject(action) {
   try {
     let result = yield api.project.create(action.data).toPromise();
     yield put({ type: CREATE_PROJECT_SUCCEEDED, data: result });
-    router.navigate(['project']);
+    router.navigate(['projects']);
   } catch (e) {
     yield put({ type: API_CALL_ERROR, error: e });
   }
