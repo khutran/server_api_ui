@@ -26,13 +26,10 @@ export class ServiceProvider {
    *
    * @return Observable
    */
-  get(params: object = {}): Observable<any> {
+  get(params: {}): Observable<any> {
     this.preloader.show();
-    const queryParams = new HttpParams();
-    // tslint:disable-next-line:forin
-    for (let k in params) {
-      queryParams.set(k, params[k]);
-    }
+    console.log(params);
+    const queryParams = new HttpParams({ fromObject: params });
     return this.http.get(this.apiUrl.getApiUrl(this.url), { params: queryParams }).pipe(
       tap(result => {
         this.preloader.hide();
