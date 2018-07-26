@@ -7,10 +7,12 @@ import { RoleService } from './role/role.service';
 import { ProjectService } from './project/project.service';
 import { StatusService } from './status/status.service';
 import { FrameworkService } from './framework/framework.service';
+import { ServerService } from './server/server.service';
 
 @Injectable()
 export class ApiService {
   constructor(
+    public server: ServerService,
     public framework: FrameworkService,
     public status: StatusService,
     public auth: AuthService,

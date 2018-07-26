@@ -9,6 +9,7 @@ import { Profile } from '../components/profile/profile.reducer';
 import { Project } from './../components/project/project.reducer';
 import { Status } from './../components/status/status.reducer';
 import { Framework } from './../components/framework/framework.reducer';
+import { Server } from './../components/server/server.reducer';
 
 const RootReducer = (state = { config: environment }, action) => {
   switch (action.type) {
@@ -18,6 +19,7 @@ const RootReducer = (state = { config: environment }, action) => {
 };
 
 export default combineReducers({
+  Server,
   Framework,
   Status,
   Project,

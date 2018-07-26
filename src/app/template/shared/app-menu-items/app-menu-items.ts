@@ -68,6 +68,13 @@ const MENUITEMS = [
         icon: 'fa fa-list'
       },
       {
+        state: 'servers',
+        short_label: 'SV',
+        name: 'Server',
+        type: 'link',
+        icon: 'fa fa-list'
+      },
+      {
         state: 'projects',
         short_label: 'P',
         name: 'Projects',

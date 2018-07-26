@@ -70,4 +70,4 @@ function* watchFetch<%= classify(name) %>DetailSuccessed() {
   yield takeLatest(GET_<%= underscore(name).toUpperCase() %>_SUCCEEDED, fill<%= classify(name) %>DetailForm);
 }
 
-export default [watchEdit<%= classify(name) %>Request, watchGet<%= dasherize(name).toUpperCase() %>Request, watchDelete<%= dasherize(name).toUpperCase() %>Request, watchRender<%= dasherize(name).toUpperCase() %>DetailFormRequested, watchFetch<%= dasherize(name).toUpperCase() %>DetailSuccessed];
+export default [watchEdit<%= classify(name) %>Request, watchGet<%= classify(name) %>Request, watchDelete<%= classify(name) %>Request, watchRender<%= classify(name) %>DetailFormRequested, watchFetch<%= classify(name) %>DetailSuccessed];

@@ -10,9 +10,10 @@ import { ApiUrl } from './api-url.service';
 import { ProjectService } from './project/project.service';
 import { StatusService } from './status/status.service';
 import { FrameworkService } from './framework/framework.service';
+import { ServerService } from './server/server.service';
 @NgModule({
   imports: [CommonModule],
   declarations: [],
-  providers: [FrameworkService, StatusService, ApiUrl, ApiService, AuthService, UserService, CategoryService, RoleService, PermissionService, ProjectService]
+  providers: [ServerService, FrameworkService, StatusService, ApiUrl, ApiService, AuthService, UserService, CategoryService, RoleService, PermissionService, ProjectService]
 })
 export class ApiModule {}
