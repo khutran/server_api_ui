@@ -26,10 +26,11 @@ import { FrameworkModule } from './framework/framework.module';
 import { ServerComponent } from './server/server.component';
 import { ServerModule } from './server/server.module';
 import { CategoryComponent } from './category/category.component';
-import { CategoryModule } from './category/category.module';
+import { CategoryModule } from './category/category.module';import { TestComponent } from "./test/test.component";
+          import { TestModule } from "./test/test.module";
 
 @NgModule({
-  declarations: [
+  declarations: [TestComponent,
     CategoryComponent,
     ServerComponent,
     FrameworkComponent,
@@ -44,7 +45,7 @@ import { CategoryModule } from './category/category.module';
     ProjectComponent
   ],
   imports: [
-    CategoryModule,
+TestModule,    CategoryModule,
     ServerModule,
     FrameworkModule,
     StatusModule,

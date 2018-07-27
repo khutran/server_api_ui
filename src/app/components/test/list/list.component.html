@@ -1,0 +1,84 @@
+<div class="user-component">
+  <div class="row mgb-20">
+    <div class="col s12">
+      <ul class="breadcrumb-title">
+        <li class="breadcrumb-item">
+          <a routerLink="/">
+            <i class="fa fa-home"></i>
+          </a>
+        </li>
+        <li class="breadcrumb-item">
+          <a href="javascript:">
+            Tests</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col s12">
+      <search-form></search-form>
+    </div>
+  </div>
+
+  <div class="row mgb-20">
+    <div class="col s12 text-right">
+      <a class="btn btn-primary btn-md" routerLink="create">
+        <i class="fa fa-plus" aria-hidden="true"></i> Create
+      </a>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s12">
+      <loader *ngIf="!store.getState().Test.list.fetched"></loader>
+      <app-card [cardOptionBlock]="true">
+        <table *ngIf="store.getState().Test.list.fetched" class="table table-no-border-top">
+          <thead>
+            <tr>
+              <th>ID
+                <sort-by-field field="id"></sort-by-field>
+              </th>
+              <th>Name
+                <sort-by-field field="name"></sort-by-field>
+              </th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="store.getState().Test.list.items | hasItem">
+            <tr *ngFor="let item of store.getState().Test.list.items">
+              <td>{{ item.getId() }}</td>
+              <td>{{ item.getName() }}</td>
+              <td>
+                <a routerLink="edit/{{ item.getId() }}" class="btn btn-dark btn-sm icon-only">
+                  <i class="fa fa-pencil" aria-hidden="true"></i>
+                </a>
+                <swal #deleteTest title="Delete" text="Do you want to delete this item?" type="warning" [showCancelButton]="true" (confirm)="delete(item.id)"></swal>
+                <button class="btn btn-danger btn-sm icon-only" [swal]="deleteTest">
+                  <i class="fa fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+
+          <tbody *ngIf="!(store.getState().Test.list.items | hasItem)">
+            <tr>
+              <td colspan="4" class="text-center">
+                We don't have any record here
+              </td>
+            </tr>
+          </tbody>
+
+        </table>
+      </app-card>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s12 m6">
+      <per-page></per-page>
+    </div>
+    <div class="col s12">
+      <length-aware-paginator *ngIf="store.getState().Test.list.fetched" [(paginator)]="store.getState().Test.list.pagination"></length-aware-paginator>
+    </div>
+  </div>
+</div>
