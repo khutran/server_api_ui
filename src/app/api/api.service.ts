@@ -7,12 +7,12 @@ import { ProjectService } from './project/project.service';
 import { StatusService } from './status/status.service';
 import { FrameworkService } from './framework/framework.service';
 import { ServerService } from './server/server.service';
-import { CategoryService } from './category/category.service';import { TestService } from './test/test.service';
+import { CategoryService } from './category/category.service';
 
 @Injectable()
 export class ApiService {
   constructor(
-    public test: TestService,    public category: CategoryService,
+    public category: CategoryService,
     public server: ServerService,
     public framework: FrameworkService,
     public status: StatusService,
