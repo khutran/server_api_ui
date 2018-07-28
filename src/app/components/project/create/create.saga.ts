@@ -7,6 +7,7 @@ import { AppInjector } from '../../../app-injector';
 import { GET_ALL_CATEGORIES_SUCCEEDED } from '../../category/category.action';
 import * as _ from 'lodash';
 import { GET_ALL_FRAMEWORKS_SUCCEEDED } from '../../framework/framework.action';
+import { GET_ALL_STATUSS_SUCCEEDED } from '../../status/status.action';
 
 function* createProject(action) {
   const api = AppInjector.get(ApiService);
@@ -26,7 +27,11 @@ function* watchCreateProjectRequest() {
 
 function* updateCategoryDropdown(action) {
   if (action.component === 'CREATE_PROJECT_COMPONENT') {
-    yield put({ type: UPDATE_CREATE_PROJECT_INPUT_OPTIONS, input: 'category', data: _.map(action.data, item => _.assign(item, { value: item.name })) });
+    const data = _.map(action.data, item => _.assign(item, { value: item.name, lable: item.name }));
+    if (!_.isUndefined(_.head(data))) {
+      data[0].selected = true;
+    }
+    yield put({ type: UPDATE_CREATE_PROJECT_INPUT_OPTIONS, input: 'category', data: data });
   }
 }
 
@@ -36,7 +41,11 @@ function* watchAllCategoryFetched() {
 
 function* updateFrameworkDropdown(action) {
   if (action.component === 'CREATE_PROJECT_COMPONENT') {
-    yield put({ type: UPDATE_CREATE_PROJECT_INPUT_OPTIONS, input: 'framework', data: _.map(action.data, item => _.assign(item, { value: item.name })) });
+    const data = _.map(action.data, item => _.assign(item, { value: item.name, lable: item.name }));
+    if (!_.isUndefined(_.head(data))) {
+      data[0].selected = true;
+    }
+    yield put({ type: UPDATE_CREATE_PROJECT_INPUT_OPTIONS, input: 'framework', data: data });
   }
 }
 
@@ -44,4 +53,18 @@ function* watchAllFrameworkFetched() {
   yield takeEvery(GET_ALL_FRAMEWORKS_SUCCEEDED, updateFrameworkDropdown);
 }
 
-export default [watchCreateProjectRequest, watchAllCategoryFetched, watchAllFrameworkFetched];
+function* updateStatusDropdown(action) {
+  if (action.component === 'CREATE_PROJECT_COMPONENT') {
+    const data = _.map(action.data, item => _.assign(item, { value: item.name, lable: item.name }));
+    if (!_.isUndefined(_.head(data))) {
+      data[0].selected = true;
+    }
+    yield put({ type: UPDATE_CREATE_PROJECT_INPUT_OPTIONS, input: 'status', data: data });
+  }
+}
+
+function* watchAllStatusFetched() {
+  yield takeEvery(GET_ALL_STATUSS_SUCCEEDED, updateStatusDropdown);
+}
+
+export default [watchCreateProjectRequest, watchAllCategoryFetched, watchAllFrameworkFetched, watchAllStatusFetched];
