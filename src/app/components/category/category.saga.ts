@@ -6,7 +6,6 @@ import createSaga from './create/create.saga';
 import { API_CALL_ERROR } from '../../store/action';
 import { GET_ALL_CATEGORIES_REQUESTED, GET_ALL_CATEGORIES_SUCCEEDED } from './category.action';
 import { ApiService } from '../../api/api.service';
-import { takeEvery } from 'redux-saga';
 import { AppInjector } from '../../app-injector';
 
 function* allSaga(action) {
@@ -26,6 +25,6 @@ function* allSaga(action) {
 }
 
 function* watchFetchAllCategorysRequest() {
-  yield takeEvery(GET_ALL_CATEGORIES_REQUESTED, allSaga);
+  yield takeLatest(GET_ALL_CATEGORIES_REQUESTED, allSaga);
 }
 export default _.map([...listSaga, ...editSaga, ...createSaga, watchFetchAllCategorysRequest], item => fork(item));

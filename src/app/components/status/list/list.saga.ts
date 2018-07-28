@@ -2,8 +2,7 @@ import { FETCH_STATUSS_SUCCEEDED, FETCH_STATUSS_REQUESTED, SORT_STATUSS_REQUESTE
 import { API_CALL_ERROR } from './../../../store/action';
 import { AppInjector } from './../../../app-injector';
 import { ApiService } from '../../../api/api.service';
-import { put, takeEvery } from 'redux-saga/effects';
-import { takeLatest } from 'redux-saga';
+import { put, takeLatest } from 'redux-saga/effects';
 
 function* getStatus(action) {
   const api = AppInjector.get(ApiService);

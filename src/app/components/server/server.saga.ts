@@ -6,7 +6,6 @@ import createSaga from "./create/create.saga";
 import { API_CALL_ERROR } from '../../store/action';
 import { GET_ALL_SERVERS_REQUESTED, GET_ALL_SERVERS_SUCCEEDED } from './server.action';
 import { ApiService } from '../../api/api.service';
-import { takeEvery } from 'redux-saga';
 import { AppInjector } from '../../app-injector';
 
 function* allSaga() {
@@ -26,7 +25,7 @@ function* allSaga() {
 }
 
 function* watchFetchAllServersRequest() {
-  yield takeEvery(GET_ALL_SERVERS_REQUESTED, allSaga);
+  yield takeLatest(GET_ALL_SERVERS_REQUESTED, allSaga);
 }
 export default _.map([...listSaga, ...editSaga, ...createSaga, watchFetchAllServersRequest], item =>
   fork(item)
