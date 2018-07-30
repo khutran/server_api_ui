@@ -1,14 +1,50 @@
-import { CREATE_PROJECT_REQUESTED, CREATE_PROJECT_SUCCEEDED, UPDATE_CREATE_PROJECT_INPUT_OPTIONS } from './create.actions';
+import { CREATE_PROJECT_REQUESTED, CREATE_PROJECT_SUCCEEDED, UPDATE_CREATE_PROJECT_INPUT_OPTIONS, RENDER_CREATE_PROJECT_FORM_REQUESTED } from './create.actions';
 import { Router } from '@angular/router';
-import { put, takeEvery, actionChannel } from 'redux-saga/effects';
+import { put, takeEvery, actionChannel, call, all } from 'redux-saga/effects';
 import { API_CALL_ERROR } from './../../../store/action';
 import { ApiService } from './../../../api/api.service';
 import { AppInjector } from '../../../app-injector';
-import { GET_ALL_CATEGORIES_SUCCEEDED } from '../../category/category.action';
+import { fetchAllServer } from '../../server/server.saga';
+import { fetchAllFramework } from '../../framework/framework.saga';
+import { fetchAllStatus } from '../../status/status.saga';
+import { fetchAllCategory } from '../../category/category.saga';
 import * as _ from 'lodash';
-import { GET_ALL_FRAMEWORKS_SUCCEEDED } from '../../framework/framework.action';
-import { GET_ALL_STATUSS_SUCCEEDED } from '../../status/status.action';
-import { GET_ALL_SERVERS_SUCCEEDED } from '../../server/server.action';
+
+function* fetchAllData(action) {
+  const [servers, frameworks, status, categories] = yield all([call(fetchAllServer), call(fetchAllFramework), call(fetchAllStatus), call(fetchAllCategory)]);
+  const availablePackageManager = [{ id: 1, value: 'Composer', label: 'Composer', selected: true }, { id: 2, value: 'Yarn', label: 'Yarn' }];
+  const availableSqlManager = [
+    { id: 1, value: 'MySQL', label: 'MySQL', selected: true },
+    { id: 2, value: 'Postgres', label: 'Postgres' },
+    { id: 3, value: 'MongoDB', label: 'MongoDB' }
+  ];
+  yield put({
+    type: UPDATE_CREATE_PROJECT_INPUT_OPTIONS,
+    input: 'server',
+    data: _.map(servers, (item, key) => _.assign(item, { value: item.name, label: item.name, selected: key === 0 }))
+  });
+  yield put({
+    type: UPDATE_CREATE_PROJECT_INPUT_OPTIONS,
+    input: 'framework',
+    data: _.map(frameworks, (item, key) => _.assign(item, { value: item.name, label: item.name, selected: key === 0 }))
+  });
+  yield put({
+    type: UPDATE_CREATE_PROJECT_INPUT_OPTIONS,
+    input: 'status',
+    data: _.map(status, (item, key) => _.assign(item, { value: item.name, label: item.name, selected: key === 0 }))
+  });
+  yield put({
+    type: UPDATE_CREATE_PROJECT_INPUT_OPTIONS,
+    input: 'category',
+    data: _.map(categories, (item, key) => _.assign(item, { value: item.name, label: item.name, selected: key === 0 }))
+  });
+  yield put({ type: UPDATE_CREATE_PROJECT_INPUT_OPTIONS, input: 'sql_manager', data: availableSqlManager });
+  yield put({ type: UPDATE_CREATE_PROJECT_INPUT_OPTIONS, input: 'package_manager', data: availablePackageManager });
+}
+
+function* watchCreateProjectFormRequested() {
+  yield takeEvery(RENDER_CREATE_PROJECT_FORM_REQUESTED, fetchAllData);
+}
 
 function* createProject(action) {
   const api = AppInjector.get(ApiService);
@@ -26,60 +62,4 @@ function* watchCreateProjectRequest() {
   yield takeEvery(CREATE_PROJECT_REQUESTED, createProject);
 }
 
-function* updateCategoryDropdown(action) {
-  if (action.component === 'CREATE_PROJECT_COMPONENT') {
-    const data = _.map(action.data, item => _.assign(item, { value: item.name, label: item.name }));
-    if (!_.isUndefined(_.head(data))) {
-      data[0].selected = true;
-    }
-    yield put({ type: UPDATE_CREATE_PROJECT_INPUT_OPTIONS, input: 'category', data: data });
-  }
-}
-
-function* watchAllCategoryFetched() {
-  yield takeEvery(GET_ALL_CATEGORIES_SUCCEEDED, updateCategoryDropdown);
-}
-
-function* updateFrameworkDropdown(action) {
-  if (action.component === 'CREATE_PROJECT_COMPONENT') {
-    const data = _.map(action.data, item => _.assign(item, { value: item.name, label: item.name }));
-    if (!_.isUndefined(_.head(data))) {
-      data[0].selected = true;
-    }
-    yield put({ type: UPDATE_CREATE_PROJECT_INPUT_OPTIONS, input: 'framework', data: data });
-  }
-}
-
-function* watchAllFrameworkFetched() {
-  yield takeEvery(GET_ALL_FRAMEWORKS_SUCCEEDED, updateFrameworkDropdown);
-}
-
-function* updateStatusDropdown(action) {
-  if (action.component === 'CREATE_PROJECT_COMPONENT') {
-    const data = _.map(action.data, item => _.assign(item, { value: item.name, label: item.name }));
-    if (!_.isUndefined(_.head(data))) {
-      data[0].selected = true;
-    }
-    yield put({ type: UPDATE_CREATE_PROJECT_INPUT_OPTIONS, input: 'status', data: data });
-  }
-}
-
-function* watchAllStatusFetched() {
-  yield takeEvery(GET_ALL_STATUSS_SUCCEEDED, updateStatusDropdown);
-}
-
-function* updateServerDropdown(action) {
-  if (action.component === 'CREATE_PROJECT_COMPONENT') {
-    const data = _.map(action.data, item => _.assign(item, { value: item.name, label: item.name }));
-    if (!_.isUndefined(_.head(data))) {
-      data[0].selected = true;
-    }
-    yield put({ type: UPDATE_CREATE_PROJECT_INPUT_OPTIONS, input: 'server', data: data });
-  }
-}
-
-function* watchAllServerFetched() {
-  yield takeEvery(GET_ALL_SERVERS_SUCCEEDED, updateServerDropdown);
-}
-
-export default [watchCreateProjectRequest, watchAllCategoryFetched, watchAllFrameworkFetched, watchAllStatusFetched, watchAllServerFetched];
+export default [watchCreateProjectFormRequested, watchCreateProjectRequest];

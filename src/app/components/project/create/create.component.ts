@@ -134,10 +134,6 @@ export class CreateComponent implements OnInit {
       })
     ];
     this.store.dispatch({ type: RENDER_CREATE_PROJECT_FORM_REQUESTED, data: { inputs: inputs } });
-    this.store.dispatch({ type: GET_ALL_CATEGORIES_REQUESTED, component: 'CREATE_PROJECT_COMPONENT' });
-    this.store.dispatch({ type: GET_ALL_FRAMEWORKS_REQUESTED, component: 'CREATE_PROJECT_COMPONENT' });
-    this.store.dispatch({ type: GET_ALL_STATUSS_REQUESTED, component: 'CREATE_PROJECT_COMPONENT' });
-    this.store.dispatch({ type: GET_ALL_SERVERS_REQUESTED, component: 'CREATE_PROJECT_COMPONENT' });
   }
 
   onSubmit(form) {
