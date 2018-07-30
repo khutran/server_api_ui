@@ -9,9 +9,10 @@ import { CreateComponent } from './create/create.component';
 import { DirectivesModule } from '../../common/directives/directives.module';
 import { SharedModule } from '../../template/shared/shared.module';
 import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
+import { NFReactiveFormModule } from '../../common/nfreactive-form/nfreactive-form.module';
 
 @NgModule({
-  imports: [CommonModule, ProjectRoutingModule, FormsModule, PipesModule, DirectivesModule, SweetAlert2Module, SharedModule],
+  imports: [CommonModule, ProjectRoutingModule, FormsModule, PipesModule, DirectivesModule, SweetAlert2Module, SharedModule, NFReactiveFormModule],
   declarations: [ListComponent, EditComponent, CreateComponent]
 })
 export class ProjectModule {}

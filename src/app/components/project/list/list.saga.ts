@@ -2,8 +2,7 @@ import { FETCH_PROJECTS_SUCCEEDED, FETCH_PROJECTS_REQUESTED } from './list.actio
 import { API_CALL_ERROR } from './../../../store/action';
 import { AppInjector } from './../../../app-injector';
 import { ApiService } from '../../../api/api.service';
-import { put } from 'redux-saga/effects';
-import { takeLatest } from 'redux-saga';
+import { put, takeLatest } from 'redux-saga/effects';
 
 function* getProjects(action) {
   const api = AppInjector.get(ApiService);

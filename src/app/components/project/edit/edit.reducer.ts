@@ -1,4 +1,4 @@
-import { EDIT_PROJECT_SUCCEEDED, GET_PROJECT_SUCCEEDED, RENDER_EDIT_PROJECT_FORM_REQUESTED, FILL_PROJECT_DETAIL_FORM } from './edit.actions';
+import { EDIT_PROJECT_SUCCEEDED, GET_PROJECT_SUCCEEDED, RENDER_EDIT_PROJECT_FORM_REQUESTED, FILL_PROJECT_DETAIL_FORM, UPDATE_UPDATE_PROJECT_INPUT_OPTIONS } from './edit.actions';
 import * as _ from 'lodash';
 
 const Input = (state: any = {}, action) => {
@@ -24,7 +24,19 @@ export const edit = (state = { updated: false, fetched: false, inputs: [] }, act
 
     case EDIT_PROJECT_SUCCEEDED:
       return _.assign({}, state, { updated: true });
-
+    case UPDATE_UPDATE_PROJECT_INPUT_OPTIONS:
+      return _.assign({}, state, {
+        inputs: _.map(state.inputs, input => {
+          if (input.key === action.input) {
+            input.options = action.data;
+            const selected = _.find(input.options, item => item.selected);
+            if (!_.isUndefined(selected)) {
+              input.value = selected;
+            }
+          }
+          return input;
+        })
+      });
     default:
       return state;
   }

@@ -1,0 +1,36 @@
+<div [formGroup]="form">
+  <div [ngSwitch]="input.controlType">
+    <div *ngSwitchCase="'textbox'">
+      <div class="form-primary">
+        <label class="float-label">{{input.label}}</label>
+        <input class="form-control" [formControlName]="input.key" [type]="input.type">
+        <div class="errorMessage messages text-danger" *ngIf="submitted && !isValid">{{input.label}} is required</div>
+      </div>
+    </div>
+
+    <div class="flex-row" *ngSwitchCase="'dropdown'">
+      <div class="reactive-form-group">
+        <label class="float-label">{{input.label}}</label>
+        <select [formControlName]="input.key" class="form-control">
+          <option *ngFor="let opt of input.options" [ngValue]="opt">{{opt.label}}</option>
+        </select>
+        <div class="errorMessage" *ngIf="submitted && !isValid">{{input.label}} is required</div>
+      </div>
+    </div>
+
+    <div *ngSwitchCase="'radio'">
+      <div class="form-primary">
+        <div class="form-radio">
+          <div class="group-add-on">
+            <div class="radio radiofill" *ngFor="let opt of input.options" [ngClass]="{'radio-inline': input.isInlineStyle()}">
+              <label>
+                <input type="radio" [formControlName]="input.key" [value]="opt.value">
+                <i class="helper"></i> {{ opt.key }}
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
