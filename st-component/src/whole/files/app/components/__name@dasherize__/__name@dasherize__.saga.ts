@@ -6,7 +6,6 @@ import createSaga from "./create/create.saga";
 import { API_CALL_ERROR } from '../../store/action';
 import { GET_ALL_<%= underscore(name).toUpperCase() %>S_REQUESTED, GET_ALL_<%= underscore(name).toUpperCase() %>S_SUCCEEDED } from './<%= dasherize(name) %>.action';
 import { ApiService } from '../../api/api.service';
-import { takeEvery } from 'redux-saga';
 import { AppInjector } from '../../app-injector';
 
 function* allSaga() {
@@ -26,7 +25,7 @@ function* allSaga() {
 }
 
 function* watchFetchAll<%= classify(name) %>sRequest() {
-  yield takeEvery(GET_ALL_<%= underscore(name).toUpperCase() %>S_REQUESTED, allSaga);
+  yield takeLatest(GET_ALL_<%= underscore(name).toUpperCase() %>S_REQUESTED, allSaga);
 }
 export default _.map([...listSaga, ...editSaga, ...createSaga, watchFetchAll<%= classify(name) %>sRequest], item =>
   fork(item)
