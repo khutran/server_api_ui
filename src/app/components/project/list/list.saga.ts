@@ -1,4 +1,4 @@
-import { FETCH_PROJECTS_SUCCEEDED, FETCH_PROJECTS_REQUESTED } from './list.actions';
+import { FETCH_PROJECTS_SUCCEEDED, FETCH_PROJECTS_REQUESTED, BUILD_PROJECT_REQUESTED, BUILD_PROJECT_SUCCEEDED } from './list.actions';
 import { API_CALL_ERROR } from './../../../store/action';
 import { AppInjector } from './../../../app-injector';
 import { ApiService } from '../../../api/api.service';
@@ -18,4 +18,37 @@ function* watchFetchProjectsRequest() {
   yield takeLatest(FETCH_PROJECTS_REQUESTED, getProjects);
 }
 
-export default [watchFetchProjectsRequest];
+function* build(action) {
+  try {
+    let create = yield AppInjector.get(ApiService)
+      .project.create(action.data)
+      .toPromise();
+    let infoDb = yield AppInjector.get(ApiService)
+      .project.createDb(action.data)
+      .toPromise();
+    let createConfig = yield AppInjector.get(ApiService)
+      .project.createConfig(action.data)
+      .toPromise();
+    let updateConfig = yield AppInjector.get(ApiService)
+      .project.updateConfig(action.data, infoDb.data.Dbname, infoDb.data.User, infoDb.data.Password)
+      .toPromise();
+    let runPackageControl = yield AppInjector.get(ApiService)
+      .project.runPackageControl(action.data)
+      .toPromise();
+    let runFirtsBuild = yield AppInjector.get(ApiService)
+      .project.runFirtsBuild(action.data)
+      .toPromise();
+    let replaceDb = yield AppInjector.get(ApiService)
+      .project.replaceDb(action.data)
+      .toPromise();
+    yield put({ type: BUILD_PROJECT_SUCCEEDED, data: replaceDb.items, pagination: replaceDb.pagination });
+  } catch (e) {
+    yield put({ type: API_CALL_ERROR, error: e });
+  }
+}
+
+function* watchBuildProjectRequested() {
+  yield takeLatest(BUILD_PROJECT_REQUESTED, build);
+}
+
+export default [watchFetchProjectsRequest, watchBuildProjectRequested];

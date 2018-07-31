@@ -1,5 +1,5 @@
 import { DELETE_PROJECT_REQUESTED } from './../edit/edit.actions';
-import { FETCH_PROJECTS_REQUESTED } from './list.actions';
+import { FETCH_PROJECTS_REQUESTED, BUILD_PROJECT_REQUESTED } from './list.actions';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from './../../../store/store.module';
 import * as _ from 'lodash';
@@ -57,5 +57,9 @@ export class ListComponent implements OnInit, OnDestroy {
 
   deleteItem(id) {
     this.store.dispatch({ type: DELETE_PROJECT_REQUESTED, data: id });
+  }
+
+  buildItem(id) {
+    this.store.dispatch({ type: BUILD_PROJECT_REQUESTED, data: id });
   }
 }
