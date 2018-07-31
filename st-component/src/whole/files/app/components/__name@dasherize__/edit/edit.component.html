@@ -1,38 +1,42 @@
-<div class="x_panel">
-  <div class="row">
-    <div class="breadcrumb-section">
-      <ul class="breadcrumb">
-        <li>
-          <a routerLink="/">Home</a>
+<div *ngIf="store.getState().<%= classify(name) %>.edit.fetched">
+  <div class="row mgb-20">
+    <div class="col s12">
+      <ul class="breadcrumb-title">
+        <li class="breadcrumb-item">
+          <a routerLink="/">
+            <i class="fa fa-home"></i>
+          </a>
         </li>
-        <li>
-          <a routerLink="/<%= dasherize(name) %>"><%= underscore(name).replace("_", "")  %></a>
+        <li class="breadcrumb-item">
+          <a routerLink="/projects">
+            <a routerLink="/<%= dasherize(name) %>">
+              <%= underscore(name).replace("_", "")  %>
+            </a>
+          </a>
         </li>
-        <li *ngIf="store.getState().<%= classify(name) %>.edit.fetched">{{ store.getState().<%= classify(name) %>.edit.item.name }}</li>
+        <li class="breadcrumb-item" *ngIf="store.getState().<%= classify(name) %>.edit.fetched">
+          <a href="javascript:">{{ store.getState().
+            <%= classify(name) %>.edit.item.name }}</a>
+        </li>
       </ul>
     </div>
   </div>
 
-  <!-- {{ store.getState().Size.edit.item.data | json }} -->
-
   <div class="row">
-    <div class="x_content" *ngIf="store.getState().<%= classify(name) %>.edit.fetched">
-      <h3>Edit {{ store.getState().<%= classify(name) %>.edit.item.name }}</h3>
-      <form #form="ngForm" (ngSubmit)="onSubmit(form)">
-        <div class="form-group">
-          <label for="">Name
-            <span class="required">*</span>
-          </label>
-          <input type="text" name="name" #name="ngModel" [(ngModel)]="store.getState().<%= classify(name) %>.edit.item.name" class="form-control" [ngClass]="{'parsley-error':name.invalid && (name.dirty || name.touched) && form.submitted}"
-            required>
-          <ul *ngIf="name.invalid && (name.dirty || name.touched) && form.submitted" class="parsley-errors-list filled">
-            <li class="parsley-required">This field is required.</li>
-          </ul>
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header no-box-shadow">
+          <h5 class="card-header-text">{{store.getState().
+            <%= classify(name) %>.edit.item.name}}</h5>
         </div>
-        <div class="form-group">
-          <input class="btn btn-primary" type="submit" value="Update">
+        <div class="card-body">
+          <div class="edit-info">
+            <div class="col-12 ">
+              <dynamic-form [(inputs)]="store.getState().<%= classify(name) %>.edit.inputs" [onSubmit]="onSubmit" submitText="Save"></dynamic-form>
+            </div>
+          </div>
         </div>
-      </form>
+      </div>
     </div>
   </div>
 </div>

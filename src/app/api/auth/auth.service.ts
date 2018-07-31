@@ -6,7 +6,7 @@ import { tap, catchError } from 'rxjs/operators';
 
 @Injectable()
 export class AuthService {
-  protected url = '/api';
+  protected url = '/api/v1/auth';
 
   constructor(private http: HttpClient, private apiUrl: ApiUrl) {}
 

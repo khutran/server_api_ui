@@ -1,12 +1,10 @@
 import { DELETE_CATEGORY_REQUESTED } from './../edit/edit.actions';
-import { FETCH_CATEGORIES_REQUESTED, FETCH_NESTED_CATEGORIES_REQUESTED, SORT_CATEGORIES_REQUESTED } from './list.actions';
+import { FETCH_CATEGORIES_REQUESTED, SORT_CATEGORIES_REQUESTED } from './list.actions';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from './../../../store/store.module';
 import * as _ from 'lodash';
-import { CREATE_CATEGORY_REQUESTED } from '../create/create.actions';
 import { NotificationService } from '../../../common/services/notification/notification.service';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { AppInjector } from '../../../app-injector';
 
 @Component({
   selector: 'app-list',
@@ -14,33 +12,23 @@ import { AppInjector } from '../../../app-injector';
   styleUrls: ['./list.component.scss']
 })
 export class ListComponent implements OnInit, OnDestroy {
-  navigationSubscription: any;
+  protected navigationSubscription: any;
   protected router: any;
   public store;
-  public page = 1;
-  public limit = 100;
-  public pagesToShow = 3;
-  public selectAll;
 
-  public orders = {
-    id: null,
-    name: null
-  };
-
-  constructor(private notification: NotificationService, private activeRouter: ActivatedRoute, router: Router) {
-    this.store = AppInjector.get(Store).getInstance();
-    this.activeRouter = activeRouter;
+  constructor(store: Store, private notification: NotificationService, private activedRoute: ActivatedRoute, router: Router) {
+    this.store = store.getInstance();
+    this.activedRoute = activedRoute;
     this.router = router;
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       if (e instanceof NavigationEnd) {
-        this.store.dispatch({ type: FETCH_CATEGORIES_REQUESTED, data: this.getQuery() });
+        this.store.dispatch({ type: FETCH_CATEGORIES_REQUESTED, data: this.parseQueryParams() });
       }
     });
   }
 
   ngOnInit() {
-    this.store.dispatch({ type: FETCH_CATEGORIES_REQUESTED });
-    this.store.dispatch({ type: FETCH_NESTED_CATEGORIES_REQUESTED, data: 1 });
+    // this.store.dispatch({ type: FETCH_CATEGORIES_REQUESTED });
   }
 
   ngOnDestroy() {
@@ -48,56 +36,25 @@ export class ListComponent implements OnInit, OnDestroy {
       this.navigationSubscription.unsubscribe();
     }
   }
-  goToPage(n: number): void {
-    this.page = n;
-    this.store.dispatch({ type: FETCH_CATEGORIES_REQUESTED, data: this.getQuery() });
+
+  private parseQueryParams(): object {
+    let params = {
+      page: 1,
+      per_page: 20
+    };
+    if (!_.isUndefined(this.activedRoute.snapshot.queryParams.page)) {
+      params = _.assign(params, { page: this.activedRoute.snapshot.queryParams.page });
+    }
+    if (!_.isUndefined(this.activedRoute.snapshot.queryParams.search)) {
+      params = _.assign(params, { search: this.activedRoute.snapshot.queryParams.search });
+    }
+    if (!_.isUndefined(this.activedRoute.snapshot.queryParams.order_by)) {
+      params = _.assign(params, { orderBy: this.activedRoute.snapshot.queryParams.order_by });
+    }
+    return params;
   }
 
-  onNext(): void {
-    this.page++;
-    this.store.dispatch({ type: FETCH_CATEGORIES_REQUESTED, data: this.getQuery() });
-  }
-
-  onPrev(): void {
-    this.page--;
-    this.store.dispatch({ type: FETCH_CATEGORIES_REQUESTED, data: this.getQuery() });
-  }
-
-  updateLimit() {
-    // console.log(this.limit);
-    this.store.dispatch({ type: FETCH_CATEGORIES_REQUESTED, data: this.getQuery() });
-  }
-
-  deleteItem(id) {
-    if (confirm('Do you want to delete this category?')) {
+  delete(id) {
       this.store.dispatch({ type: DELETE_CATEGORY_REQUESTED, data: id });
-    }
-  }
-
-  sortBy(field) {
-    // tslint:disable-next-line:forin
-    let query = [];
-    for (const prop in this.orders) {
-      if (prop === field) {
-        if (this.orders[field] === null) {
-          this.orders[field] = '-';
-        } else {
-          this.orders[field] = this.orders[field] === '-' ? '' : '-';
-        }
-      }
-    }
-    this.store.dispatch({ type: SORT_CATEGORIES_REQUESTED, data: this.orders });
-  }
-
-  private getQuery(): object {
-    let page = 1;
-    let per_page = this.limit;
-    if (!_.isUndefined(this.activeRouter.snapshot.queryParams.page)) {
-      page = this.activeRouter.snapshot.queryParams.page;
-    }
-    if (!_.isUndefined(this.activeRouter.snapshot.queryParams.per_page)) {
-      per_page = this.activeRouter.snapshot.queryParams.per_page;
-    }
-    return _.assign({}, { page: page, per_page });
   }
 }

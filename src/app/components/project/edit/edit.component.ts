@@ -1,11 +1,13 @@
+import * as _ from 'lodash';
 import { EDIT_PROJECT_REQUESTED, RENDER_EDIT_PROJECT_FORM_REQUESTED } from './edit.actions';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { InputBase } from '../../../common/directives/dynamic-form/Input/InputBase';
-import { TextBox } from '../../../common/directives/dynamic-form/Input/TextBox';
-import { Radio } from '../../../common/directives/dynamic-form/Input/Radio';
 import { Store } from '../../../store/store.module';
 import { AppInjector } from '../../../app-injector';
+import { Validators } from '../../../../../node_modules/@angular/forms';
+import { Dropdown } from '../../../common/nfreactive-form/models/Dropdown';
+import { InputBase } from '../../../common/nfreactive-form/models/InputBase';
+import { TextBox } from '../../../common/nfreactive-form/models/TextBox';
 
 @Component({
   selector: 'app-edit',
@@ -22,70 +24,100 @@ export class EditComponent implements OnInit {
   ngOnInit() {
     let inputs: InputBase<any>[] = [
       new TextBox({
+        key: 'name',
+        label: 'Name',
+        classes: ['col'],
+        validators: [Validators.required],
+        group_classes: ['col-12'],
+        group: 1
+      }),
+      new Dropdown({
+        key: 'server',
+        label: 'Server',
+        classes: ['col'],
+        validators: [Validators.required],
+        group_classes: ['col-12'],
+        group: 2
+      }),
+      new Dropdown({
+        key: 'framework',
+        label: 'Framework',
+        classes: ['col'],
+        validators: [Validators.required],
+        group_classes: ['col-12'],
+        group: 3
+      }),
+      new Dropdown({
+        key: 'status',
+        label: 'Status',
+        classes: ['col'],
+        validators: [Validators.required],
+        group_classes: ['col-12'],
+        group: 3
+      }),
+      new Dropdown({
+        key: 'category',
+        label: 'Category',
+        classes: ['col'],
+        validators: [Validators.required],
+        group_classes: ['col-12'],
+        group: 4
+      }),
+      new Dropdown({
+        key: 'package_manager',
+        label: 'Package Control',
+        classes: ['col'],
+        validators: [Validators.required],
+        group_classes: ['col-12'],
+        group: 4
+      }),
+      new TextBox({
+        key: 'database',
+        label: 'Database Name',
+        classes: ['col'],
+        validators: [Validators.required],
+        group_classes: ['col-12'],
+        group: 5
+      }),
+      new Dropdown({
+        key: 'sql_manager',
+        label: 'SQL',
+        classes: ['col'],
+        validators: [Validators.required],
+        group_classes: ['col-12'],
+        group: 5
+      }),
+      new TextBox({
         key: 'git_remote',
         label: 'Git Remote',
-        required: true,
         classes: ['col'],
+        validators: [Validators.required],
         group_classes: ['col-12'],
-        order: 1
+        group: 6
       }),
       new TextBox({
         key: 'git_branch',
         label: 'Git Branch',
-        required: true,
         classes: ['col'],
+        validators: [Validators.required],
         group_classes: ['col-12'],
-        order: 1
+        group: 6
       }),
       new TextBox({
-        key: 'git_app_key',
+        key: 'git_application_key',
         label: 'Git Application Key',
         classes: ['col'],
+        validators: [Validators.required],
         group_classes: ['col-12'],
-        order: 2
+        group: 7
       }),
       new TextBox({
-        key: 'git_app_secret',
+        key: 'git_application_secret',
         label: 'Git Application Secret',
         classes: ['col'],
+        validators: [Validators.required],
         group_classes: ['col-12'],
-        order: 2
-      }),
-      new Radio({
-        key: 'build_automatically',
-        label: '',
-        classes: ['col'],
-        group_classes: ['col-12'],
-        style: 'inline',
-        options: [
-          {
-            key: 'Build Project Automatically',
-            value: 'yes'
-          },
-          {
-            key: 'No',
-            value: 'no'
-          }
-        ],
-        order: 5
-      }),
-      new Radio({
-        key: 'backup_automatically',
-        label: '',
-        classes: ['col'],
-        group_classes: ['col-12'],
-        style: 'inline',
-        options: [
-          {
-            key: 'Backup Project Automatically',
-            value: 'yes'
-          },
-          {
-            key: 'No',
-            value: 'no'
-          }
-        ],
-        order: 5
+        group: 7
       })
     ];
     this.store.dispatch({ type: RENDER_EDIT_PROJECT_FORM_REQUESTED, data: { project_id: this.activatedRoute.snapshot.params.id, inputs: inputs } });
@@ -93,7 +125,24 @@ export class EditComponent implements OnInit {
 
   onSubmit(form) {
     if (form.valid) {
-      this.store.dispatch({ type: EDIT_PROJECT_REQUESTED, data: this.store.getState().Project.edit.item });
+      const store = AppInjector.get(Store).getInstance();
+      const data = {
+        name: form.value.name,
+        status_id: form.value.status.id,
+        category_id: form.value.category.id,
+        framework_id: form.value.framework.id,
+        csdl_id: form.value.sql_manager.id,
+        server_id: form.value.server.id,
+        database: form.value.database,
+        git_remote: form.value.git_remote,
+        git_branch: form.value.git_branch,
+        git_application_key: form.value.git_application_key,
+        git_application_secret: form.value.git_application_secret
+      };
+      store.dispatch({
+        type: EDIT_PROJECT_REQUESTED,
+        data: _.assign(data, { id: store.getState().Project.edit.item.id })
+      });
     }
   }
 

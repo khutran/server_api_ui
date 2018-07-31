@@ -1,34 +1,77 @@
-import { Router, ActivatedRoute } from '@angular/router';
+import * as _ from 'lodash';
+import { Router } from '@angular/router';
 import { FETCH_PROJECTS_REQUESTED } from './../list/list.actions';
-import { DELETE_PROJECT_REQUESTED, GET_PROJECT_REQUESTED, GET_PROJECT_SUCCEEDED, EDIT_PROJECT_REQUESTED, RENDER_EDIT_PROJECT_FORM_REQUESTED } from './edit.actions';
-import { takeEvery, put, takeLatest } from 'redux-saga/effects';
+import {
+  DELETE_PROJECT_REQUESTED,
+  GET_PROJECT_REQUESTED,
+  GET_PROJECT_SUCCEEDED,
+  EDIT_PROJECT_REQUESTED,
+  RENDER_EDIT_PROJECT_FORM_REQUESTED,
+  FILL_PROJECT_DETAIL_FORM,
+  UPDATE_UPDATE_PROJECT_INPUT_OPTIONS
+} from './edit.actions';
+import { takeEvery, put, takeLatest, call, all } from 'redux-saga/effects';
 import { API_CALL_ERROR } from './../../../store/action';
 import { ApiService } from './../../../api/api.service';
 import { AppInjector } from './../../../app-injector';
+import { fetchAllServer } from '../../server/server.saga';
+import { fetchAllFramework } from '../../framework/framework.saga';
+import { fetchAllStatus } from '../../status/status.saga';
+import { fetchAllCategory } from '../../category/category.saga';
 
-function* editProject(action) {
+function* edit(action) {
   const api = AppInjector.get(ApiService);
   const router = AppInjector.get(Router);
   try {
     let result = yield api.project.update(action.data).toPromise();
-    router.navigate(['project']);
+    router.navigate(['projects']);
   } catch (e) {
     yield put({ type: API_CALL_ERROR, error: e });
   }
 }
 
 function* watchEditProjectRequest() {
-  yield takeEvery(EDIT_PROJECT_REQUESTED, editProject);
+  yield takeEvery(EDIT_PROJECT_REQUESTED, edit);
+}
+
+export function* fetchProjectDetail(id) {
+  return yield AppInjector.get(ApiService)
+    .project.getItemById(id)
+    .toPromise();
 }
 
 function* getProject(action) {
-  const api = AppInjector.get(ApiService);
-  try {
-    let result = yield api.project.getItemById(action.data).toPromise();
-    yield put({ type: GET_PROJECT_SUCCEEDED, data: result });
-  } catch (e) {
-    yield put({ type: API_CALL_ERROR, error: e });
-  }
+  const [project, servers, frameworks, status, categories] = yield all([
+    call(fetchProjectDetail, action.data),
+    call(fetchAllServer),
+    call(fetchAllFramework),
+    call(fetchAllStatus),
+    call(fetchAllCategory)
+  ]);
+  yield put({ type: GET_PROJECT_SUCCEEDED, data: project });
+  const availablePackageManager = [{ id: 1, value: 'Composer', label: 'Composer' }, { id: 2, value: 'Yarn', label: 'Yarn' }];
+  const availableSqlManager = [{ id: 1, value: 'MySQL', label: 'MySQL' }, { id: 2, value: 'Postgres', label: 'Postgres' }, { id: 3, value: 'MongoDB', label: 'MongoDB' }];
+  yield put({ type: UPDATE_UPDATE_PROJECT_INPUT_OPTIONS, input: 'server', data: _.map(servers, item => _.assign(item, { value: item.name, label: item.name })) });
+  yield put({ type: UPDATE_UPDATE_PROJECT_INPUT_OPTIONS, input: 'framework', data: _.map(frameworks, item => _.assign(item, { value: item.name, label: item.name })) });
+  yield put({ type: UPDATE_UPDATE_PROJECT_INPUT_OPTIONS, input: 'status', data: _.map(status, item => _.assign(item, { value: item.name, label: item.name })) });
+  yield put({ type: UPDATE_UPDATE_PROJECT_INPUT_OPTIONS, input: 'category', data: _.map(categories, item => _.assign(item, { value: item.name, label: item.name })) });
+  yield put({ type: UPDATE_UPDATE_PROJECT_INPUT_OPTIONS, input: 'sql_manager', data: availableSqlManager });
+  yield put({ type: UPDATE_UPDATE_PROJECT_INPUT_OPTIONS, input: 'package_manager', data: availablePackageManager });
+  const data = {
+    name: project.name,
+    server: _.find(servers, item => item.id === project.host_id),
+    framework: _.find(frameworks, item => item.id === project.framework_id),
+    status: _.find(status, item => item.id === project.status_id),
+    category: _.find(categories, item => item.id === project.category_id),
+    package_manager: _.head(availablePackageManager),
+    database: project.database,
+    sql_manager: _.find(availableSqlManager, item => item.id === project.csdl_id),
+    git_remote: project.git_remote,
+    git_branch: project.git_branch,
+    git_application_key: project.git_application_key,
+    git_application_secret: project.git_application_secret
+  };
+  yield put({ type: FILL_PROJECT_DETAIL_FORM, data: data });
 }
 
 function* watchGetProjectRequest() {
@@ -38,7 +81,7 @@ function* watchGetProjectRequest() {
 function* deleteProject(action) {
   const api = AppInjector.get(ApiService);
   try {
-    let result = yield api.project.delete(action.data).toPromise();
+    yield api.project.delete(action.data).toPromise();
     yield put({ type: FETCH_PROJECTS_REQUESTED });
   } catch (e) {
     yield put({ type: API_CALL_ERROR, error: e });

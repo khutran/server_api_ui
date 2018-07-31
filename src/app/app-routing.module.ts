@@ -9,6 +9,9 @@ import { AuthGuardService } from './auth/auth-guard.service';
 import { ProfileComponent } from './components/profile/profile.component';
 import { CategoryComponent } from './components/category/category.component';
 import { ProjectComponent } from './components/project/project.component';
+import { StatusComponent } from './components/status/status.component';
+import { FrameworkComponent } from './components/framework/framework.component';
+import { ServerComponent } from './components/server/server.component';
 
 const appRoutes: Routes = [
   {
@@ -26,9 +29,24 @@ const appRoutes: Routes = [
         loadChildren: 'app/components/profile/profile.module#ProfileModule'
       },
       {
-        path: 'category',
+        path: 'categories',
         component: CategoryComponent,
         loadChildren: './components/category/category.module#CategoryModule'
+      },
+      {
+        path: 'status',
+        component: StatusComponent,
+        loadChildren: './components/status/status.module#StatusModule'
+      },
+      {
+        path: 'frameworks',
+        component: FrameworkComponent,
+        loadChildren: './components/framework/framework.module#FrameworkModule'
+      },
+      {
+        path: 'servers',
+        component: ServerComponent,
+        loadChildren: './components/server/server.module#ServerModule'
       },
       {
         path: 'projects',

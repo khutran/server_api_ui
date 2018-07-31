@@ -47,9 +47,30 @@ const MENUITEMS = [
     label: 'Project',
     main: [
       {
-        state: 'category',
+        state: 'frameworks',
+        short_label: 'F',
+        name: 'Framework',
+        type: 'link',
+        icon: 'fa fa-list'
+      },
+      {
+        state: 'status',
+        short_label: 'S',
+        name: 'Status',
+        type: 'link',
+        icon: 'fa fa-list'
+      },
+      {
+        state: 'categories',
         short_label: 'C',
         name: 'Category',
+        type: 'link',
+        icon: 'fa fa-list'
+      },
+      {
+        state: 'servers',
+        short_label: 'SV',
+        name: 'Server',
         type: 'link',
         icon: 'fa fa-list'
       },

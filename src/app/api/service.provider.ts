@@ -1,82 +1,52 @@
 import { ApiUrl } from './api-url.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { tap, catchError, map } from 'rxjs/operators';
 import * as _ from 'lodash';
-import Category from '../models/Category';
 import LengthAwarePaginator from '../models/LengthAwarePaginator';
-import Role from '../models/Role';
-import User from '../models/User';
-import { AppInjector } from '../app-injector';
 import { PreloaderService } from '../common/services/preloader/preloader.service';
-import Project from '../models/Project';
-
-const classes = {
-  Project,
-  Category,
-  Location,
-  Event,
-  Role,
-  User
-};
+import { AppInjector } from '../app-injector';
 
 export class ServiceProvider {
-  protected url = '';
+  public url = '';
+  public model;
+  public http;
+  public apiUrl;
+  public preloader;
 
-  constructor(protected http: HttpClient, protected apiUrl: ApiUrl, public modelName = '') {}
+  constructor() {
+    this.http = AppInjector.get(HttpClient);
+    this.apiUrl = AppInjector.get(ApiUrl);
+    this.preloader = AppInjector.get(PreloaderService);
+  }
   /**
    * Get list of all resource with pagination
    *
    * @param param Optinal
-   * @param sort Optinal
-   * @param filter Optinal
-   * @param search Optinal
    *
    * @return Observable
    */
-  get(param: object = { page: 1, per_page: 100 }, sort: any = null, filter: any = null, search: any = null): Observable<any> {
-    let query = [];
-    let sorts = [];
-    // tslint:disable-next-line:forin
-    for (const prop in param) {
-      query.push(prop + '=' + param[prop]);
-    }
-    if (sort) {
-      for (const prop in sort) {
-        if (sort[prop] !== null) {
-          sorts.push(sort[prop] + prop);
-        }
-      }
-    }
-    AppInjector.get(PreloaderService).show();
-    return this.http
-      .get(
-        this.apiUrl.getApiUrl(this.url) +
-          '?' +
-          _.join(query, '&') +
-          (sort ? '&sort=' + _.join(sorts, ',') : '') +
-          (filter ? '&constraints=' + JSON.stringify(filter) : '') +
-          (search ? '&search=' + search : '')
-      )
-      .pipe(
-        tap(result => {
-          AppInjector.get(PreloaderService).hide();
-        }),
-        map(result =>
-          _.assign(
-            {},
-            {
-              items: (result as any).data.map(item => new classes[this.modelName](item)),
-              total: (result as any).meta.pagination.total,
-              pagination: new LengthAwarePaginator((result as any).meta.pagination)
-            }
-          )
-        ),
-        catchError(error => {
-          AppInjector.get(PreloaderService).hide();
-          throw error;
-        })
-      );
+  get(params: {}): Observable<any> {
+    this.preloader.show();
+    const queryParams = new HttpParams({ fromObject: params });
+    return this.http.get(this.apiUrl.getApiUrl(this.url), { params: queryParams }).pipe(
+      tap(result => {
+        this.preloader.hide();
+      }),
+      map(result =>
+        _.assign(
+          {},
+          {
+            items: (result as any).data.map(item => new this.model(item)),
+            pagination: new LengthAwarePaginator((result as any).meta.pagination)
+          }
+        )
+      ),
+      catchError(error => {
+        this.preloader.hide();
+        throw error;
+      })
+    );
   }
 
   /**
@@ -87,14 +57,14 @@ export class ServiceProvider {
    * @return Observable
    */
   list(params = {}): Observable<any> {
-    AppInjector.get(PreloaderService).show();
-    return this.http.post(this.apiUrl.getApiUrl(`${this.url}/list`), JSON.stringify(params)).pipe(
+    this.preloader.show();
+    return this.http.post(this.apiUrl.getApiUrl(`${this.url}/list`), params).pipe(
       tap(result => {
-        AppInjector.get(PreloaderService).hide();
+        this.preloader.hide();
       }),
-      map(result => _.map((result as any).data, item => new classes[this.modelName](item))),
+      map(result => _.map((result as any).data, item => new this.model(item))),
       catchError(error => {
-        AppInjector.get(PreloaderService).hide();
+        this.preloader.hide();
         throw error;
       })
     );
@@ -108,14 +78,14 @@ export class ServiceProvider {
    * @return Observable
    */
   update(data): Observable<any> {
-    AppInjector.get(PreloaderService).show();
+    this.preloader.show();
     return this.http.put(this.apiUrl.getApiUrl(this.url) + '/' + data.id, data).pipe(
       tap(result => {
-        AppInjector.get(PreloaderService).hide();
+        this.preloader.hide();
       }),
-      map(result => new classes[this.modelName]((result as any).data)),
+      map(result => new this.model((result as any).data)),
       catchError(error => {
-        AppInjector.get(PreloaderService).hide();
+        this.preloader.hide();
         throw error;
       })
     );
@@ -129,116 +99,41 @@ export class ServiceProvider {
    * @return Observable
    */
   delete(id): Observable<any> {
-    AppInjector.get(PreloaderService).show();
+    this.preloader.show();
     return this.http.delete(this.apiUrl.getApiUrl(this.url) + '/' + id).pipe(
       tap(result => {
-        AppInjector.get(PreloaderService).hide();
+        this.preloader.hide();
       }),
       catchError(error => {
-        AppInjector.get(PreloaderService).hide();
+        this.preloader.hide();
         throw error;
       })
     );
   }
 
   create(data): Observable<any> {
-    AppInjector.get(PreloaderService).show();
+    this.preloader.show();
     return this.http.post(this.apiUrl.getApiUrl(this.url), data).pipe(
       tap(result => {
-        AppInjector.get(PreloaderService).hide();
+        this.preloader.hide();
       }),
-      map(result => new classes[this.modelName]((result as any).data)),
+      map(result => new this.model((result as any).data)),
       catchError(error => {
-        AppInjector.get(PreloaderService).hide();
+        this.preloader.hide();
         throw error;
       })
     );
   }
 
   getItemById(id): Observable<any> {
-    AppInjector.get(PreloaderService).show();
+    this.preloader.show();
     return this.http.get(this.apiUrl.getApiUrl(this.url) + '/' + id).pipe(
       tap(result => {
-        AppInjector.get(PreloaderService).hide();
+        this.preloader.hide();
       }),
-      map(result => new classes[this.modelName]((result as any).data)),
+      map(result => new this.model((result as any).data)),
       catchError(error => {
-        AppInjector.get(PreloaderService).hide();
-        throw error;
-      })
-    );
-  }
-
-  sort(data): Observable<any> {
-    // tslint:disable-next-line:forin
-    AppInjector.get(PreloaderService).show();
-    let query = [];
-    for (const prop in data) {
-      if (data[prop] !== null) {
-        query.push(data[prop] + prop);
-      }
-    }
-
-    return this.http.get(this.apiUrl.getApiUrl(this.url) + '?sort=' + _.join(query, ',')).pipe(
-      tap(results => {
-        AppInjector.get(PreloaderService).hide();
-      }),
-      map(results =>
-        _.assign(
-          {},
-          {
-            items: (results as any).data.map(item => new classes[this.modelName](item)),
-            total: (results as any).meta.pagination.total
-          }
-        )
-      ),
-      catchError(error => {
-        AppInjector.get(PreloaderService).hide();
-        throw error;
-      })
-    );
-  }
-
-  filter(query): Observable<any> {
-    AppInjector.get(PreloaderService).show();
-    return this.http.get(this.apiUrl.getApiUrl(this.url) + '?constraints=' + JSON.stringify(query)).pipe(
-      tap(results => {
-        AppInjector.get(PreloaderService).hide();
-      }),
-      // map(results => _.assign({}, { items: (results as any).data.items.map(item => new new classes[this.modelName](item)), total: (results as any).data.total })),
-      map(results => {
-        return _.assign(
-          {},
-          {
-            items: (results as any).data.map(item => new classes[this.modelName](item)),
-            total: (results as any).meta.pagination.total
-          }
-        );
-      }),
-      catchError(error => {
-        AppInjector.get(PreloaderService).hide();
-        throw error;
-      })
-    );
-  }
-
-  search(query): Observable<any> {
-    AppInjector.get(PreloaderService).show();
-    return this.http.get(this.apiUrl.getApiUrl(this.url) + '?search=' + query).pipe(
-      tap(results => {
-        AppInjector.get(PreloaderService).hide();
-      }),
-      map(results =>
-        _.assign(
-          {},
-          {
-            items: (results as any).data.map(item => new classes[this.modelName](item)),
-            total: (results as any).meta.pagination.total
-          }
-        )
-      ),
-      catchError(error => {
-        AppInjector.get(PreloaderService).hide();
+        this.preloader.hide();
         throw error;
       })
     );

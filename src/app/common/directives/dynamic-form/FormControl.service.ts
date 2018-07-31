@@ -1,6 +1,7 @@
 import { InputBase } from './Input/InputBase';
 import { Injectable } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import * as _ from 'lodash';
 
 @Injectable()
 export class FormControlService {
@@ -10,7 +11,9 @@ export class FormControlService {
     let group: any = {};
 
     inputs.forEach(input => {
-      group[input.key] = input.required ? new FormControl(input.value || '', Validators.required) : new FormControl(input.value || '');
+      let formControl: FormControl;
+      formControl = input.required ? new FormControl(input.value || '', Validators.required) : new FormControl(input.value || '');
+      group[input.key] = formControl;
     });
     return new FormGroup(group);
   }
