@@ -1,0 +1,42 @@
+<div *ngIf="store.getState().Server.edit.fetched">
+  <div class="row mgb-20">
+    <div class="col s12">
+      <ul class="breadcrumb-title">
+        <li class="breadcrumb-item">
+          <a routerLink="/">
+            <i class="fa fa-home"></i>
+          </a>
+        </li>
+        <li class="breadcrumb-item">
+          <a routerLink="/projects">
+            <a routerLink="/server">
+              server
+            </a>
+          </a>
+        </li>
+        <li class="breadcrumb-item" *ngIf="store.getState().Server.edit.fetched">
+          <a href="javascript:">{{ store.getState().
+            Server.edit.item.name }}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header no-box-shadow">
+          <h5 class="card-header-text">{{store.getState().
+            Server.edit.item.name}}</h5>
+        </div>
+        <div class="card-body">
+          <div class="edit-info">
+            <div class="col-12 ">
+              <dynamic-form [(inputs)]="store.getState().Server.edit.inputs" [onSubmit]="onSubmit" submitText="Save"></dynamic-form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

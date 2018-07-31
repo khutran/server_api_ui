@@ -54,24 +54,24 @@
             <tr *ngFor="let item of store.getState().Project.list.items">
               <td>{{ item.getId() }}</td>
               <td>{{ item.getName() }}</td>
-              <td>{{ item.getFramework().name }}</td>
+              <td><span *ngIf="item.framework">{{ item.getFramework().name }}</span></td>
               <td>
                 <ul>
                   <li>
-                    <strong>URL:</strong> {{ item.getBuild().git }}
+                    <strong>URL:</strong> {{ item.getGitRemote() }}
                   </li>
                   <li>
-                    <strong>Branch:</strong> {{ item.getBuild().git_branch }}
+                    <strong>Branch:</strong> {{ item.getGitBranch() }}
                   </li>
-                  <li>
-                    <strong>IP:</strong> {{ item.getBuild().host.ip }}
+                  <li *ngIf="item.host">
+                    <strong>IP:</strong> {{ item.getHost().ip }}
                   </li>
-                  <li>
-                    <strong>Hostname:</strong> {{ item.getBuild().host.name }}
+                  <li *ngIf="item.host">
+                    <strong>Hostname:</strong> {{ item.getHost().name }}
                   </li>
                 </ul>
               </td>
-              <td>{{ item.getStatus().name }}</td>
+              <td><span *ngIf="item.status">{{ item.getStatus().name }}</span></td>
               <td>
                 <a routerLink="edit/{{ item.getId() }}" class="btn btn-dark btn-sm icon-only">
                   <i class="fa fa-pencil" aria-hidden="true"></i>

@@ -1,31 +1,42 @@
-import { CREATE_<%= underscore(name).toUpperCase() %>_REQUESTED } from './create.actions';
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Store } from './../../../store/store.module';
 import { AppInjector } from '../../../app-injector';
+import { InputBase } from '../../../common/directives/dynamic-form/Input/InputBase';
+import { TextBox } from '../../../common/directives/dynamic-form/Input/TextBox';
+import { RENDER_CREATE_<%= underscore(name).toUpperCase() %>_FORM_REQUESTED, CREATE_<%= underscore(name).toUpperCase() %>_REQUESTED } from './create.actions';
+
 
 @Component({
   selector: 'app-create',
   templateUrl: './create.component.html',
-  styleUrls: ['./create.component.<%= styleext %>']
+  styleUrls: ['./create.component.scss']
 })
 export class CreateComponent implements OnInit {
-
   public store;
-  private <%= camelize(name) %> = {
-    name: ''
-  };
 
-  constructor() {
+  constructor(public activatedRoute: ActivatedRoute, store: Store) {
     this.store = AppInjector.get(Store).getInstance();
   }
 
   ngOnInit() {
+    let inputs: InputBase<any>[] = [
+      new TextBox({
+        key: 'name',
+        label: 'Name',
+        required: true,
+        classes: ['col'],
+        group_classes: ['col-12'],
+        order: 1
+      })
+    ];
+    this.store.dispatch({ type: RENDER_CREATE_<%= underscore(name).toUpperCase() %>_FORM_REQUESTED, data: { inputs: inputs } });
   }
 
   onSubmit(form) {
     if (form.valid) {
-      store.dispatch({ type: CREATE_<%= underscore(name).toUpperCase() %>_REQUESTED, data: this.<%= camelize(name) %> });
+      const store = AppInjector.get(Store).getInstance();
+      store.dispatch({ type: CREATE_<%= underscore(name).toUpperCase() %>_REQUESTED, data: form.value });
     }
   }
-
 }

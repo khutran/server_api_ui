@@ -1,4 +1,3 @@
-import { AppInjector } from './../../app-injector';
 import { ApiUrl } from './../api-url.service';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -10,11 +9,8 @@ import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class RoleService extends ServiceProvider {
-  protected url = '/api/v1/roles';
-
-  constructor() {
-    super(AppInjector.get(HttpClient), AppInjector.get(ApiUrl), 'Role');
-  }
+  public url = '/api/v1/roles';
+  public model = Role;
 
   listWithPermission(params) {
     return this.http.post(this.apiUrl.getApiUrl(`${this.url}/list?includes=permissions`), JSON.stringify(params)).pipe(
@@ -38,14 +34,15 @@ export class RoleService extends ServiceProvider {
   }
 
   detach(roleId, permission): Observable<any> {
-    return this.http.request('delete', this.apiUrl.getApiUrl(this.url) + `/${roleId}/permissions`, {
-      body: permission
-    }).pipe(
-      tap(result => {
-      }),
-      catchError(error => {
-        throw error;
+    return this.http
+      .request('delete', this.apiUrl.getApiUrl(this.url) + `/${roleId}/permissions`, {
+        body: permission
       })
-    );
+      .pipe(
+        tap(result => {}),
+        catchError(error => {
+          throw error;
+        })
+      );
   }
 }

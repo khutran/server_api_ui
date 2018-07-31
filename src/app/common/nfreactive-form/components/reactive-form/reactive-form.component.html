@@ -1,0 +1,17 @@
+<form (ngSubmit)="submit()" [formGroup]="form">
+  <div class="row">
+    <div class="dynamic-collection" *ngFor="let group of groups" [ngClass]="group.classes">
+      <div class="row">
+        <div *ngFor="let input of group.items" class="dynamic-input-group" [ngClass]="input.classes">
+          <dynamic-input [input]="input" [form]="form" [submitted]="submitted"></dynamic-input>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dynamic-submit-btn">
+    <button type="submit" [ngClass]="{'disabled': !form.valid}" class="btn btn-primary m-r-15 ripple light">
+      <i class="icofont icofont-plus m-r-5"></i> {{ submitText !== undefined ? submitText : 'Submit' }}
+    </button>
+  </div>
+</form>

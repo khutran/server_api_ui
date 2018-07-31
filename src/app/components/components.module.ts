@@ -10,7 +10,6 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { MainComponent } from './main.component';
 import { ProfileModule } from './profile/profile.module';
 import { ProfileComponent } from './profile/profile.component';
-import { CategoryComponent } from './category/category.component';
 import { AclComponent } from './acl/acl.component';
 import { UserModule } from './user/user.module';
 import { UserComponent } from './user/user.component';
@@ -20,20 +19,35 @@ import { AppMenuItems } from '../template/shared/app-menu-items/app-menu-items';
 import { SettingsModule } from './settings/settings.module';
 import { ProjectModule } from './project/project.module';
 import { ProjectComponent } from './project/project.component';
+import { StatusComponent } from './status/status.component';
+import { StatusModule } from './status/status.module';
+import { FrameworkComponent } from './framework/framework.component';
+import { FrameworkModule } from './framework/framework.module';
+import { ServerComponent } from './server/server.component';
+import { ServerModule } from './server/server.module';
+import { CategoryComponent } from './category/category.component';
+import { CategoryModule } from './category/category.module';
 
 @NgModule({
   declarations: [
+    CategoryComponent,
+    ServerComponent,
+    FrameworkComponent,
+    StatusComponent,
     PageNotFoundComponent,
     DashboardComponent,
     MainComponent,
     ProfileComponent,
-    CategoryComponent,
     AclComponent,
     UserComponent,
     BreadcrumbsComponent,
     ProjectComponent
   ],
   imports: [
+    CategoryModule,
+    ServerModule,
+    FrameworkModule,
+    StatusModule,
     CommonModule,
     SharedModule,
     RouterModule,

@@ -1,31 +1,13 @@
-import {
-  FETCH_CATEGORIES_SUCCEEDED,
-  FETCH_NESTED_CATEGORIES_SUCCEEDED,
-  SORT_CATEGORIES_SUCCEEDED
-} from "./list.actions";
-import * as _ from "lodash";
+import { FETCH_CATEGORIES_SUCCEEDED, SORT_CATEGORIES_SUCCEEDED } from './list.actions';
+import * as _ from 'lodash';
 
-export const list = (
-  state = { fetched: false, items: [], tree: [] },
-  action
-) => {
+export const list = (state = { fetched: false, items: [] }, action) => {
   switch (action.type) {
     case FETCH_CATEGORIES_SUCCEEDED:
-      return _.assign({}, state, {
-        fetched: true,
-        items: action.data,
-        pagination: action.pagination
-      });
-
-    case FETCH_NESTED_CATEGORIES_SUCCEEDED:
-      return _.assign({}, state, { fetched: true, tree: action.data });
+      return _.assign({}, state, { fetched: true, items: action.data, pagination: action.pagination });
 
     case SORT_CATEGORIES_SUCCEEDED:
-      return _.assign({}, state, {
-        fetched: true,
-        items: action.data,
-        total: action.total
-      });
+      return _.assign({}, state, { fetched: true, items: action.data, total: action.total });
 
     default:
       return state;
