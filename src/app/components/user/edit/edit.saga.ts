@@ -78,7 +78,7 @@ function* updateUser(action) {
         data: result
       });
       AppInjector.get(NotificationService).show('success', 'User updated', 3000);
-      AppInjector.get(Router).navigate([`/user/edit/${action.data.getId()}`]);
+      AppInjector.get(Router).navigate([`/users/edit/${action.data.getId()}`]);
     } else {
     }
     AppInjector.get(PreloaderService).hide();

@@ -21,7 +21,7 @@ export class CreateComponent implements OnInit, OnDestroy {
   public user = {
     email: '',
     password: '',
-    repassword: '',
+    re_password: '',
     first_name: '',
     last_name: '',
     status: 0,

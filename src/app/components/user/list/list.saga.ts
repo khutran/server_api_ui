@@ -79,7 +79,7 @@ function* reloadUsers(action) {
     if (!_.isUndefined(action.com)) {
       switch (action.com) {
         case USER_COMP:
-          AppInjector.get(Router).navigate(['/user']);
+          AppInjector.get(Router).navigate(['/users']);
           break;
 
         default:
