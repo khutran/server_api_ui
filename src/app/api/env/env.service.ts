@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ServiceProvider } from '../service.provider';
-import Environment from '../../models/Environment';
+import Environment from '../../models/Env';
 import { Observable } from 'rxjs';
 import { tap, map, catchError } from 'rxjs/operators';
 
