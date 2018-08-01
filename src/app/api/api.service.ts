@@ -8,6 +8,7 @@ import { StatusService } from './status/status.service';
 import { FrameworkService } from './framework/framework.service';
 import { ServerService } from './server/server.service';
 import { CategoryService } from './category/category.service';
+import { EnvService } from './env/env.service';
 
 @Injectable()
 export class ApiService {
@@ -20,6 +21,7 @@ export class ApiService {
     public user: UserService,
     public role: RoleService,
     public permission: PermissionService,
-    public project: ProjectService
+    public project: ProjectService,
+    public env: EnvService
   ) {}
 }

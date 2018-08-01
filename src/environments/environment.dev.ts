@@ -6,6 +6,6 @@
 export const environment = {
   production: false,
   hmr: false,
-  apiUrl: 'https://api.viwebsite.com',
+  apiUrl: 'http://server.nodetest.com',
   jwtTokenKey: 'jwt_token_key',
 };

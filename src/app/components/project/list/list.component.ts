@@ -32,6 +32,7 @@ export class ListComponent implements OnInit, OnDestroy {
     // this.store.dispatch({ type: FETCH_PROJECTS_REQUESTED });
   }
 
+
   ngOnDestroy() {
     if (!_.isUndefined(this.navigationSubscription)) {
       this.navigationSubscription.unsubscribe();

@@ -122,6 +122,9 @@ export class EditComponent implements OnInit {
     ];
     this.store.dispatch({ type: RENDER_EDIT_PROJECT_FORM_REQUESTED, data: { project_id: this.activatedRoute.snapshot.params.id, inputs: inputs } });
   }
+  getData() {
+    console.log('store', this.store.getState());
+  }
 
   onSubmit(form) {
     if (form.valid) {
