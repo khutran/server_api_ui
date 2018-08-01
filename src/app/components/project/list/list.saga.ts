@@ -3,6 +3,7 @@ import { API_CALL_ERROR } from './../../../store/action';
 import { AppInjector } from './../../../app-injector';
 import { ApiService } from '../../../api/api.service';
 import { put, takeLatest } from 'redux-saga/effects';
+import { NotificationService } from '../../../common/services/notification/notification.service';
 
 function* getProjects(action) {
   const api = AppInjector.get(ApiService);
@@ -42,6 +43,7 @@ function* build(action) {
       .project.replaceDb(action.data)
       .toPromise();
     yield put({ type: BUILD_PROJECT_SUCCEEDED, data: replaceDb.items, pagination: replaceDb.pagination });
+    AppInjector.get(NotificationService).show('success', 'Build success', 3000);
   } catch (e) {
     yield put({ type: API_CALL_ERROR, error: e });
   }

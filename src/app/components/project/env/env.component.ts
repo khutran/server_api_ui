@@ -22,7 +22,12 @@ export class EnvComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch({ type: GET_INFO_ENV_REQUESTED, data: { id: this.activatedRoute.snapshot.params.id } });
+    this.store.dispatch({ 
+      type: GET_INFO_ENV_REQUESTED, 
+      data: { 
+        id: this.activatedRoute.snapshot.params.id 
+      } 
+    });
   }
 
   onSubmit(form) {
