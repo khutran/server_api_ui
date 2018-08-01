@@ -22,7 +22,7 @@ function* watchFetchProjectsRequest() {
 function* build(action) {
   try {
     let create = yield AppInjector.get(ApiService)
-      .project.create(action.data)
+      .project.clone(action.data)
       .toPromise();
     let infoDb = yield AppInjector.get(ApiService)
       .project.createDb(action.data)

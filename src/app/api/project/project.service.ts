@@ -13,6 +13,20 @@ export class ProjectService extends ServiceProvider {
 
   create(params): Observable<any> {
     this.preloader.show();
+    return this.http.post(this.apiUrl.getApiUrl(this.url), params).pipe(
+      tap(result => {
+        this.preloader.hide();
+      }),
+      map(result => result),
+      catchError(error => {
+        this.preloader.hide();
+        throw error;
+      })
+    );
+  }
+
+  clone(params): Observable<any> {
+    this.preloader.show();
     return this.http.post(this.apiUrl.getApiUrl(this.urlBuild) + '/' + params, {}).pipe(
       tap(result => {
         this.preloader.hide();
