@@ -9,7 +9,7 @@ import { environment } from '../../../environments/environment';
 export class ProjectService extends ServiceProvider {
   public url = '/api/v1/projects';
   public model = Project;
-  public urlBuild = '/api/v1/remote/project';
+  public buildUrl = '/api/v1/remote/project';
 
   create(params): Observable<any> {
     this.preloader.show();
@@ -25,9 +25,9 @@ export class ProjectService extends ServiceProvider {
     );
   }
 
-  clone(params): Observable<any> {
+  clone(id): Observable<any> {
     this.preloader.show();
-    return this.http.post(this.apiUrl.getApiUrl(this.urlBuild) + '/' + params, {}).pipe(
+    return this.http.post(this.apiUrl.getApiUrl(this.buildUrl) + '/' + id, {}).pipe(
       tap(result => {
         this.preloader.hide();
       }),
@@ -39,9 +39,9 @@ export class ProjectService extends ServiceProvider {
     );
   }
 
-  createDb(params): Observable<any> {
+  createDb(id): Observable<any> {
     this.preloader.show();
-    return this.http.post(this.apiUrl.getApiUrl(this.urlBuild) + '/' + params + '/' + 'db', {}).pipe(
+    return this.http.post(this.apiUrl.getApiUrl(this.buildUrl) + '/' + id + '/' + 'db', {}).pipe(
       tap(result => {
         this.preloader.hide();
       }),
@@ -53,9 +53,9 @@ export class ProjectService extends ServiceProvider {
     );
   }
 
-  createConfig(params): Observable<any> {
+  createConfig(id): Observable<any> {
     this.preloader.show();
-    return this.http.post(this.apiUrl.getApiUrl(this.urlBuild) + '/' + params + '/' + 'config', {}).pipe(
+    return this.http.post(this.apiUrl.getApiUrl(this.buildUrl) + '/' + id + '/' + 'config', {}).pipe(
       tap(result => {
         this.preloader.hide();
       }),
@@ -67,9 +67,9 @@ export class ProjectService extends ServiceProvider {
     );
   }
 
-  updateConfig(params, db, user, pass): Observable<any> {
+  updateConfig(id, db, user, pass): Observable<any> {
     this.preloader.show();
-    return this.http.put(this.apiUrl.getApiUrl(this.urlBuild) + '/' + params + '/' + 'config', { db_name: db, user_name: user, password: pass }).pipe(
+    return this.http.put(this.apiUrl.getApiUrl(this.buildUrl) + '/' + id + '/' + 'config', { db_name: db, user_name: user, password: pass }).pipe(
       tap(result => {
         this.preloader.hide();
       }),
@@ -81,9 +81,9 @@ export class ProjectService extends ServiceProvider {
     );
   }
 
-  runPackageControl(params): Observable<any> {
+  runPackageControl(id): Observable<any> {
     this.preloader.show();
-    return this.http.post(this.apiUrl.getApiUrl(this.urlBuild) + '/' + params + '/' + 'project-manager', {}).pipe(
+    return this.http.post(this.apiUrl.getApiUrl(this.buildUrl) + '/' + id + '/' + 'project-manager', {}).pipe(
       tap(result => {
         this.preloader.hide();
       }),
@@ -95,9 +95,9 @@ export class ProjectService extends ServiceProvider {
     );
   }
 
-  runFirtsBuild(params): Observable<any> {
+  runFirtsBuild(id): Observable<any> {
     this.preloader.show();
-    return this.http.post(this.apiUrl.getApiUrl(this.urlBuild) + '/' + params + '/' + 'firts-build', {}).pipe(
+    return this.http.post(this.apiUrl.getApiUrl(this.buildUrl) + '/' + id + '/' + 'firts-build', {}).pipe(
       tap(result => {
         this.preloader.hide();
       }),
@@ -109,9 +109,9 @@ export class ProjectService extends ServiceProvider {
     );
   }
 
-  replaceDb(params): Observable<any> {
+  replaceDb(id): Observable<any> {
     this.preloader.show();
-    return this.http.post(this.apiUrl.getApiUrl(this.urlBuild) + '/' + params + '/' + 'replace', {}).pipe(
+    return this.http.post(this.apiUrl.getApiUrl(this.buildUrl) + '/' + id + '/' + 'replace', {}).pipe(
       tap(result => {
         this.preloader.hide();
       }),
