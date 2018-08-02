@@ -122,4 +122,19 @@ export class ProjectService extends ServiceProvider {
       })
     );
   }
+
+  getUsersById(id): Observable<any> {
+    this.preloader.show();
+    return this.http.get(this.apiUrl.getApiUrl(this.url) + '/' + id + '/user').pipe(
+      tap(result => {
+        this.preloader.hide();
+      }),
+      map(result => new this.model((result as any).data)),
+      catchError(error => {
+        this.preloader.hide();
+        throw error;
+      })
+    );
+  }
+ 
 }

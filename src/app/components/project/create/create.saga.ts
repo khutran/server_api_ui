@@ -9,6 +9,7 @@ import { fetchAllFramework } from '../../framework/framework.saga';
 import { fetchAllStatus } from '../../status/status.saga';
 import { fetchAllCategory } from '../../category/category.saga';
 import * as _ from 'lodash';
+import { NotificationService } from '../../../common/services/notification/notification.service';
 
 function* fetchAllData(action) {
   const [servers, frameworks, status, categories] = yield all([call(fetchAllServer), call(fetchAllFramework), call(fetchAllStatus), call(fetchAllCategory)]);
@@ -52,6 +53,7 @@ function* createProject(action) {
   try {
     let result = yield api.project.create(action.data).toPromise();
     yield put({ type: CREATE_PROJECT_SUCCEEDED, data: result });
+    AppInjector.get(NotificationService).show('success', 'Create success', 5000);
     router.navigate(['projects']);
   } catch (e) {
     yield put({ type: API_CALL_ERROR, error: e });

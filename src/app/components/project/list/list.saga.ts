@@ -43,7 +43,7 @@ function* build(action) {
       .project.replaceDb(action.data)
       .toPromise();
     yield put({ type: BUILD_PROJECT_SUCCEEDED, data: replaceDb.items, pagination: replaceDb.pagination });
-    AppInjector.get(NotificationService).show('success', 'Build success', 3000);
+    AppInjector.get(NotificationService).show('success', 'Build success', 5000);
   } catch (e) {
     yield put({ type: API_CALL_ERROR, error: e });
   }

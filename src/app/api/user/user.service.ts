@@ -66,4 +66,15 @@ export class UserService extends ServiceProvider {
       })
     );
   }
+
+  assignProjectToUser(userId, data) {
+    return this.http.post(this.apiUrl.getApiUrl(this.url) + '/' + userId + '/projects', data).pipe(
+      tap(result => {
+        // console.log(result);
+      }),
+      catchError(error => {
+        throw error;
+      })
+    );
+  }
 }
