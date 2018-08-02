@@ -7,7 +7,7 @@ import { NotificationService } from '../../../common/services/notification/notif
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { AppInjector } from '../../../app-injector';
 import { PROJECT_COMP } from '../project.const';
-import { GET_ALL_USERS_NO_PAGINATION_REQUESTED, ASSIGN_PROJECT_TO_USER_REQUESTED } from '../../user/user.actions';
+import { GET_ALL_USERS_NO_PAGINATION_REQUESTED, ASSIGN_PROJECT_TO_USER_REQUESTED, UN_ASSIGN_PROJECT_TO_USER_REQUESTED } from '../../user/user.actions';
 
 @Component({
   selector: 'app-list',
@@ -84,6 +84,24 @@ export class ListComponent implements OnInit, OnDestroy {
       data: {
         project_id: this.id_Project
       }
+    });
+    this.store.dispatch({
+      type: GET_ALL_USERS_NO_PAGINATION_REQUESTED,
+      com: PROJECT_COMP,
+      data: { id_project: this.id_Project }
+    });
+  }
+
+  unAsignProject(userId) {
+    this.store.dispatch({
+      type: UN_ASSIGN_PROJECT_TO_USER_REQUESTED,
+      userId: userId,
+      projectId: this.id_Project
+    });
+    this.store.dispatch({
+      type: GET_ALL_USERS_NO_PAGINATION_REQUESTED,
+      com: PROJECT_COMP,
+      data: { id_project: this.id_Project }
     });
   }
 }

@@ -4,7 +4,7 @@ import { createUser } from './create/create.reducer';
 import { editUser } from './edit/edit.reducer';
 import { FETCH_USER_DETAIL_SUCCEEDED } from './edit/edit.actions';
 import * as _ from 'lodash';
-import { GET_ALL_USERS_NO_PAGINATION_SUCCEEDED, ASSIGN_PROJECT_TO_USER_SUCCEEDED } from './user.actions';
+import { GET_ALL_USERS_NO_PAGINATION_SUCCEEDED, ASSIGN_PROJECT_TO_USER_SUCCEEDED, UN_ASSIGN_PROJECT_TO_USER_SUCCEEDED } from './user.actions';
 import { PROJECT_COMP } from '../project/project.const';
 
 const common = (
@@ -23,6 +23,10 @@ const common = (
     case ASSIGN_PROJECT_TO_USER_SUCCEEDED:
       return _.assign({}, state, {
         assigned: true
+      });
+    case UN_ASSIGN_PROJECT_TO_USER_SUCCEEDED:
+      return _.assign({}, state, {
+        unAssigned: true
       });
     case GET_ALL_USERS_NO_PAGINATION_SUCCEEDED:
       if (action.com == PROJECT_COMP) {

@@ -67,12 +67,25 @@ export class UserService extends ServiceProvider {
     );
   }
 
-  assignProjectToUser(userId, data) {
+  assignProjectToUser(userId, data): Observable<any> {
     return this.http.post(this.apiUrl.getApiUrl(this.url) + '/' + userId + '/projects', data).pipe(
       tap(result => {
         // console.log(result);
       }),
       catchError(error => {
+        throw error;
+      })
+    );
+  }
+
+  unAssignProjectUser(userId, projectId): Observable<any> {
+    this.preloader.show();
+    return this.http.delete(this.apiUrl.getApiUrl(this.url) + '/' + userId + '/projects/?project_id=' + projectId).pipe(
+      tap(result => {
+        this.preloader.hide();
+      }),
+      catchError(error => {
+        this.preloader.hide();
         throw error;
       })
     );

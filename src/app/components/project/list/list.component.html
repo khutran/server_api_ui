@@ -120,7 +120,7 @@
                         <a (click)="assignProject(item.id)" *ngIf="!item.isAssigned" href="javascript:" class="btn btn-primary btn-sm icon-only" title="assign">
                           <i class="fa fa-check" aria-hidden="true"></i>
                         </a>
-                        <a *ngIf="item.isAssigned" href="javascript:" class="btn btn-danger btn-sm icon-only" title="un-assign">
+                        <a (click)="unAsignProject(item.id)" *ngIf="item.isAssigned" href="javascript:" class="btn btn-danger btn-sm icon-only" title="un-assign">
                           <i class="fa fa-times" aria-hidden="true"></i>
                         </a>
                       </td>

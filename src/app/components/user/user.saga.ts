@@ -5,7 +5,7 @@ import createUser from './create/create.saga';
 import editUser from './edit/edit.saga';
 import { ApiService } from '../../api/api.service';
 import { AppInjector } from '../../app-injector';
-import { GET_ALL_USERS_NO_PAGINATION_REQUESTED, GET_ALL_USERS_NO_PAGINATION_SUCCEEDED, ASSIGN_PROJECT_TO_USER_REQUESTED, ASSIGN_PROJECT_TO_USER_SUCCEEDED } from './user.actions';
+import { GET_ALL_USERS_NO_PAGINATION_REQUESTED, GET_ALL_USERS_NO_PAGINATION_SUCCEEDED, ASSIGN_PROJECT_TO_USER_REQUESTED, ASSIGN_PROJECT_TO_USER_SUCCEEDED, UN_ASSIGN_PROJECT_TO_USER_SUCCEEDED } from './user.actions';
 import { API_CALL_ERROR } from '../../store/action';
 import { PROJECT_COMP } from '../project/project.const';
 import { NotificationService } from '../../common/services/notification/notification.service';
@@ -47,8 +47,6 @@ function* assignProjectUser(action) {
       type: ASSIGN_PROJECT_TO_USER_SUCCEEDED,
       data: results
     });
-    AppInjector.get(NotificationService).show('success', 'Assign success', 5000);
-    AppInjector.get(Router).navigate(['projects']);
   } catch (e) {
     yield put({ type: API_CALL_ERROR, error: e });
   }
@@ -57,4 +55,21 @@ function* assignProjectUser(action) {
 function* watchAssignProjectUserRequest() {
   yield takeLatest(ASSIGN_PROJECT_TO_USER_REQUESTED, assignProjectUser);
 }
-export default _.map([...listUserSaga, ...createUser, ...editUser, watchFetchAllUsersNoPaginationRequest, watchAssignProjectUserRequest], item => fork(item));
+
+function* unAssignProjectUser(action) {
+  const api = AppInjector.get(ApiService);
+  try {
+    let results = yield api.user.unAssignProjectUser(action.userId,action.projectId).toPromise();
+    yield put({
+      type: UN_ASSIGN_PROJECT_TO_USER_SUCCEEDED,
+      data: results
+    });
+  } catch (e) {
+    yield put({ type: API_CALL_ERROR, error: e });
+  }
+}
+
+function* watchUnAssignProjectUserRequest() {
+  yield takeLatest(UN_ASSIGN_PROJECT_TO_USER_SUCCEEDED, unAssignProjectUser);
+}
+export default _.map([...listUserSaga, ...createUser, ...editUser, watchFetchAllUsersNoPaginationRequest, watchAssignProjectUserRequest, watchUnAssignProjectUserRequest], item => fork(item));
