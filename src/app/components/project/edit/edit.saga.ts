@@ -88,8 +88,6 @@ function* deleteProject(action) {
       if (!_.isEmpty(envData)) {
         yield api.project.deleteDbProject(action.data.id).toPromise();
       }
-    }
-    if (isBuilded.data.success) {
       yield api.project.deleteCodeProject(action.data.id).toPromise();
     }
     if (!_.isEmpty(domainData.data)) {
