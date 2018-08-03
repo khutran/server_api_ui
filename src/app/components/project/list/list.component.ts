@@ -70,38 +70,14 @@ export class ListComponent implements OnInit, OnDestroy {
 
   getAllUser(id) {
     this.id_Project = id;
-    this.store.dispatch({
-      type: GET_ALL_USERS_NO_PAGINATION_REQUESTED,
-      com: PROJECT_COMP,
-      data: { id_project: id }
-    });
+    this.store.dispatch({ type: GET_ALL_USERS_NO_PAGINATION_REQUESTED, com: PROJECT_COMP, data: { id_project: id }});
   }
 
   assignProject(userId) {
-    this.store.dispatch({
-      type: ASSIGN_PROJECT_TO_USER_REQUESTED,
-      userId: userId,
-      data: {
-        project_id: this.id_Project
-      }
-    });
-    this.store.dispatch({
-      type: GET_ALL_USERS_NO_PAGINATION_REQUESTED,
-      com: PROJECT_COMP,
-      data: { id_project: this.id_Project }
-    });
+    this.store.dispatch({ type: ASSIGN_PROJECT_TO_USER_REQUESTED, userId: userId, data: { project_id: this.id_Project }});
   }
 
   unAsignProject(userId) {
-    this.store.dispatch({
-      type: UN_ASSIGN_PROJECT_TO_USER_REQUESTED,
-      userId: userId,
-      projectId: this.id_Project
-    });
-    this.store.dispatch({
-      type: GET_ALL_USERS_NO_PAGINATION_REQUESTED,
-      com: PROJECT_COMP,
-      data: { id_project: this.id_Project }
-    });
+    this.store.dispatch({ type: UN_ASSIGN_PROJECT_TO_USER_REQUESTED, userId: userId, projectId: this.id_Project });
   }
 }

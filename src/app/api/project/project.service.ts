@@ -123,7 +123,7 @@ export class ProjectService extends ServiceProvider {
     );
   }
 
-  getUsersById(id): Observable<any> {
+  getUsersByIdProject(id): Observable<any> {
     this.preloader.show();
     return this.http.get(this.apiUrl.getApiUrl(this.url) + '/' + id + '/user').pipe(
       tap(result => {

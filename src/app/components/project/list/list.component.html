@@ -102,6 +102,7 @@
           <div class="modal fade list-user-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
               <div class="modal-content">
+                <h3>Project: #{{store.getState().Users.common.projectId}}</h3>
                 <table *ngIf="store.getState().Users.common.fetched" class="table table-no-border-top">
                   <thead>
                     <tr>

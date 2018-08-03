@@ -43,7 +43,8 @@ const common = (
         return _.assign({}, state, {
           fetched: true,
           items: action.data,
-          com: action.com
+          com: action.com,
+          projectId: action.projectId
         });
       } else {
         return _.assign({}, state, {
