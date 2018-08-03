@@ -57,10 +57,9 @@ function* createProject(action) {
       name: action.data.name,
       ip: serverData.ip
     };
-    console.log('data', data);
-    let domainData = yield api.project.domainPointingIP(data).toPromise();
     let result = yield api.project.create(action.data).toPromise();
-    yield put({ type: CREATE_PROJECT_SUCCEEDED, data: result, domain: domainData });
+    let domainData = yield api.project.domainPointingIP(data).toPromise();
+    yield put({ type: CREATE_PROJECT_SUCCEEDED, data: result });
     AppInjector.get(NotificationService).show('success', 'Create success', 5000);
     router.navigate(['projects']);
   } catch (e) {

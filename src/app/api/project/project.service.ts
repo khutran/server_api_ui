@@ -151,5 +151,65 @@ export class ProjectService extends ServiceProvider {
     );
   }
 
+  deleteDbProject(id): Observable<any> {
+    this.preloader.show();
+    return this.http.delete(this.apiUrl.getApiUrl(this.buildUrl) + '/' + id + '/db').pipe(
+      tap(result => {
+        this.preloader.hide();
+      }),
+      catchError(error => {
+        this.preloader.hide();
+        throw error;
+      })
+    );
+  }
+
+  deleteCodeProject(id): Observable<any> {
+    this.preloader.show();
+    return this.http.delete(this.apiUrl.getApiUrl(this.buildUrl) + '/' + id).pipe(
+      tap(result => {
+        this.preloader.hide();
+      }),
+      catchError(error => {
+        this.preloader.hide();
+        throw error;
+      })
+    );
+  }
+
+  deleteDomainProject(nameDomain): Observable<any> {
+    this.preloader.show();
+    return this.http.delete(this.apiUrl.getApiUrl('/api/v1/cloudflare/dns?name=') + nameDomain).pipe(
+      tap(result => {
+        this.preloader.hide();
+      }),
+      catchError(error => {
+        this.preloader.hide();
+        throw error;
+      })
+    );
+  }
+
+  checkProjectAlready(id): Observable<any> {
+    return this.http.get(this.apiUrl.getApiUrl(this.buildUrl) + '/' + id).pipe(
+      tap(result => {
+      }),
+      map(result => result),
+      catchError(error => {
+        throw error;
+      })
+    );
+  }
+
+  getDomainProject(nameDomain): Observable<any> {
+    return this.http.get(this.apiUrl.getApiUrl('/api/v1/cloudflare/dns?name=') + nameDomain).pipe(
+      tap(result => {
+      }),
+      map(result => result),
+      catchError(error => {
+        throw error;
+      })
+    );
+  }
  
 }
