@@ -136,5 +136,20 @@ export class ProjectService extends ServiceProvider {
       })
     );
   }
+
+  domainPointingIP(data): Observable<any> {
+    this.preloader.show();
+    return this.http.post(this.apiUrl.getApiUrl('/api/v1/cloudflare/dns'), data).pipe(
+      tap(result => {
+        this.preloader.hide();
+      }),
+      map(result => result),
+      catchError(error => {
+        this.preloader.hide();
+        throw error;
+      })
+    );
+  }
+
  
 }
