@@ -2,7 +2,7 @@ import { FETCH_PROJECTS_SUCCEEDED, FETCH_PROJECTS_REQUESTED, BUILD_PROJECT_REQUE
 import { API_CALL_ERROR } from './../../../store/action';
 import { AppInjector } from './../../../app-injector';
 import { ApiService } from '../../../api/api.service';
-import { put, takeLatest } from 'redux-saga/effects';
+import { put, takeLatest, all, call } from 'redux-saga/effects';
 import { NotificationService } from '../../../common/services/notification/notification.service';
 
 function* getProjects(action) {
@@ -19,30 +19,57 @@ function* watchFetchProjectsRequest() {
   yield takeLatest(FETCH_PROJECTS_REQUESTED, getProjects);
 }
 
+function* clone(id) {
+  return yield AppInjector.get(ApiService)
+    .project.clone(id)
+    .toPromise();
+}
+
+function* createDb(id) {
+  return yield AppInjector.get(ApiService)
+    .project.createDb(id)
+    .toPromise();
+}
+
+function* createConfig(id) {
+  return yield AppInjector.get(ApiService)
+    .project.createConfig(id)
+    .toPromise();
+}
+
+function* updateConfig(id, db, user, pass) {
+  return yield AppInjector.get(ApiService)
+    .project.updateConfig(id, db, user, pass)
+    .toPromise();
+}
+
+function* runPackageControl(id) {
+  return yield AppInjector.get(ApiService)
+    .project.runPackageControl(id)
+    .toPromise();
+}
+
+function* runFirtsBuild(id) {
+  return yield AppInjector.get(ApiService)
+    .project.runFirtsBuild(id)
+    .toPromise();
+}
+
+function* replaceDb(id) {
+  return yield AppInjector.get(ApiService)
+    .project.replaceDb(id)
+    .toPromise();
+}
+
 function* build(action) {
   try {
-    let create = yield AppInjector.get(ApiService)
-      .project.clone(action.data)
-      .toPromise();
-    let infoDb = yield AppInjector.get(ApiService)
-      .project.createDb(action.data)
-      .toPromise();
-    let createConfig = yield AppInjector.get(ApiService)
-      .project.createConfig(action.data)
-      .toPromise();
-    let updateConfig = yield AppInjector.get(ApiService)
-      .project.updateConfig(action.data, infoDb.data.Dbname, infoDb.data.User, infoDb.data.Password)
-      .toPromise();
-    let runPackageControl = yield AppInjector.get(ApiService)
-      .project.runPackageControl(action.data)
-      .toPromise();
-    let runFirtsBuild = yield AppInjector.get(ApiService)
-      .project.runFirtsBuild(action.data)
-      .toPromise();
-    let replaceDb = yield AppInjector.get(ApiService)
-      .project.replaceDb(action.data)
-      .toPromise();
-    yield put({ type: BUILD_PROJECT_SUCCEEDED, data: replaceDb.items, pagination: replaceDb.pagination });
+    const [cloneProject, Db] = yield all([call(clone, action.data), call(createDb, action.data)]);
+    yield call(createConfig, action.data);
+    yield call(updateConfig, action.data, Db.data.Dbname, Db.data.User, Db.data.Password);
+    yield call(runPackageControl, action.data);
+    yield call(runFirtsBuild, action.data);
+    yield call(replaceDb, action.data);
+    yield put({ type: BUILD_PROJECT_SUCCEEDED, data: cloneProject.items, pagination: cloneProject.pagination });
     AppInjector.get(NotificationService).show('success', 'Build success', 5000);
   } catch (e) {
     yield put({ type: API_CALL_ERROR, error: e });
