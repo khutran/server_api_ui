@@ -78,22 +78,62 @@ function* watchGetProjectRequest() {
   yield takeEvery(GET_PROJECT_REQUESTED, getProject);
 }
 
+function* checkProjectAlready(id) {
+  return yield AppInjector.get(ApiService)
+    .project.checkProjectAlready(id)
+    .toPromise();
+}
+
+function* getDomainProject(name) {
+  return yield AppInjector.get(ApiService)
+    .project.getDomainProject(name)
+    .toPromise();
+}
+
+function* getEnvById(id) {
+  return AppInjector.get(ApiService)
+    .env.getEnvById(id)
+    .toPromise();
+}
+
+function* deleteDbProject(id) {
+  return AppInjector.get(ApiService)
+    .project.deleteDbProject(id)
+    .toPromise();
+}
+
+function* deleteCodeProject(id) {
+  return AppInjector.get(ApiService)
+    .project.deleteCodeProject(id)
+    .toPromise();
+}
+
+function* deleteDomainProject(name) {
+  return AppInjector.get(ApiService)
+    .project.deleteDomainProject(name)
+    .toPromise();
+}
+
+function* deleteP(id) {
+  return AppInjector.get(ApiService)
+    .project.delete(id)
+    .toPromise();
+}
 function* deleteProject(action) {
   const api = AppInjector.get(ApiService);
   try {
-    let isBuilded = yield api.project.checkProjectAlready(action.data.id).toPromise();
-    let domainData = yield api.project.getDomainProject(action.data.name).toPromise();
+    const [isBuilded, domainData] = yield all([call(checkProjectAlready, action.data.id), call(getDomainProject, action.data.name)]);
     if (isBuilded.data.success) {
-      let envData = yield api.env.getEnvById(action.data.id).toPromise();
+      const envData = yield call(getEnvById, action.data.id);
       if (!_.isEmpty(envData)) {
-        yield api.project.deleteDbProject(action.data.id).toPromise();
+        yield call(deleteDbProject, action.data.id);
       }
-      yield api.project.deleteCodeProject(action.data.id).toPromise();
+      yield call(deleteCodeProject, action.data.id);
     }
     if (!_.isEmpty(domainData.data)) {
-      yield api.project.deleteDomainProject(action.data.name).toPromise();
+      yield call(deleteDomainProject, action.data.name);
     }
-    yield api.project.delete(action.data.id).toPromise();
+    yield call(deleteP, action.data.id);
     AppInjector.get(Router).navigate(['/projects']);
   } catch (e) {
     yield put({ type: API_CALL_ERROR, error: e });
@@ -105,7 +145,7 @@ function* watchDeleteProjectRequest() {
 }
 
 function* watchRenderProjectDetailFormRequested() {
-  yield takeLatest(RENDER_EDIT_PROJECT_FORM_REQUESTED, function* (action: any) {
+  yield takeLatest(RENDER_EDIT_PROJECT_FORM_REQUESTED, function*(action: any) {
     yield put({ type: GET_PROJECT_REQUESTED, data: action.data.project_id });
   });
 }
