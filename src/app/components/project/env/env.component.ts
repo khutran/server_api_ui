@@ -13,20 +13,19 @@ import { GET_INFO_ENV_REQUESTED, EDIT_INFO_ENV_REQUESTED } from './env.actions';
   styleUrls: ['./env.component.scss']
 })
 export class EnvComponent implements OnInit {
-
   public store;
-  public id_project = +this.activatedRoute.snapshot.params.id;
+  public id_project = this.activatedRoute.snapshot.params.id;
   constructor(private activatedRoute: ActivatedRoute, store: Store) {
     this.activatedRoute = activatedRoute;
     this.store = store.getInstance();
   }
 
   ngOnInit() {
-    this.store.dispatch({ 
-      type: GET_INFO_ENV_REQUESTED, 
-      data: { 
-        id: this.activatedRoute.snapshot.params.id 
-      } 
+    this.store.dispatch({
+      type: GET_INFO_ENV_REQUESTED,
+      data: {
+        id: this.activatedRoute.snapshot.params.id
+      }
     });
   }
 
@@ -38,9 +37,8 @@ export class EnvComponent implements OnInit {
         type: EDIT_INFO_ENV_REQUESTED,
         data: _.assign(data, { id: store.getState().Project.envedit.env.id_project })
       });
-    }else {
+    } else {
       console.log('form is not valid');
     }
   }
-
 }

@@ -27,7 +27,7 @@ export class DetailComponent implements OnInit {
     this.store.dispatch({ type: BUILD_PROJECT_REQUESTED, data: id });
   }
 
-  deleteBuild(id) {
+  deleteBuildOfItem(id) {
     this.store.dispatch({ type: DELETE_BUILD_PROJECT_REQUESTED, data: id });
   }
 }
