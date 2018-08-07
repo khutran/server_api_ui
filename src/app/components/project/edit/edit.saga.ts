@@ -81,8 +81,20 @@ function* watchGetProjectRequest() {
 function* deleteProject(action) {
   const api = AppInjector.get(ApiService);
   try {
-    yield api.project.delete(action.data).toPromise();
-    yield put({ type: FETCH_PROJECTS_REQUESTED });
+    let isBuilded = yield api.project.checkProjectAlready(action.data.id).toPromise();
+    let domainData = yield api.project.getDomainProject(action.data.name).toPromise();
+    if (isBuilded.data.success) {
+      let envData = yield api.env.getEnvById(action.data.id).toPromise();
+      if (!_.isEmpty(envData)) {
+        yield api.project.deleteDbProject(action.data.id).toPromise();
+      }
+      yield api.project.deleteCodeProject(action.data.id).toPromise();
+    }
+    if (!_.isEmpty(domainData.data)) {
+      yield api.project.deleteDomainProject(action.data.name).toPromise();
+    }
+    yield api.project.delete(action.data.id).toPromise();
+    AppInjector.get(Router).navigate(['/projects']);
   } catch (e) {
     yield put({ type: API_CALL_ERROR, error: e });
   }
@@ -93,7 +105,7 @@ function* watchDeleteProjectRequest() {
 }
 
 function* watchRenderProjectDetailFormRequested() {
-  yield takeLatest(RENDER_EDIT_PROJECT_FORM_REQUESTED, function*(action: any) {
+  yield takeLatest(RENDER_EDIT_PROJECT_FORM_REQUESTED, function* (action: any) {
     yield put({ type: GET_PROJECT_REQUESTED, data: action.data.project_id });
   });
 }

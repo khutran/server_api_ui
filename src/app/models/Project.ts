@@ -2,6 +2,8 @@ import Model from './Model';
 import ProjectStatus from './ProjectStatus';
 import ProjectFramework from './ProjectFramework';
 import Host from './Host';
+import User from './User';
+import * as _ from 'lodash';
 
 class Project extends Model {
   constructor(options) {
@@ -14,6 +16,9 @@ class Project extends Model {
     };
     (this as any).host = d => {
       return new Host(d.data);
+    };
+    (this as any).users = d => {
+      return new _.map(d.data, item => new User(item));
     };
     this.bind(options);
   }

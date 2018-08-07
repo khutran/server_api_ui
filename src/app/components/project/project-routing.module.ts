@@ -4,6 +4,7 @@ import { EditComponent } from './edit/edit.component';
 import { ListComponent } from './list/list.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { EnvComponent } from './env/env.component';
 
 const routes: Routes = [{
     path: '',
@@ -19,6 +20,10 @@ const routes: Routes = [{
         {
             path: 'create',
             component: CreateComponent
+        },
+        {
+            path: 'edit/:id/environment',
+            component: EnvComponent
         }
     ],
     canActivate: [AuthGuardService]

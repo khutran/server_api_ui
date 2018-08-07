@@ -27,7 +27,7 @@ function* createUser(action) {
           if (action.redirect) {
             AppInjector.get(Router).navigate([action.redirect]);
           } else {
-            AppInjector.get(Router).navigate(['user']);
+            AppInjector.get(Router).navigate(['users']);
           }
           AppInjector.get(UtilityService).reset();
           break;

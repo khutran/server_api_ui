@@ -4,8 +4,8 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 export const environment = {
-  production: true,
+  production: false,
   hmr: false,
-  apiUrl: 'http://api.viwebsite.com',
-  jwtTokenKey: 'jwt_token_key',
+  apiUrl: 'http://server.nodetest.com',
+  jwtTokenKey: 'vicoders',
 };

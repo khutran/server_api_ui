@@ -3,6 +3,7 @@ import * as _ from 'lodash';
 import listSaga from './list/list.saga';
 import editSaga from './edit/edit.saga';
 import createSaga from './create/create.saga';
+import envSaga from './env/env.saga';
 import { API_CALL_ERROR } from '../../store/action';
 import { GET_ALL_PROJECTS_REQUESTED, GET_ALL_PROJECTS_SUCCEEDED } from './project.action';
 import { ApiService } from '../../api/api.service';
@@ -27,4 +28,4 @@ function* allSaga() {
 function* watchFetchAllProjectsRequest() {
   yield takeLatest(GET_ALL_PROJECTS_REQUESTED, allSaga);
 }
-export default _.map([...listSaga, ...editSaga, ...createSaga, watchFetchAllProjectsRequest], item => fork(item));
+export default _.map([...listSaga, ...editSaga, ...createSaga, ...envSaga, watchFetchAllProjectsRequest], item => fork(item));
