@@ -3,15 +3,7 @@ import { API_CALL_ERROR } from './../../../store/action';
 import { PreloaderService } from './../../../common/services/preloader/preloader.service';
 import { USER_COMP } from './../user.const';
 import { AppInjector } from './../../../app-injector';
-import {
-  FETCH_ALL_USER_REQUESTED,
-  FETCH_ALL_USER_SUCCEEDED,
-  DELETE_USER_REQUESTED,
-  DELETE_USER_SUCCEEDED,
-  FILTER_USERS_REQUESTED,
-  FILTER_USERS_SUCCEEDED,
-  FILTER_USERS_PROCESSING
-} from './list.actions';
+import { FETCH_ALL_USER_REQUESTED, FETCH_ALL_USER_SUCCEEDED, DELETE_USER_REQUESTED, DELETE_USER_SUCCEEDED } from './list.actions';
 import { takeEvery, put } from 'redux-saga/effects';
 import { ApiService } from '../../../api/api.service';
 import * as _ from 'lodash';
@@ -87,7 +79,7 @@ function* reloadUsers(action) {
     if (!_.isUndefined(action.com)) {
       switch (action.com) {
         case USER_COMP:
-          AppInjector.get(Router).navigate(['/user']);
+          AppInjector.get(Router).navigate(['/users']);
           break;
 
         default:
@@ -104,37 +96,4 @@ function* watchDeleteUserSuccess() {
   yield takeEvery(DELETE_USER_SUCCEEDED, reloadUsers);
 }
 
-function* filterUsers(action) {
-  try {
-    AppInjector.get(PreloaderService).show();
-    yield put({ type: FILTER_USERS_PROCESSING });
-    const results = yield AppInjector.get(ApiService)
-      .user.get(action.data.pagination, action.data.sort, action.data.filter, action.data.search)
-      .toPromise();
-
-    if (!_.isUndefined(action.com)) {
-      switch (action.com) {
-        case USER_COMP:
-          yield put({
-            type: FILTER_USERS_SUCCEEDED,
-            data: results,
-            com: USER_COMP
-          });
-          break;
-        default:
-          break;
-      }
-    } else {
-    }
-    AppInjector.get(PreloaderService).hide();
-  } catch (e) {
-    AppInjector.get(PreloaderService).hide();
-    yield put({ type: API_CALL_ERROR, error: e });
-  }
-}
-
-function* watchFilterUsersRequest() {
-  yield takeEvery(FILTER_USERS_REQUESTED, filterUsers);
-}
-
-export default [watchFetchAllUserRequest, watchDeleteUserRequest, watchDeleteUserSuccess, watchFilterUsersRequest];
+export default [watchFetchAllUserRequest, watchDeleteUserRequest, watchDeleteUserSuccess];

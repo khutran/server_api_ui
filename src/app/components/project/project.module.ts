@@ -9,10 +9,11 @@ import { CreateComponent } from './create/create.component';
 import { DirectivesModule } from '../../common/directives/directives.module';
 import { SharedModule } from '../../template/shared/shared.module';
 import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
-import { setAppInjector } from '../../app-injector';
+import { NFReactiveFormModule } from '../../common/nfreactive-form/nfreactive-form.module';
+import { EnvComponent } from './env/env.component';
 
 @NgModule({
-  imports: [CommonModule, ProjectRoutingModule, FormsModule, PipesModule, DirectivesModule, SweetAlert2Module, SharedModule],
-  declarations: [ListComponent, EditComponent, CreateComponent]
+  imports: [CommonModule, ProjectRoutingModule, FormsModule, PipesModule, DirectivesModule, SweetAlert2Module, SharedModule, NFReactiveFormModule],
+  declarations: [ListComponent, EditComponent, CreateComponent, EnvComponent]
 })
 export class ProjectModule {}

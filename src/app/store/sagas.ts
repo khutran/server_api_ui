@@ -9,6 +9,10 @@ import aclSaga from '../components/acl/acl.saga';
 import userSaga from '../components/user/user.saga';
 import profileSaga from '../components/profile/profile.saga';
 import projectSaga from './../components/project/project.saga';
+import statusSaga from './../components/status/status.saga';
+import frameworkSaga from './../components/framework/framework.saga';
+import serverSaga from './../components/server/server.saga';
+import categorySaga from './../components/category/category.saga';
 
 function* watchApiCallError() {
   yield takeEvery(API_CALL_ERROR, function*(action) {
@@ -22,5 +26,5 @@ function* watchApiCallError() {
 }
 
 export default function* sagas() {
-  yield [...[fork(watchApiCallError)], ...projectSaga, ...main, ...auth, ...aclSaga, ...userSaga, ...profileSaga];
+  yield [...[fork(watchApiCallError)], ...categorySaga, ...serverSaga, ...frameworkSaga, ...statusSaga, ...projectSaga, ...main, ...auth, ...aclSaga, ...userSaga, ...profileSaga];
 }

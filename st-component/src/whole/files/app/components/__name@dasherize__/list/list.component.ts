@@ -2,7 +2,6 @@ import { DELETE_<%= name.toUpperCase() %>_REQUESTED } from './../edit/edit.actio
 import { FETCH_<%= name.toUpperCase() %>S_REQUESTED, SORT_<%= name.toUpperCase() %>S_REQUESTED } from './list.actions';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from './../../../store/store.module';
-import { AppInjector } from '../../../app-injector';
 import * as _ from 'lodash';
 import { NotificationService } from '../../../common/services/notification/notification.service';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
@@ -15,21 +14,21 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 export class ListComponent implements OnInit, OnDestroy {
   protected navigationSubscription: any;
   protected router: any;
-  private store;
+  public store;
 
-  constructor(private notification: NotificationService, private activeRouter: ActivatedRoute, router: Router) {
-    this.store = AppInjector.get(Store).getInstance();
-    this.activeRouter = activeRouter;
+  constructor(store: Store, private notification: NotificationService, private activedRoute: ActivatedRoute, router: Router) {
+    this.store = store.getInstance();
+    this.activedRoute = activedRoute;
     this.router = router;
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       if (e instanceof NavigationEnd) {
-        this.store.dispatch({ type: FETCH_<%= underscore(name).toUpperCase() %>S_REQUESTED, data: this.getQuery() });
+        this.store.dispatch({ type: FETCH_<%= underscore(name).toUpperCase() %>S_REQUESTED, data: this.parseQueryParams() });
       }
     });
   }
 
   ngOnInit() {
-    this.store.dispatch({ type: FETCH_<%= underscore(name).toUpperCase() %>S_REQUESTED });
+    // this.store.dispatch({ type: FETCH_<%= underscore(name).toUpperCase() %>S_REQUESTED });
   }
 
   ngOnDestroy() {
@@ -38,17 +37,24 @@ export class ListComponent implements OnInit, OnDestroy {
     }
   }
 
-  private getQuery(): object {
-    let page = 1;
-    if (!_.isUndefined(this.activeRouter.snapshot.queryParams.page)) {
-      page = this.activeRouter.snapshot.queryParams.page;
+  private parseQueryParams(): object {
+    let params = {
+      page: 1,
+      per_page: 20
+    };
+    if (!_.isUndefined(this.activedRoute.snapshot.queryParams.page)) {
+      params = _.assign(params, { page: this.activedRoute.snapshot.queryParams.page });
     }
-    return _.assign({}, { page: page });
+    if (!_.isUndefined(this.activedRoute.snapshot.queryParams.search)) {
+      params = _.assign(params, { search: this.activedRoute.snapshot.queryParams.search });
+    }
+    if (!_.isUndefined(this.activedRoute.snapshot.queryParams.order_by)) {
+      params = _.assign(params, { orderBy: this.activedRoute.snapshot.queryParams.order_by });
+    }
+    return params;
   }
 
-  deleteItem(id) {
-    if (confirm('Do you want to delete this <%= underscore(name).replace("_", "")  %>?')) {
+  delete(id) {
       this.store.dispatch({ type: DELETE_<%= underscore(name).toUpperCase() %>_REQUESTED, data: id });
-    }
   }
 }

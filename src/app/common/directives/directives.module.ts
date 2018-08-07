@@ -6,7 +6,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoaderComponent } from './loader/loader.component';
 import { SearchInputComponent } from './search-input/search-input.component';
-import { DataTableComponent } from './data-table/data-table.component';
 import { RangeComponent } from './range/range.component';
 import { NotifyComponent } from './notify/notify.component';
 import { SearchFormComponent } from './search-form/search-form.component';
@@ -17,7 +16,6 @@ import { MultiPurposeSearchComponent } from './multi-purpose-search/multi-purpos
 import { InputMaskDirective } from './input-mask/input-mask.directive';
 import { CountryFieldComponent } from './country-field/country-field.component';
 import { InputSwitchDirective } from './input-switch/input-switch.directive';
-import { NgxBarcodeModule } from 'ngx-barcode';
 import { InputCheckboxDirective } from './input-checkbox/input-checkbox.directive';
 import { BarcodeScannerDetectorDirective } from './barcode-scanner-detector/barcode-scanner-detector.directive';
 import { AutoresizeDirective } from './autoresize/autoresize.directive';
@@ -27,12 +25,11 @@ import { DynamicFormComponent } from './dynamic-form/dynamic-form.component';
 import { DynamicInputComponent } from './dynamic-form/dynamic-input.component';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule, PipesModule, NgxBarcodeModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule, PipesModule],
   exports: [
     PaginationComponent,
     LoaderComponent,
     SearchInputComponent,
-    DataTableComponent,
     RangeComponent,
     NotifyComponent,
     SearchFormComponent,
@@ -55,7 +52,6 @@ import { DynamicInputComponent } from './dynamic-form/dynamic-input.component';
     PaginationComponent,
     LoaderComponent,
     SearchInputComponent,
-    DataTableComponent,
     RangeComponent,
     NotifyComponent,
     SearchFormComponent,

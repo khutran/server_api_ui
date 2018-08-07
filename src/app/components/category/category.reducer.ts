@@ -1,24 +1,23 @@
-import { combineReducers } from "redux";
+import { combineReducers } from 'redux';
 import { list } from './list/list.reducer';
 import { edit } from './edit/edit.reducer';
 import { create } from './create/create.reducer';
+import { GET_ALL_CATEGORIES_SUCCEEDED } from './category.action';
 import { EDIT_CATEGORY_SUCCEEDED, DELETE_CATEGORY_SUCCEEDED } from './edit/edit.actions';
 import { CREATE_CATEGORY_SUCCEEDED } from './create/create.actions';
-import { GET_ALL_CATEGORIES_SUCCEEDED } from './category.actions';
-
 const all = (state = { fetched: false, items: []}, action) => {
   switch (action.type) {
+    case CREATE_CATEGORY_SUCCEEDED:
+      return {
+        fetched: false,
+        items: [...state.items]
+      };
     case EDIT_CATEGORY_SUCCEEDED:
       return {
         fetched: false,
         items: [...state.items]
       };
     case DELETE_CATEGORY_SUCCEEDED:
-      return {
-        fetched: false,
-        items: [...state.items]
-      };
-    case CREATE_CATEGORY_SUCCEEDED:
       return {
         fetched: false,
         items: [...state.items]

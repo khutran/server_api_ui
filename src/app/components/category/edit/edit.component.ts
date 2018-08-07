@@ -1,8 +1,10 @@
-import { GET_CATEGORY_REQUESTED, EDIT_CATEGORY_REQUESTED } from './edit.actions';
+import * as _ from 'lodash';
+import { EDIT_CATEGORY_REQUESTED, RENDER_EDIT_CATEGORY_FORM_REQUESTED } from './edit.actions';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { Store } from './../../../store/store.module';
-import { FETCH_CATEGORIES_REQUESTED } from '../list/list.actions';
+import { InputBase } from '../../../common/directives/dynamic-form/Input/InputBase';
+import { TextBox } from '../../../common/directives/dynamic-form/Input/TextBox';
+import { Store } from '../../../store/store.module';
 import { AppInjector } from '../../../app-injector';
 
 @Component({
@@ -12,29 +14,36 @@ import { AppInjector } from '../../../app-injector';
 })
 export class EditComponent implements OnInit {
   public store;
-
-  constructor(private route: ActivatedRoute) {
-    this.store = AppInjector.get(Store).getInstance();
+  constructor(private activatedRoute: ActivatedRoute, store: Store) {
+    this.activatedRoute = activatedRoute;
+    this.store = store.getInstance();
   }
 
   ngOnInit() {
-    this.store.dispatch({ type: FETCH_CATEGORIES_REQUESTED });
-    this.store.dispatch({
-      type: GET_CATEGORY_REQUESTED,
-      data: this.getCategoryId()
-    });
+    let inputs: InputBase<any>[] = [
+      new TextBox({
+        key: 'name',
+        label: 'Name',
+        required: true,
+        classes: ['col'],
+        group_classes: ['col-12'],
+        order: 1
+      })
+    ];
+    this.store.dispatch({ type: RENDER_EDIT_CATEGORY_FORM_REQUESTED, data: { id: this.activatedRoute.snapshot.params.id, inputs: inputs } });
   }
 
   onSubmit(form) {
+    const store = AppInjector.get(Store).getInstance();
     if (form.valid) {
-      this.store.dispatch({
+      store.dispatch({
         type: EDIT_CATEGORY_REQUESTED,
-        data: this.store.getState().Category.edit.item
+        data: _.assign(form.value, { id: store.getState().Category.edit.item.id })
       });
     }
   }
 
-  getCategoryId() {
-    return this.route.snapshot.paramMap.get('id');
+  getItemId() {
+    return this.activatedRoute.snapshot.params.id;
   }
 }
