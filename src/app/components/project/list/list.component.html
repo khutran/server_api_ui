@@ -89,7 +89,7 @@
                   <i class="fa fa-align-justify"></i>
                 </button>
                 <p></p>
-                <a routerLink="edit/{{ item.getId() }}" class="btn btn-dark btn-sm icon-only" title="edit">
+                <a routerLink="detail/{{ item.getId() }}" class="btn btn-dark btn-sm icon-only" title="detail">
                   <i class="fa fa-pencil" aria-hidden="true"></i>
                 </a>
                 <swal #deleteBuild title="Delete" text="Do you want to delete build this user?" type="warning" [showCancelButton]="true" (confirm)="deleteItem(item.id,item.name)"></swal>

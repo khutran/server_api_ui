@@ -2,13 +2,14 @@ import * as _ from 'lodash';
 import { Router } from '@angular/router';
 import {
   DELETE_PROJECT_REQUESTED,
-  GET_PROJECT_REQUESTED,
-  GET_PROJECT_SUCCEEDED,
+  FETCH_PROJECT_DETAIL_REQUESTED,
+  FETCH_PROJECT_DETAIL_SUCCEEDED,
   EDIT_PROJECT_REQUESTED,
   RENDER_EDIT_PROJECT_FORM_REQUESTED,
-  FILL_PROJECT_DETAIL_FORM,
-  UPDATE_UPDATE_PROJECT_INPUT_OPTIONS
-} from './edit.actions';
+  DELETE_BUILD_PROJECT_REQUESTED,
+  BUILD_PROJECT_REQUESTED,
+  BUILD_PROJECT_SUCCEEDED
+} from './detail.actions';
 import { takeEvery, put, takeLatest, call, all } from 'redux-saga/effects';
 import { API_CALL_ERROR } from './../../../store/action';
 import { ApiService } from './../../../api/api.service';
@@ -17,6 +18,7 @@ import { fetchAllServer } from '../../server/server.saga';
 import { fetchAllFramework } from '../../framework/framework.saga';
 import { fetchAllStatus } from '../../status/status.saga';
 import { fetchAllCategory } from '../../category/category.saga';
+import { NotificationService } from '../../../common/services/notification/notification.service';
 
 function* edit(action) {
   const api = AppInjector.get(ApiService);
@@ -47,34 +49,11 @@ function* getProject(action) {
     call(fetchAllStatus),
     call(fetchAllCategory)
   ]);
-  yield put({ type: GET_PROJECT_SUCCEEDED, data: project });
-  const availablePackageManager = [{ id: 1, value: 'Composer', label: 'Composer' }, { id: 2, value: 'Yarn', label: 'Yarn' }];
-  const availableSqlManager = [{ id: 1, value: 'MySQL', label: 'MySQL' }, { id: 2, value: 'Postgres', label: 'Postgres' }, { id: 3, value: 'MongoDB', label: 'MongoDB' }];
-  yield put({ type: UPDATE_UPDATE_PROJECT_INPUT_OPTIONS, input: 'server', data: _.map(servers, item => _.assign(item, { value: item.name, label: item.name })) });
-  yield put({ type: UPDATE_UPDATE_PROJECT_INPUT_OPTIONS, input: 'framework', data: _.map(frameworks, item => _.assign(item, { value: item.name, label: item.name })) });
-  yield put({ type: UPDATE_UPDATE_PROJECT_INPUT_OPTIONS, input: 'status', data: _.map(status, item => _.assign(item, { value: item.name, label: item.name })) });
-  yield put({ type: UPDATE_UPDATE_PROJECT_INPUT_OPTIONS, input: 'category', data: _.map(categories, item => _.assign(item, { value: item.name, label: item.name })) });
-  yield put({ type: UPDATE_UPDATE_PROJECT_INPUT_OPTIONS, input: 'sql_manager', data: availableSqlManager });
-  yield put({ type: UPDATE_UPDATE_PROJECT_INPUT_OPTIONS, input: 'package_manager', data: availablePackageManager });
-  const data = {
-    name: project.name,
-    server: _.find(servers, item => item.id === project.host_id),
-    framework: _.find(frameworks, item => item.id === project.framework_id),
-    status: _.find(status, item => item.id === project.status_id),
-    category: _.find(categories, item => item.id === project.category_id),
-    package_manager: _.head(availablePackageManager),
-    database: project.database,
-    sql_manager: _.find(availableSqlManager, item => item.id === project.csdl_id),
-    git_remote: project.git_remote,
-    git_branch: project.git_branch,
-    git_application_key: project.git_application_key,
-    git_application_secret: project.git_application_secret
-  };
-  yield put({ type: FILL_PROJECT_DETAIL_FORM, data: data });
+  yield put({ type: FETCH_PROJECT_DETAIL_SUCCEEDED, data: project });
 }
 
 function* watchGetProjectRequest() {
-  yield takeEvery(GET_PROJECT_REQUESTED, getProject);
+  yield takeEvery(FETCH_PROJECT_DETAIL_REQUESTED, getProject);
 }
 
 function* checkProjectAlready(id) {
@@ -144,8 +123,99 @@ function* watchDeleteProjectRequest() {
 
 function* watchRenderProjectDetailFormRequested() {
   yield takeLatest(RENDER_EDIT_PROJECT_FORM_REQUESTED, function*(action: any) {
-    yield put({ type: GET_PROJECT_REQUESTED, data: action.data.project_id });
+    yield put({ type: FETCH_PROJECT_DETAIL_REQUESTED, data: action.data.project_id });
   });
 }
 
-export default [watchEditProjectRequest, watchGetProjectRequest, watchDeleteProjectRequest, watchRenderProjectDetailFormRequested];
+function* deleteBuild(action) {
+  try {
+    const [isBuilded, domainData] = yield all([call(checkProjectAlready, action.data.id), call(getDomainProject, action.data.name)]);
+    if (isBuilded.data.success) {
+      const envData = yield call(getEnvById, action.data.id);
+      if (!_.isEmpty(envData)) {
+        yield call(deleteDbProject, action.data.id);
+      }
+      yield call(deleteCodeProject, action.data.id);
+    }
+    if (!_.isEmpty(domainData.data)) {
+      yield call(deleteDomainProject, action.data.name);
+    }
+    AppInjector.get(Router).navigate(['/projects']);
+  } catch (e) {
+    yield put({ type: API_CALL_ERROR, error: e });
+  }
+}
+
+function* watchDeleteBuildRequested() {
+  yield takeLatest(DELETE_BUILD_PROJECT_REQUESTED, deleteBuild);
+}
+
+function* clone(id) {
+  return yield AppInjector.get(ApiService)
+    .project.clone(id)
+    .toPromise();
+}
+
+function* createDb(id) {
+  return yield AppInjector.get(ApiService)
+    .project.createDb(id)
+    .toPromise();
+}
+
+function* createConfig(id) {
+  return yield AppInjector.get(ApiService)
+    .project.createConfig(id)
+    .toPromise();
+}
+
+function* updateConfig(id, db, user, pass) {
+  return yield AppInjector.get(ApiService)
+    .project.updateConfig(id, db, user, pass)
+    .toPromise();
+}
+
+function* runPackageControl(id) {
+  return yield AppInjector.get(ApiService)
+    .project.runPackageControl(id)
+    .toPromise();
+}
+
+function* runFirtsBuild(id) {
+  return yield AppInjector.get(ApiService)
+    .project.runFirtsBuild(id)
+    .toPromise();
+}
+
+function* replaceDb(id) {
+  return yield AppInjector.get(ApiService)
+    .project.replaceDb(id)
+    .toPromise();
+}
+
+function* build(action) {
+  try {
+    const [cloneProject, Db] = yield all([call(clone, action.data), call(createDb, action.data)]);
+    yield call(createConfig, action.data);
+    yield call(updateConfig, action.data, Db.data.Dbname, Db.data.User, Db.data.Password);
+    yield call(runPackageControl, action.data);
+    yield call(runFirtsBuild, action.data);
+    yield call(replaceDb, action.data);
+    yield put({ type: BUILD_PROJECT_SUCCEEDED, data: cloneProject.items, pagination: cloneProject.pagination });
+    AppInjector.get(NotificationService).show('success', 'Build success', 5000);
+  } catch (e) {
+    yield put({ type: API_CALL_ERROR, error: e });
+  }
+}
+
+function* watchBuildProjectRequested() {
+  yield takeLatest(BUILD_PROJECT_REQUESTED, build);
+}
+
+export default [
+  watchEditProjectRequest,
+  watchGetProjectRequest,
+  watchDeleteProjectRequest,
+  watchRenderProjectDetailFormRequested,
+  watchDeleteBuildRequested,
+  watchBuildProjectRequested
+];
