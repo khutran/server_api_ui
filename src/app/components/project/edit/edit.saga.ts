@@ -8,7 +8,8 @@ import {
   EDIT_PROJECT_REQUESTED,
   RENDER_EDIT_PROJECT_FORM_REQUESTED,
   FILL_PROJECT_DETAIL_FORM,
-  UPDATE_UPDATE_PROJECT_INPUT_OPTIONS
+  UPDATE_UPDATE_PROJECT_INPUT_OPTIONS,
+  DELETE_BUILD_PROJECT_REQUESTED
 } from './edit.actions';
 import { takeEvery, put, takeLatest, call, all } from 'redux-saga/effects';
 import { API_CALL_ERROR } from './../../../store/action';
@@ -120,7 +121,6 @@ function* deleteP(id) {
     .toPromise();
 }
 function* deleteProject(action) {
-  const api = AppInjector.get(ApiService);
   try {
     const [isBuilded, domainData] = yield all([call(checkProjectAlready, action.data.id), call(getDomainProject, action.data.name)]);
     if (isBuilded.data.success) {
@@ -150,4 +150,27 @@ function* watchRenderProjectDetailFormRequested() {
   });
 }
 
-export default [watchEditProjectRequest, watchGetProjectRequest, watchDeleteProjectRequest, watchRenderProjectDetailFormRequested];
+function* deleteBuild(action) {
+  try {
+    const [isBuilded, domainData] = yield all([call(checkProjectAlready, action.data.id), call(getDomainProject, action.data.name)]);
+    if (isBuilded.data.success) {
+      const envData = yield call(getEnvById, action.data.id);
+      if (!_.isEmpty(envData)) {
+        yield call(deleteDbProject, action.data.id);
+      }
+      yield call(deleteCodeProject, action.data.id);
+    }
+    if (!_.isEmpty(domainData.data)) {
+      yield call(deleteDomainProject, action.data.name);
+    }
+    AppInjector.get(Router).navigate(['/projects']);
+  } catch (e) {
+    yield put({ type: API_CALL_ERROR, error: e });
+  }
+}
+
+function* watchDeleteBuildRequested() {
+  yield takeLatest(DELETE_BUILD_PROJECT_REQUESTED, deleteBuild);
+}
+
+export default [watchEditProjectRequest, watchGetProjectRequest, watchDeleteProjectRequest, watchRenderProjectDetailFormRequested, watchDeleteBuildRequested];
