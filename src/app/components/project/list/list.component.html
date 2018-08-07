@@ -92,7 +92,7 @@
                 <a routerLink="edit/{{ item.getId() }}" class="btn btn-dark btn-sm icon-only" title="edit">
                   <i class="fa fa-pencil" aria-hidden="true"></i>
                 </a>
-                <swal #deleteBuild title="Delete" text="Do you want to delete build this user?" type="warning" [showCancelButton]="true" (confirm)="deleteItem(item.id,item.name)"></swal>
+                <swal #deleteBuild title="Delete" text="Do you want to delete build this user?" type="warning" [showCancelButton]="true" (confirm)="deleteBuildOfItem(item.id)"></swal>
                 <button class="btn btn-danger btn-sm icon-only" [swal]="deleteBuild" title="delete">
                   <i class="fa fa-cutlery"></i>
                 </button>

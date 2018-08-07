@@ -140,28 +140,15 @@ function* deleteProject(action) {
   }
 }
 
-function* watchDeleteProjectRequest() {
-  yield takeEvery(DELETE_PROJECT_REQUESTED, deleteProject);
-}
-
-function* watchRenderProjectDetailFormRequested() {
-  yield takeLatest(RENDER_EDIT_PROJECT_FORM_REQUESTED, function*(action: any) {
-    yield put({ type: GET_PROJECT_REQUESTED, data: action.data.project_id });
-  });
-}
-
-function* deleteBuild(action) {
+function* deleteBuildOfItem(action) {
   try {
-    const [isBuilded, domainData] = yield all([call(checkProjectAlready, action.data.id), call(getDomainProject, action.data.name)]);
+    const isBuilded = yield call(checkProjectAlready, action.data);
     if (isBuilded.data.success) {
-      const envData = yield call(getEnvById, action.data.id);
+      const envData = yield call(getEnvById, action.data);
       if (!_.isEmpty(envData)) {
-        yield call(deleteDbProject, action.data.id);
+        yield call(deleteDbProject, action.data);
       }
-      yield call(deleteCodeProject, action.data.id);
-    }
-    if (!_.isEmpty(domainData.data)) {
-      yield call(deleteDomainProject, action.data.name);
+      yield call(deleteCodeProject, action.data);
     }
     AppInjector.get(Router).navigate(['/projects']);
   } catch (e) {
@@ -170,7 +157,17 @@ function* deleteBuild(action) {
 }
 
 function* watchDeleteBuildRequested() {
-  yield takeLatest(DELETE_BUILD_PROJECT_REQUESTED, deleteBuild);
+  yield takeLatest(DELETE_BUILD_PROJECT_REQUESTED, deleteBuildOfItem);
+}
+
+function* watchDeleteProjectRequest() {
+  yield takeEvery(DELETE_PROJECT_REQUESTED, deleteProject);
+}
+
+function* watchRenderProjectDetailFormRequested() {
+  yield takeLatest(RENDER_EDIT_PROJECT_FORM_REQUESTED, function*(action: any) {
+    yield put({ type: GET_PROJECT_REQUESTED, data: action.data.project_id });
+  });
 }
 
 export default [watchEditProjectRequest, watchGetProjectRequest, watchDeleteProjectRequest, watchRenderProjectDetailFormRequested, watchDeleteBuildRequested];
