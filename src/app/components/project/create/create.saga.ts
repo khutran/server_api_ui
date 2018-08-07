@@ -1,6 +1,12 @@
-import { CREATE_PROJECT_REQUESTED, CREATE_PROJECT_SUCCEEDED, UPDATE_CREATE_PROJECT_INPUT_OPTIONS, RENDER_CREATE_PROJECT_FORM_REQUESTED, CREATE_DOMAIN_REQUESTED } from './create.actions';
+import {
+  CREATE_PROJECT_REQUESTED,
+  CREATE_PROJECT_SUCCEEDED,
+  UPDATE_CREATE_PROJECT_INPUT_OPTIONS,
+  RENDER_CREATE_PROJECT_FORM_REQUESTED,
+  CREATE_DOMAIN_REQUESTED
+} from './create.actions';
 import { Router } from '@angular/router';
-import { put, takeEvery, actionChannel, call, all } from 'redux-saga/effects';
+import { put, takeEvery, actionChannel, call, all, take } from 'redux-saga/effects';
 import { API_CALL_ERROR } from './../../../store/action';
 import { ApiService } from './../../../api/api.service';
 import { AppInjector } from '../../../app-injector';
@@ -57,9 +63,10 @@ function* createProject(action) {
       name: action.data.name,
       ip: serverData.ip
     };
-    let result = yield api.project.create(action.data).toPromise();
-    let domainData = yield api.project.domainPointingIP(data).toPromise();
+    const [result, domainData] = yield all([api.project.create(action.data).toPromise(), api.project.domainPointingIP(data).toPromise()]);
+
     yield put({ type: CREATE_PROJECT_SUCCEEDED, data: result });
+
     AppInjector.get(NotificationService).show('success', 'Create success', 5000);
     router.navigate(['projects']);
   } catch (e) {

@@ -3,7 +3,7 @@ import { ServiceProvider } from '../service.provider';
 import Project from '../../models/Project';
 import { Observable } from '../../../../node_modules/rxjs';
 import { tap, map, catchError } from '../../../../node_modules/rxjs/operators';
-import { environment } from '../../../environments/environment';
+// import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class ProjectService extends ServiceProvider {
@@ -43,7 +43,7 @@ export class ProjectService extends ServiceProvider {
     this.preloader.show();
     return this.http.post(this.apiUrl.getApiUrl(this.buildUrl) + '/' + id + '/' + 'db', {}).pipe(
       tap(result => {
-        this.preloader.hide();
+        // this.preloader.hide();
       }),
       map(result => result),
       catchError(error => {
@@ -211,5 +211,5 @@ export class ProjectService extends ServiceProvider {
       })
     );
   }
- 
+
 }

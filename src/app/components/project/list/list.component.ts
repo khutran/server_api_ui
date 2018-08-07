@@ -1,4 +1,4 @@
-import { DELETE_PROJECT_REQUESTED } from './../edit/edit.actions';
+import { DELETE_PROJECT_REQUESTED, DELETE_BUILD_PROJECT_REQUESTED } from './../edit/edit.actions';
 import { FETCH_PROJECTS_REQUESTED, BUILD_PROJECT_REQUESTED } from './list.actions';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from './../../../store/store.module';
@@ -35,7 +35,6 @@ export class ListComponent implements OnInit, OnDestroy {
     // this.store.dispatch({ type: FETCH_PROJECTS_REQUESTED });
   }
 
-
   ngOnDestroy() {
     if (!_.isUndefined(this.navigationSubscription)) {
       this.navigationSubscription.unsubscribe();
@@ -68,13 +67,16 @@ export class ListComponent implements OnInit, OnDestroy {
     this.store.dispatch({ type: BUILD_PROJECT_REQUESTED, data: id });
   }
 
+  deleteBuild(id) {
+    this.store.dispatch({ type: DELETE_BUILD_PROJECT_REQUESTED, data: id });
+  }
   getAllUser(id) {
     this.id_Project = id;
-    this.store.dispatch({ type: GET_ALL_USERS_NO_PAGINATION_REQUESTED, com: PROJECT_COMP, data: { id_project: id }});
+    this.store.dispatch({ type: GET_ALL_USERS_NO_PAGINATION_REQUESTED, com: PROJECT_COMP, data: { id_project: id } });
   }
 
   assignProject(userId) {
-    this.store.dispatch({ type: ASSIGN_PROJECT_TO_USER_REQUESTED, userId: userId, data: { project_id: this.id_Project }});
+    this.store.dispatch({ type: ASSIGN_PROJECT_TO_USER_REQUESTED, userId: userId, data: { project_id: this.id_Project } });
   }
 
   unAsignProject(userId) {
