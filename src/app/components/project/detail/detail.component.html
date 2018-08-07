@@ -1,0 +1,109 @@
+<div class="x_panel" *ngIf="store.getState().Project.detail.fetched">
+  <div class="row mgb-20">
+    <div class="col s12">
+      <ul class="breadcrumb-title">
+        <li class="breadcrumb-item">
+          <a routerLink="/">
+            <i class="fa fa-home"></i>
+          </a>
+        </li>
+        <li class="breadcrumb-item">
+          <a routerLink="/projects">Projects</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a href="javascript:">{{ store.getState().Project.detail.item.name }}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header no-box-shadow">
+          <h5 class="card-header-text text-strong">{{store.getState().Project.detail.item.name}}</h5>
+          <div class="text-right">
+            <a routerLink="/projects/edit/{{ store.getState().Project.detail.item.getId() }}" class="btn btn-dark btn-sm" title="Edit">
+              <i class="fa fa-pencil" aria-hidden="true"></i> Edit
+            </a>
+            <swal #buildProject title="Build" text="{{ store.getState().Project.detail.item.name }}" type="warning" [showCancelButton]="true" (confirm)="buildItem(store.getState().Project.detail.item.id)"></swal>
+            <button class="btn btn-warning btn-sm" [swal]="buildProject" title="build">
+              <i class="fa fa-align-justify"></i> Build
+            </button>
+            <swal #deleteBuild title="Delete" text="Do you want to delete all build of this project?" type="warning" [showCancelButton]="true" (confirm)="deleteBuild(store.getState().Project.detail.item.id)"></swal>
+            <button class="btn btn-danger btn-sm" [swal]="deleteBuild" title="delete">
+              <i class="fa fa-trash"></i> Delete Build
+            </button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="view-info">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="general-info">
+                  <div class="row">
+                    <div class="col">
+                      <div class="table-responsive">
+                        <table class="table m-0">
+                          <tbody>
+                            <tr>
+                              <th class="text-strong">Name</th>
+                              <td>{{ store.getState().Project.detail.item.name }}</td>
+                            </tr>
+                            <tr *ngIf="store.getState().Project.detail.item.framework">
+                              <th class="text-strong">Framework / CMS</th>
+                              <td>{{ store.getState().Project.detail.item.framework.name }}</td>
+                            </tr>
+                            <tr>
+                              <th class="text-strong">Git Remote</th>
+                              <td>{{ store.getState().Project.detail.item.git_remote }}</td>
+                            </tr>
+                            <tr>
+                              <th class="text-strong">Git Branch</th>
+                              <td>{{ store.getState().Project.detail.item.git_branch}}</td>
+                            </tr>
+                            <tr>
+                              <th class="text-strong">Git Application Key</th>
+                              <td>{{ store.getState().Project.detail.item.git_application_key }}</td>
+                            </tr>
+                            <tr>
+                              <th class="text-strong">Git Application Secret</th>
+                              <td>{{ store.getState().Project.detail.item.git_application_secret }}</td>
+                            </tr>
+                            <tr *ngIf="store.getState().Project.detail.item.host">
+                              <th class="text-strong">IP</th>
+                              <td>{{ store.getState().Project.detail.item.host.ip }}</td>
+                            </tr>
+                            <tr *ngIf="store.getState().Project.detail.item.host">
+                              <th class="text-strong">Server Name</th>
+                              <td>{{ store.getState().Project.detail.item.host.name }}</td>
+                            </tr>
+                            <tr *ngIf="store.getState().Project.detail.item.host">
+                              <th class="text-strong">SQL IP</th>
+                              <td>{{ store.getState().Project.detail.item.host.address_mysql }}</td>
+                            </tr>
+                            <tr *ngIf="store.getState().Project.detail.item.csdl">
+                              <th class="text-strong">Database Type</th>
+                              <td>{{ store.getState().Project.detail.item.csdl.data.name }}</td>
+                            </tr>
+                            <tr>
+                              <th class="text-strong">Database Name</th>
+                              <td>{{ store.getState().Project.detail.item.database }}</td>
+                            </tr>
+                            <tr *ngIf="store.getState().Project.detail.item.status">
+                              <th class="text-strong">Status</th>
+                              <td>{{ store.getState().Project.detail.item.status.name }}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
