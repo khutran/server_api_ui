@@ -108,16 +108,37 @@ function* replaceDb(id) {
     .toPromise();
 }
 
+function* pull(id) {
+  return yield AppInjector.get(ApiService)
+    .project.pull(id)
+    .toPromise();
+}
+
+function* runBuild(id) {
+  return yield AppInjector.get(ApiService)
+    .project.runBuild(id)
+    .toPromise();
+}
+
 function* build(action) {
   try {
-    const [cloneProject, Db] = yield all([call(clone, action.data), call(createDb, action.data)]);
-    yield call(createConfig, action.data);
-    yield call(updateConfig, action.data, Db.data.Dbname, Db.data.User, Db.data.Password);
-    yield call(runPackageControl, action.data);
-    yield call(runFirtsBuild, action.data);
-    yield call(replaceDb, action.data);
-    yield put({ type: BUILD_PROJECT_SUCCEEDED, data: cloneProject.items, pagination: cloneProject.pagination });
-    AppInjector.get(NotificationService).show('success', 'Build success', 5000);
+    if (+action.data.build_time === 0) {
+      yield call(clone, action.data.id);
+      const Db = yield call(createDb, action.data.id);
+      yield call(createConfig, action.data.id);
+      yield call(updateConfig, action.data.id, Db.data.Dbname, Db.data.User, Db.data.Password);
+      yield call(runPackageControl, action.data.id);
+      yield call(runFirtsBuild, action.data.id);
+      yield call(replaceDb, action.data.id);
+      yield put({ type: BUILD_PROJECT_SUCCEEDED, data: action.data.id });
+      AppInjector.get(NotificationService).show('success', 'Build success', 5000);
+    } else if (+action.data.build_time > 0) {
+      yield call(pull, action.data.id);
+      yield call(runPackageControl, action.data.id);
+      yield call(runBuild, action.data.id);
+      yield put({ type: BUILD_PROJECT_SUCCEEDED, data: action.data.id });
+      AppInjector.get(NotificationService).show('success', 'Build success', 5000);
+    }
   } catch (e) {
     yield put({ type: API_CALL_ERROR, error: e });
   }
@@ -127,4 +148,10 @@ function* watchBuildProjectRequested() {
   yield takeLatest(BUILD_PROJECT_REQUESTED, build);
 }
 
-export default [watchEditProjectRequest, watchGetProjectRequest, watchRenderProjectDetailFormRequested, watchBuildProjectRequested];
+function* watchBuildProjectSuccessed() {
+  yield takeLatest(BUILD_PROJECT_SUCCEEDED, function*(action: any) {
+    yield put({ type: FETCH_PROJECT_DETAIL_REQUESTED, data: action.data });
+  });
+}
+
+export default [watchEditProjectRequest, watchGetProjectRequest, watchRenderProjectDetailFormRequested, watchBuildProjectRequested, watchBuildProjectSuccessed];
