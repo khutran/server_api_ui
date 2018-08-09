@@ -1,4 +1,4 @@
-import { FETCH_PROJECT_DETAIL_REQUESTED, BUILD_PROJECT_REQUESTED, DELETE_BUILD_PROJECT_REQUESTED } from './detail.actions';
+import { FETCH_PROJECT_DETAIL_REQUESTED, BUILD_PROJECT_REQUESTED, DELETE_BUILD_PROJECT_REQUESTED, SEND_COMMAND_REQUESTED } from './detail.actions';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { Store } from '../../../store/store.module';
@@ -32,15 +32,24 @@ export class DetailComponent implements OnInit {
     return this.activatedRoute.snapshot.params.id;
   }
 
-  check(me) {
-    console.log(me.checked);
-  }
-  async buildItem(id, name, build_time) {
-    let hide = 'inherit';
-    if (build_time === 0) {
-      hide = 'none';
+  async runCommand(id, name) {
+    const { value: command } = await swal({
+      title: `Project ${name} run command`,
+      input: 'text',
+      showCancelButton: true,
+      inputAutoTrim: true,
+      inputValidator: value => {
+        return !value && 'You need to write something!';
+      }
+    });
+
+    if (command) {
+      this.store.dispatch({ type: SEND_COMMAND_REQUESTED, data: { id: id, command: command } });
     }
-    let text = `<div style='display:${hide}'><input type='checkbox' id='swal-input1' value='test'> Import Database</div>`;
+  }
+
+  async buildItem(id, name, build_time) {
+    let text = `<div style='display:${build_time === 0 ? 'node' : 'inherit'}'><input type='checkbox' id='swal-input1' value='test'> Import Database</div>`;
     const { value: accept } = await swal({
       type: 'warning',
       title: `Build project ${name}`,
@@ -50,8 +59,7 @@ export class DetailComponent implements OnInit {
       confirmButtonText: 'Build <i class="fa fa-arrow-right></i>',
       preConfirm: () => {
         return new Promise(resolve => {
-          let check = (document.getElementById('swal-input1') as any).checked;
-          resolve([check]);
+          resolve([(document.getElementById('swal-input1') as any).checked]);
         });
       }
     });

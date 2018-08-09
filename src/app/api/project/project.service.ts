@@ -247,4 +247,14 @@ export class ProjectService extends ServiceProvider {
       })
     );
   }
+
+  runCommand(id, command): Observable<any> {
+    return this.http.post(this.apiUrl.getApiUrl(this.buildUrl) + '/' + id + '/' + 'command', { command: command }).pipe(
+      tap(result => {}),
+      map(result => result),
+      catchError(error => {
+        throw error;
+      })
+    );
+  }
 }
