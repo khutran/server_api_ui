@@ -237,4 +237,14 @@ export class ProjectService extends ServiceProvider {
       })
     );
   }
+
+  importDb(id): Observable<any> {
+    return this.http.put(this.apiUrl.getApiUrl(this.buildUrl) + '/' + id + '/' + 'import').pipe(
+      tap(result => {}),
+      map(result => result),
+      catchError(error => {
+        throw error;
+      })
+    );
+  }
 }

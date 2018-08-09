@@ -10,6 +10,7 @@ import {
   UPDATE_UPDATE_PROJECT_INPUT_OPTIONS,
   DELETE_BUILD_PROJECT_REQUESTED
 } from './edit.actions';
+import { BUILD_PROJECT_SUCCEEDED } from '../detail/detail.actions';
 import { takeEvery, put, takeLatest, call, all } from 'redux-saga/effects';
 import { API_CALL_ERROR } from './../../../store/action';
 import { ApiService } from './../../../api/api.service';
@@ -18,12 +19,13 @@ import { fetchAllServer } from '../../server/server.saga';
 import { fetchAllFramework } from '../../framework/framework.saga';
 import { fetchAllStatus } from '../../status/status.saga';
 import { fetchAllCategory } from '../../category/category.saga';
+import { NotificationService } from '../../../common/services/notification/notification.service';
 
 function* edit(action) {
   const api = AppInjector.get(ApiService);
   const router = AppInjector.get(Router);
   try {
-    let result = yield api.project.update(action.data).toPromise();
+    yield api.project.update(action.data).toPromise();
     router.navigate(['projects']);
   } catch (e) {
     yield put({ type: API_CALL_ERROR, error: e });
@@ -91,31 +93,31 @@ function* getDomainProject(name) {
 }
 
 function* getEnvById(id) {
-  return AppInjector.get(ApiService)
+  return yield AppInjector.get(ApiService)
     .env.getEnvById(id)
     .toPromise();
 }
 
 function* deleteDbProject(id) {
-  return AppInjector.get(ApiService)
+  return yield AppInjector.get(ApiService)
     .project.deleteDbProject(id)
     .toPromise();
 }
 
 function* deleteCodeProject(id) {
-  return AppInjector.get(ApiService)
+  return yield AppInjector.get(ApiService)
     .project.deleteCodeProject(id)
     .toPromise();
 }
 
 function* deleteDomainProject(name) {
-  return AppInjector.get(ApiService)
+  return yield AppInjector.get(ApiService)
     .project.deleteDomainProject(name)
     .toPromise();
 }
 
 function* deleteP(id) {
-  return AppInjector.get(ApiService)
+  return yield AppInjector.get(ApiService)
     .project.delete(id)
     .toPromise();
 }
@@ -149,7 +151,8 @@ function* deleteBuildOfItem(action) {
       }
       yield call(deleteCodeProject, action.data);
     }
-    AppInjector.get(Router).navigate(['/projects']);
+    yield put({ type: BUILD_PROJECT_SUCCEEDED, data: action.data });
+    AppInjector.get(NotificationService).show('success', 'Delete Build success', 5000);
   } catch (e) {
     yield put({ type: API_CALL_ERROR, error: e });
   }

@@ -29,15 +29,14 @@
               title="env">
               <i class="fa fa-cog" aria-hidden="true"></i> Env
             </a>
-            <a href="{{urlDownload_Db}}" class="btn btn-success btn-sm icon-only" title="env">
+            <a href="{{urlDownload_Db}}" class="btn btn-info btn-sm icon-only" title="env">
               <i class="fa fa-download" aria-hidden="true"></i> Download-Db
             </a>
-            <a href="{{urlDownload_Source}}" class="btn btn-success btn-sm icon-only" title="env">
+            <a href="{{urlDownload_Source}}" class="btn btn-primary btn-sm icon-only" title="env">
               <i class="fa fa-download" aria-hidden="true"></i> Download-Source
             </a>
-            <swal #buildProject title="Build" text="{{ store.getState().Project.detail.item.name }}" type="warning" [showCancelButton]="true"
-              (confirm)="buildItem(store.getState().Project.detail.item.id, store.getState().Project.detail.item.build_time)"></swal>
-            <button class="btn btn-warning btn-sm" [swal]="buildProject" title="build">
+            <!-- <swal #buildProject title="Build" text="{{ store.getState().Project.detail.item.name }}" [showCancelButton]="true" (confirm)="buildItem(store.getState().Project.detail.item.id, store.getState().Project.detail.item.build_time)"></swal> -->
+            <button class="btn btn-warning btn-sm" title="build" (click)="buildItem(store.getState().Project.detail.item.id, store.getState().Project.detail.item.name, store.getState().Project.detail.item.build_time)">
               <i class="fa fa-align-justify"></i> Build
             </button>
             <swal #deleteBuild title="Delete" text="Do you want to delete all build of this project?" type="warning" [showCancelButton]="true"

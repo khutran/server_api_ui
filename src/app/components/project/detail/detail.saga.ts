@@ -35,7 +35,7 @@ function* watchEditProjectRequest() {
 
 export function* fetchProjectDetail(id) {
   return yield AppInjector.get(ApiService)
-    .project.getItemById(id)
+    .project.getItemById(+id)
     .toPromise();
 }
 
@@ -56,7 +56,7 @@ function* watchGetProjectRequest() {
 
 function* deleteP(id) {
   return AppInjector.get(ApiService)
-    .project.delete(id)
+    .project.delete(+id)
     .toPromise();
 }
 
@@ -68,60 +68,66 @@ function* watchRenderProjectDetailFormRequested() {
 
 function* clone(id) {
   return yield AppInjector.get(ApiService)
-    .project.clone(id)
+    .project.clone(+id)
     .toPromise();
 }
 
 function* createDb(id) {
   return yield AppInjector.get(ApiService)
-    .project.createDb(id)
+    .project.createDb(+id)
     .toPromise();
 }
 
 function* createConfig(id) {
   return yield AppInjector.get(ApiService)
-    .project.createConfig(id)
+    .project.createConfig(+id)
     .toPromise();
 }
 
 function* updateConfig(id, db, user, pass) {
   return yield AppInjector.get(ApiService)
-    .project.updateConfig(id, db, user, pass)
+    .project.updateConfig(+id, db, user, pass)
     .toPromise();
 }
 
 function* runPackageControl(id) {
   return yield AppInjector.get(ApiService)
-    .project.runPackageControl(id)
+    .project.runPackageControl(+id)
     .toPromise();
 }
 
 function* runFirtsBuild(id) {
   return yield AppInjector.get(ApiService)
-    .project.runFirtsBuild(id)
+    .project.runFirtsBuild(+id)
     .toPromise();
 }
 
 function* replaceDb(id) {
   return yield AppInjector.get(ApiService)
-    .project.replaceDb(id)
+    .project.replaceDb(+id)
     .toPromise();
 }
 
 function* pull(id) {
   return yield AppInjector.get(ApiService)
-    .project.pull(id)
+    .project.pull(+id)
     .toPromise();
 }
 
 function* runBuild(id) {
   return yield AppInjector.get(ApiService)
-    .project.runBuild(id)
+    .project.runBuild(+id)
+    .toPromise();
+}
+function* importDb(id) {
+  return yield AppInjector.get(ApiService)
+    .project.importDb(id)
     .toPromise();
 }
 
 function* build(action) {
   try {
+    console.log(action);
     if (+action.data.build_time === 0) {
       yield call(clone, action.data.id);
       const Db = yield call(createDb, action.data.id);
@@ -136,6 +142,9 @@ function* build(action) {
       yield call(pull, action.data.id);
       yield call(runPackageControl, action.data.id);
       yield call(runBuild, action.data.id);
+      if (action.data.accept) {
+        yield call(importDb, action.data.id);
+      }
       yield put({ type: BUILD_PROJECT_SUCCEEDED, data: action.data.id });
       AppInjector.get(NotificationService).show('success', 'Build success', 5000);
     }

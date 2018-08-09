@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { Store } from '../../../store/store.module';
 import { ServiceProvider } from './../../../api/service.provider';
+import swal from 'sweetalert2';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-detail',
@@ -30,9 +32,38 @@ export class DetailComponent implements OnInit {
     return this.activatedRoute.snapshot.params.id;
   }
 
-  buildItem(id, build_time) {
-    this.store.dispatch({ type: BUILD_PROJECT_REQUESTED, data: { id: id, build_time: build_time } });
+  check(me) {
+    console.log(me.checked);
   }
+  async buildItem(id, name, build_time) {
+    let hide = 'inherit';
+    if (build_time === 0) {
+      hide = 'none';
+    }
+    let text = `<div style='display:${hide}'><input type='checkbox' id='swal-input1' value='test'> Import Database</div>`;
+    const { value: accept } = await swal({
+      type: 'warning',
+      title: `Build project ${name}`,
+      html: text,
+      showCloseButton: true,
+      showCancelButton: true,
+      confirmButtonText: 'Build <i class="fa fa-arrow-right></i>',
+      preConfirm: () => {
+        return new Promise(resolve => {
+          let check = (document.getElementById('swal-input1') as any).checked;
+          resolve([check]);
+        });
+      }
+    });
+
+    if (!_.isNil(accept)) {
+      this.store.dispatch({ type: BUILD_PROJECT_REQUESTED, data: { id: id, build_time: build_time, accept: accept[0] } });
+    }
+  }
+
+  // buildItem(id, build_time) {
+  //   this.store.dispatch({ type: BUILD_PROJECT_REQUESTED, data: { id: id, build_time: build_time } });
+  // }
 
   deleteBuildOfItem(id) {
     this.store.dispatch({ type: DELETE_BUILD_PROJECT_REQUESTED, data: id });
