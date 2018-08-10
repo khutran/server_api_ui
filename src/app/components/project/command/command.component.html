@@ -1,0 +1,29 @@
+<div class="x_panel" *ngIf="store.getState().Project.detail.item">
+  <div class="row mgb-20">
+    <div class="col s12">
+      <ul class="breadcrumb-title">
+        <li class="breadcrumb-item">
+          <a routerLink="/">
+            <i class="fa fa-home"></i>
+          </a>
+        </li>
+        <li class="breadcrumb-item">
+          <a routerLink="/projects">Projects</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a routerLink="/projects/detail/{{store.getState().Project.detail.item.id}}">{{store.getState().Project.detail.item.name}}</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a href="javascript:">Send Command</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 ">
+      <dynamic-form [(inputs)]="store.getState().Project.command.inputs" [onSubmit]="onSubmit" submitText="Send Command"></dynamic-form>
+    </div>
+  </div>
+  <br>
+  <div *ngIf="store.getState().Project.command.item">{{store.getState().Project.command.item}}</div>
+</div>

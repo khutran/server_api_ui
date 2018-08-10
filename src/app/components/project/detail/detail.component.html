@@ -35,9 +35,10 @@
             <a href="{{urlDownload_Source}}" class="btn btn-primary btn-sm icon-only" title="env">
               <i class="fa fa-download" aria-hidden="true"></i> Download-Source
             </a>
-            <button class="btn btn-warning btn-sm" title="build" (click)="runCommand(store.getState().Project.detail.item.id, store.getState().Project.detail.item.name)">
-              <i class="fa fa-fighter-jet"></i> Run Command
-            </button>
+            <a routerLink="/projects/command/{{ store.getState().Project.detail.item.getId() }}" class="btn btn-warning btn-sm"
+              title="env">
+              <i class="fa fa-fighter-jet" aria-hidden="true"></i> Run Command
+            </a>
             <!-- <swal #buildProject title="Build" text="{{ store.getState().Project.detail.item.name }}" [showCancelButton]="true" (confirm)="buildItem(store.getState().Project.detail.item.id, store.getState().Project.detail.item.build_time)"></swal> -->
             <button class="btn btn-warning btn-sm" title="build" (click)="buildItem(store.getState().Project.detail.item.id, store.getState().Project.detail.item.name, store.getState().Project.detail.item.build_time)">
               <i class="fa fa-align-justify"></i> Build

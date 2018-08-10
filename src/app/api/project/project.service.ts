@@ -249,10 +249,14 @@ export class ProjectService extends ServiceProvider {
   }
 
   runCommand(id, command): Observable<any> {
+    this.preloader.show();
     return this.http.post(this.apiUrl.getApiUrl(this.buildUrl) + '/' + id + '/' + 'command', { command: command }).pipe(
-      tap(result => {}),
+      tap(result => {
+        this.preloader.hide();
+      }),
       map(result => result),
       catchError(error => {
+        this.preloader.hide();
         throw error;
       })
     );

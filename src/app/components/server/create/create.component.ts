@@ -27,6 +27,14 @@ export class CreateComponent implements OnInit {
         classes: ['col'],
         group_classes: ['col-12'],
         order: 1
+      }),
+      new TextBox({
+        key: 'Ip',
+        label: 'Ip',
+        required: true,
+        classes: ['col'],
+        group_classes: ['col-12'],
+        order: 1
       })
     ];
     this.store.dispatch({ type: RENDER_CREATE_SERVER_FORM_REQUESTED, data: { inputs: inputs } });

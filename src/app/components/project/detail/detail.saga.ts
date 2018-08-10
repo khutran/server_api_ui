@@ -6,9 +6,7 @@ import {
   EDIT_PROJECT_REQUESTED,
   RENDER_EDIT_PROJECT_FORM_REQUESTED,
   BUILD_PROJECT_REQUESTED,
-  BUILD_PROJECT_SUCCEEDED,
-  SEND_COMMAND_REQUESTED,
-  SEND_COMMAND_SUCCESSED
+  BUILD_PROJECT_SUCCEEDED
 } from './detail.actions';
 import { takeEvery, put, takeLatest, call, all } from 'redux-saga/effects';
 import { API_CALL_ERROR } from './../../../store/action';
@@ -127,21 +125,6 @@ function* importDb(id) {
     .toPromise();
 }
 
-function* runCommand(id, command) {
-  return yield AppInjector.get(ApiService)
-    .project.runCommand(id, command)
-    .toPromise();
-}
-
-function* sendCommand(action) {
-  try {
-    const cmd = yield call(runCommand, action.data.id, action.data.command);
-    yield put({ type: SEND_COMMAND_SUCCESSED, data: cmd.data });
-  } catch (e) {
-    yield put({ type: API_CALL_ERROR, error: e });
-  }
-}
-
 function* build(action) {
   try {
     console.log(action);
@@ -174,21 +157,10 @@ function* watchBuildProjectRequested() {
   yield takeLatest(BUILD_PROJECT_REQUESTED, build);
 }
 
-function* watchPutCommandRequested() {
-  yield takeLatest(SEND_COMMAND_REQUESTED, sendCommand);
-}
-
 function* watchBuildProjectSuccessed() {
   yield takeLatest(BUILD_PROJECT_SUCCEEDED, function*(action: any) {
     yield put({ type: FETCH_PROJECT_DETAIL_REQUESTED, data: action.data });
   });
 }
 
-export default [
-  watchEditProjectRequest,
-  watchGetProjectRequest,
-  watchRenderProjectDetailFormRequested,
-  watchBuildProjectRequested,
-  watchBuildProjectSuccessed,
-  watchPutCommandRequested
-];
+export default [watchEditProjectRequest, watchGetProjectRequest, watchRenderProjectDetailFormRequested, watchBuildProjectRequested, watchBuildProjectSuccessed];
