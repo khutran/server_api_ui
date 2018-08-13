@@ -7,8 +7,10 @@ import {
   EDIT_PROJECT_REQUESTED,
   RENDER_EDIT_PROJECT_FORM_REQUESTED,
   FILL_PROJECT_DETAIL_FORM,
-  UPDATE_UPDATE_PROJECT_INPUT_OPTIONS
+  UPDATE_UPDATE_PROJECT_INPUT_OPTIONS,
+  DELETE_BUILD_PROJECT_REQUESTED
 } from './edit.actions';
+import { BUILD_PROJECT_SUCCEEDED } from '../detail/detail.actions';
 import { takeEvery, put, takeLatest, call, all } from 'redux-saga/effects';
 import { API_CALL_ERROR } from './../../../store/action';
 import { ApiService } from './../../../api/api.service';
@@ -17,12 +19,13 @@ import { fetchAllServer } from '../../server/server.saga';
 import { fetchAllFramework } from '../../framework/framework.saga';
 import { fetchAllStatus } from '../../status/status.saga';
 import { fetchAllCategory } from '../../category/category.saga';
+import { NotificationService } from '../../../common/services/notification/notification.service';
 
 function* edit(action) {
   const api = AppInjector.get(ApiService);
   const router = AppInjector.get(Router);
   try {
-    let result = yield api.project.update(action.data).toPromise();
+    yield api.project.update(action.data).toPromise();
     router.navigate(['projects']);
   } catch (e) {
     yield put({ type: API_CALL_ERROR, error: e });
@@ -90,31 +93,31 @@ function* getDomainProject(name) {
 }
 
 function* getEnvById(id) {
-  return AppInjector.get(ApiService)
+  return yield AppInjector.get(ApiService)
     .env.getEnvById(id)
     .toPromise();
 }
 
 function* deleteDbProject(id) {
-  return AppInjector.get(ApiService)
+  return yield AppInjector.get(ApiService)
     .project.deleteDbProject(id)
     .toPromise();
 }
 
 function* deleteCodeProject(id) {
-  return AppInjector.get(ApiService)
+  return yield AppInjector.get(ApiService)
     .project.deleteCodeProject(id)
     .toPromise();
 }
 
 function* deleteDomainProject(name) {
-  return AppInjector.get(ApiService)
+  return yield AppInjector.get(ApiService)
     .project.deleteDomainProject(name)
     .toPromise();
 }
 
 function* deleteP(id) {
-  return AppInjector.get(ApiService)
+  return yield AppInjector.get(ApiService)
     .project.delete(id)
     .toPromise();
 }
@@ -138,6 +141,27 @@ function* deleteProject(action) {
   }
 }
 
+function* deleteBuildOfItem(action) {
+  try {
+    const isBuilded = yield call(checkProjectAlready, action.data);
+    if (isBuilded.data.success) {
+      const envData = yield call(getEnvById, action.data);
+      if (!_.isEmpty(envData)) {
+        yield call(deleteDbProject, action.data);
+      }
+      yield call(deleteCodeProject, action.data);
+    }
+    yield put({ type: BUILD_PROJECT_SUCCEEDED, data: action.data });
+    AppInjector.get(NotificationService).show('success', 'Delete Build success', 5000);
+  } catch (e) {
+    yield put({ type: API_CALL_ERROR, error: e });
+  }
+}
+
+function* watchDeleteBuildRequested() {
+  yield takeLatest(DELETE_BUILD_PROJECT_REQUESTED, deleteBuildOfItem);
+}
+
 function* watchDeleteProjectRequest() {
   yield takeEvery(DELETE_PROJECT_REQUESTED, deleteProject);
 }
@@ -148,4 +172,4 @@ function* watchRenderProjectDetailFormRequested() {
   });
 }
 
-export default [watchEditProjectRequest, watchGetProjectRequest, watchDeleteProjectRequest, watchRenderProjectDetailFormRequested];
+export default [watchEditProjectRequest, watchGetProjectRequest, watchDeleteProjectRequest, watchRenderProjectDetailFormRequested, watchDeleteBuildRequested];

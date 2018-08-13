@@ -63,13 +63,6 @@ export class ListComponent implements OnInit, OnDestroy {
     this.store.dispatch({ type: DELETE_PROJECT_REQUESTED, data: { id: id, name: name } });
   }
 
-  buildItem(id) {
-    this.store.dispatch({ type: BUILD_PROJECT_REQUESTED, data: id });
-  }
-
-  deleteBuild(id) {
-    this.store.dispatch({ type: DELETE_BUILD_PROJECT_REQUESTED, data: id });
-  }
   getAllUser(id) {
     this.id_Project = id;
     this.store.dispatch({ type: GET_ALL_USERS_NO_PAGINATION_REQUESTED, com: PROJECT_COMP, data: { id_project: id } });

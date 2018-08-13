@@ -1,12 +1,10 @@
 import * as _ from 'lodash';
 import { Router } from '@angular/router';
 import {
-  DELETE_PROJECT_REQUESTED,
   FETCH_PROJECT_DETAIL_REQUESTED,
   FETCH_PROJECT_DETAIL_SUCCEEDED,
   EDIT_PROJECT_REQUESTED,
   RENDER_EDIT_PROJECT_FORM_REQUESTED,
-  DELETE_BUILD_PROJECT_REQUESTED,
   BUILD_PROJECT_REQUESTED,
   BUILD_PROJECT_SUCCEEDED
 } from './detail.actions';
@@ -37,7 +35,7 @@ function* watchEditProjectRequest() {
 
 export function* fetchProjectDetail(id) {
   return yield AppInjector.get(ApiService)
-    .project.getItemById(id)
+    .project.getItemById(+id)
     .toPromise();
 }
 
@@ -56,69 +54,10 @@ function* watchGetProjectRequest() {
   yield takeEvery(FETCH_PROJECT_DETAIL_REQUESTED, getProject);
 }
 
-function* checkProjectAlready(id) {
-  return yield AppInjector.get(ApiService)
-    .project.checkProjectAlready(id)
-    .toPromise();
-}
-
-function* getDomainProject(name) {
-  return yield AppInjector.get(ApiService)
-    .project.getDomainProject(name)
-    .toPromise();
-}
-
-function* getEnvById(id) {
-  return AppInjector.get(ApiService)
-    .env.getEnvById(id)
-    .toPromise();
-}
-
-function* deleteDbProject(id) {
-  return AppInjector.get(ApiService)
-    .project.deleteDbProject(id)
-    .toPromise();
-}
-
-function* deleteCodeProject(id) {
-  return AppInjector.get(ApiService)
-    .project.deleteCodeProject(id)
-    .toPromise();
-}
-
-function* deleteDomainProject(name) {
-  return AppInjector.get(ApiService)
-    .project.deleteDomainProject(name)
-    .toPromise();
-}
-
 function* deleteP(id) {
   return AppInjector.get(ApiService)
-    .project.delete(id)
+    .project.delete(+id)
     .toPromise();
-}
-function* deleteProject(action) {
-  try {
-    const [isBuilded, domainData] = yield all([call(checkProjectAlready, action.data.id), call(getDomainProject, action.data.name)]);
-    if (isBuilded.data.success) {
-      const envData = yield call(getEnvById, action.data.id);
-      if (!_.isEmpty(envData)) {
-        yield call(deleteDbProject, action.data.id);
-      }
-      yield call(deleteCodeProject, action.data.id);
-    }
-    if (!_.isEmpty(domainData.data)) {
-      yield call(deleteDomainProject, action.data.name);
-    }
-    yield call(deleteP, action.data.id);
-    AppInjector.get(Router).navigate(['/projects']);
-  } catch (e) {
-    yield put({ type: API_CALL_ERROR, error: e });
-  }
-}
-
-function* watchDeleteProjectRequest() {
-  yield takeEvery(DELETE_PROJECT_REQUESTED, deleteProject);
 }
 
 function* watchRenderProjectDetailFormRequested() {
@@ -127,81 +66,88 @@ function* watchRenderProjectDetailFormRequested() {
   });
 }
 
-function* deleteBuild(action) {
-  try {
-    const [isBuilded, domainData] = yield all([call(checkProjectAlready, action.data.id), call(getDomainProject, action.data.name)]);
-    if (isBuilded.data.success) {
-      const envData = yield call(getEnvById, action.data.id);
-      if (!_.isEmpty(envData)) {
-        yield call(deleteDbProject, action.data.id);
-      }
-      yield call(deleteCodeProject, action.data.id);
-    }
-    if (!_.isEmpty(domainData.data)) {
-      yield call(deleteDomainProject, action.data.name);
-    }
-    AppInjector.get(Router).navigate(['/projects']);
-  } catch (e) {
-    yield put({ type: API_CALL_ERROR, error: e });
-  }
-}
-
-function* watchDeleteBuildRequested() {
-  yield takeLatest(DELETE_BUILD_PROJECT_REQUESTED, deleteBuild);
-}
-
 function* clone(id) {
   return yield AppInjector.get(ApiService)
-    .project.clone(id)
+    .project.clone(+id)
     .toPromise();
 }
 
 function* createDb(id) {
   return yield AppInjector.get(ApiService)
-    .project.createDb(id)
+    .project.createDb(+id)
     .toPromise();
 }
 
 function* createConfig(id) {
   return yield AppInjector.get(ApiService)
-    .project.createConfig(id)
+    .project.createConfig(+id)
     .toPromise();
 }
 
 function* updateConfig(id, db, user, pass) {
   return yield AppInjector.get(ApiService)
-    .project.updateConfig(id, db, user, pass)
+    .project.updateConfig(+id, db, user, pass)
     .toPromise();
 }
 
 function* runPackageControl(id) {
   return yield AppInjector.get(ApiService)
-    .project.runPackageControl(id)
+    .project.runPackageControl(+id)
     .toPromise();
 }
 
 function* runFirtsBuild(id) {
   return yield AppInjector.get(ApiService)
-    .project.runFirtsBuild(id)
+    .project.runFirtsBuild(+id)
     .toPromise();
 }
 
 function* replaceDb(id) {
   return yield AppInjector.get(ApiService)
-    .project.replaceDb(id)
+    .project.replaceDb(+id)
+    .toPromise();
+}
+
+function* pull(id) {
+  return yield AppInjector.get(ApiService)
+    .project.pull(+id)
+    .toPromise();
+}
+
+function* runBuild(id) {
+  return yield AppInjector.get(ApiService)
+    .project.runBuild(+id)
+    .toPromise();
+}
+function* importDb(id) {
+  return yield AppInjector.get(ApiService)
+    .project.importDb(id)
     .toPromise();
 }
 
 function* build(action) {
   try {
-    const [cloneProject, Db] = yield all([call(clone, action.data), call(createDb, action.data)]);
-    yield call(createConfig, action.data);
-    yield call(updateConfig, action.data, Db.data.Dbname, Db.data.User, Db.data.Password);
-    yield call(runPackageControl, action.data);
-    yield call(runFirtsBuild, action.data);
-    yield call(replaceDb, action.data);
-    yield put({ type: BUILD_PROJECT_SUCCEEDED, data: cloneProject.items, pagination: cloneProject.pagination });
-    AppInjector.get(NotificationService).show('success', 'Build success', 5000);
+    console.log(action);
+    if (+action.data.build_time === 0) {
+      yield call(clone, action.data.id);
+      const Db = yield call(createDb, action.data.id);
+      yield call(createConfig, action.data.id);
+      yield call(updateConfig, action.data.id, Db.data.Dbname, Db.data.User, Db.data.Password);
+      yield call(runPackageControl, action.data.id);
+      yield call(runFirtsBuild, action.data.id);
+      yield call(replaceDb, action.data.id);
+      yield put({ type: BUILD_PROJECT_SUCCEEDED, data: action.data.id });
+      AppInjector.get(NotificationService).show('success', 'Build success', 5000);
+    } else if (+action.data.build_time > 0) {
+      yield call(pull, action.data.id);
+      yield call(runPackageControl, action.data.id);
+      yield call(runBuild, action.data.id);
+      if (action.data.accept) {
+        yield call(importDb, action.data.id);
+      }
+      yield put({ type: BUILD_PROJECT_SUCCEEDED, data: action.data.id });
+      AppInjector.get(NotificationService).show('success', 'Build success', 5000);
+    }
   } catch (e) {
     yield put({ type: API_CALL_ERROR, error: e });
   }
@@ -211,11 +157,10 @@ function* watchBuildProjectRequested() {
   yield takeLatest(BUILD_PROJECT_REQUESTED, build);
 }
 
-export default [
-  watchEditProjectRequest,
-  watchGetProjectRequest,
-  watchDeleteProjectRequest,
-  watchRenderProjectDetailFormRequested,
-  watchDeleteBuildRequested,
-  watchBuildProjectRequested
-];
+function* watchBuildProjectSuccessed() {
+  yield takeLatest(BUILD_PROJECT_SUCCEEDED, function*(action: any) {
+    yield put({ type: FETCH_PROJECT_DETAIL_REQUESTED, data: action.data });
+  });
+}
+
+export default [watchEditProjectRequest, watchGetProjectRequest, watchRenderProjectDetailFormRequested, watchBuildProjectRequested, watchBuildProjectSuccessed];

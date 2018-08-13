@@ -31,7 +31,7 @@ function* editEnv(action) {
     const api = AppInjector.get(ApiService);
     const notification = AppInjector.get(NotificationService);
     try {
-        let result = yield api.env.updateEnvById(action.data).toPromise();
+        yield api.env.updateEnvById(action.data).toPromise();
         yield put({ type: EDIT_INFO_ENV_SUCCEEDED });
         notification.show('success', 'Update environment file success', 3000);
     } catch (e) {

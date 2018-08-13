@@ -39,6 +39,34 @@ export class ProjectService extends ServiceProvider {
     );
   }
 
+  pull(id): Observable<any> {
+    this.preloader.show();
+    return this.http.put(this.apiUrl.getApiUrl(this.buildUrl) + '/' + id + '/' + 'pull', {}).pipe(
+      tap(result => {
+        // this.preloader.hide();
+      }),
+      map(result => result),
+      catchError(error => {
+        this.preloader.hide();
+        throw error;
+      })
+    );
+  }
+
+  runBuild(id): Observable<any> {
+    this.preloader.show();
+    return this.http.post(this.apiUrl.getApiUrl(this.buildUrl) + '/' + id + '/' + 'run-build', {}).pipe(
+      tap(result => {
+        // this.preloader.hide();
+      }),
+      map(result => result),
+      catchError(error => {
+        this.preloader.hide();
+        throw error;
+      })
+    );
+  }
+
   createDb(id): Observable<any> {
     this.preloader.show();
     return this.http.post(this.apiUrl.getApiUrl(this.buildUrl) + '/' + id + '/' + 'db', {}).pipe(
@@ -192,8 +220,7 @@ export class ProjectService extends ServiceProvider {
 
   checkProjectAlready(id): Observable<any> {
     return this.http.get(this.apiUrl.getApiUrl(this.buildUrl) + '/' + id).pipe(
-      tap(result => {
-      }),
+      tap(result => {}),
       map(result => result),
       catchError(error => {
         throw error;
@@ -203,8 +230,7 @@ export class ProjectService extends ServiceProvider {
 
   getDomainProject(nameDomain): Observable<any> {
     return this.http.get(this.apiUrl.getApiUrl('/api/v1/cloudflare/dns?name=') + nameDomain).pipe(
-      tap(result => {
-      }),
+      tap(result => {}),
       map(result => result),
       catchError(error => {
         throw error;
@@ -212,4 +238,27 @@ export class ProjectService extends ServiceProvider {
     );
   }
 
+  importDb(id): Observable<any> {
+    return this.http.put(this.apiUrl.getApiUrl(this.buildUrl) + '/' + id + '/' + 'import').pipe(
+      tap(result => {}),
+      map(result => result),
+      catchError(error => {
+        throw error;
+      })
+    );
+  }
+
+  runCommand(id, command): Observable<any> {
+    this.preloader.show();
+    return this.http.post(this.apiUrl.getApiUrl(this.buildUrl) + '/' + id + '/' + 'command', { command: command }).pipe(
+      tap(result => {
+        this.preloader.hide();
+      }),
+      map(result => result),
+      catchError(error => {
+        this.preloader.hide();
+        throw error;
+      })
+    );
+  }
 }

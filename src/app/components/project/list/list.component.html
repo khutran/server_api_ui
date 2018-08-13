@@ -81,21 +81,10 @@
                   title="assign">
                   <i class="fa fa-users" aria-hidden="true"></i>
                 </a>
-                <a routerLink="edit/{{ item.getId() }}/environment" class="btn btn-success btn-sm icon-only" title="env">
-                  <i class="fa fa-cog" aria-hidden="true"></i>
-                </a>
-                <swal #buildProject title="Build" text="{{item.name}}" type="warning" [showCancelButton]="true" (confirm)="buildItem(item.id)"></swal>
-                <button class="btn btn-warning btn-sm icon-only" [swal]="buildProject" title="build">
-                  <i class="fa fa-align-justify"></i>
-                </button>
-                <p></p>
+                <!-- <p></p> -->
                 <a routerLink="detail/{{ item.getId() }}" class="btn btn-dark btn-sm icon-only" title="detail">
                   <i class="fa fa-pencil" aria-hidden="true"></i>
                 </a>
-                <swal #deleteBuild title="Delete" text="Do you want to delete build this user?" type="warning" [showCancelButton]="true" (confirm)="deleteItem(item.id,item.name)"></swal>
-                <button class="btn btn-danger btn-sm icon-only" [swal]="deleteBuild" title="delete">
-                  <i class="fa fa-cutlery"></i>
-                </button>
                 <swal #deleteUser title="Delete" text="Do you want to delete this user?" type="warning" [showCancelButton]="true" (confirm)="deleteItem(item.id,item.name)"></swal>
                 <button class="btn btn-danger btn-sm icon-only" [swal]="deleteUser" title="delete">
                   <i class="fa fa-trash"></i>

@@ -27,7 +27,7 @@
         </div>
         <div class="card-body">
           <div class="edit-info">
-            <div class="col-12 ">
+            <div class="col-12 " *ngIf="store.getState().Server.create.inputs | hasItem" >
               <dynamic-form [(inputs)]="store.getState().Server.create.inputs" [onSubmit]="onSubmit" submitText="Create"></dynamic-form>
             </div>
           </div>
