@@ -3,11 +3,10 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NotificationService } from '../../../../common/services/notification/notification.service';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
-import { Store } from './../../../../store/store.module';
 import { FETCH_ALL_ROLE_REQUESTED } from '../roles.actions';
 import * as _ from 'lodash';
 import { DELETE_ROLE_REQUESTED } from './list.actions';
-import { AppInjector } from '../../../../app-injector';
+import { Store } from '../../../../store/store.module';
 
 @Component({
   selector: 'app-list',
@@ -18,8 +17,8 @@ export class ListComponent implements OnInit, OnDestroy {
   public store;
   public navigationSubscription: Subscription;
 
-  constructor(private notification: NotificationService, private activeRouter: ActivatedRoute, private route: Router) {
-    this.store = AppInjector.get(Store).getInstance();
+  constructor(private notification: NotificationService, private activeRouter: ActivatedRoute, private route: Router, store: Store) {
+    this.store = store.getInstance();
     this.navigationSubscription = this.route.events.subscribe((e: any) => {
       if (e instanceof NavigationEnd) {
         this.store.dispatch({ type: FETCH_ALL_ROLE_REQUESTED, com: ROLE_COMP });

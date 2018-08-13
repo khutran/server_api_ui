@@ -16,18 +16,19 @@ function* getRoles(action) {
   const api = AppInjector.get(ApiService);
   try {
     const results = yield api.role.listWithPermission({}).toPromise();
-    if (!_.isUndefined(action.com)) {
-      yield put({
-        type: FETCH_ALL_ROLE_SUCCEEDED,
-        com: action.com,
-        data: results
-      });
-    } else {
-      yield put({
-        type: FETCH_ALL_ROLE_SUCCEEDED,
-        data: results
-      });
+    let put_data: any = {
+      type: FETCH_ALL_ROLE_SUCCEEDED,
+      data: results
+    };
+
+    if (!_.isNil(action.except)) {
+      put_data.except = action.except;
     }
+    if (!_.isUndefined(action.com)) {
+      put_data.com = action.com;
+    }
+
+    yield put(put_data);
   } catch (e) {
     yield put({ type: API_CALL_ERROR, error: e });
   }

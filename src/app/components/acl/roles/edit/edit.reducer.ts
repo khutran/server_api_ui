@@ -11,9 +11,9 @@ export const roleDetail = (state = { fetched: false, item: {}, groups: [] }, act
 
     case FETCH_ALL_PERMISSIONS_GROUP_SUCCEEDED:
       return _.assign({}, state, {
-        groups: _.map(action.data, item => {
-          return _.assign(_.clone(item), {
-            permissions: _.map(item.permissions, i => {
+        groups: _.map(action.data, group => {
+          return _.assign(_.clone(group), {
+            permissions: _.map(group.permissions, i => {
               let pm = _.find((state as any).item.permissions, t => i.slug === t.slug);
               if (!_.isUndefined(pm)) {
                 i.checked = true;

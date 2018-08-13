@@ -1,25 +1,32 @@
-.label--custom {
+:host {
+  .label--custom {
     color: #ffffff;
     margin: 3px;
     display: inline-block;
     font-weight: normal;
     font-size: 13px;
-  
+
     .fa-custom {
       cursor: pointer;
       vertical-align: middle;
       padding-left: 5px;
-  
+
       &:hover {
         color: #333;
       }
     }
   }
-  
-  .group__item label {
-    cursor: pointer;
+
+  .group__item {
+    > label {
+      font-size: 18px;
+      font-weight: bold;
+    }
+    label {
+      cursor: pointer;
+    }
   }
-  
+
   .permission__item {
     display: inline-block;
     width: 30%;
@@ -28,4 +35,4 @@
       cursor: pointer;
     }
   }
-  
+}
