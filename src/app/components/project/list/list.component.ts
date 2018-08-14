@@ -22,8 +22,8 @@ export class ListComponent implements OnInit, OnDestroy {
 
   constructor(private notification: NotificationService, private activeRouter: ActivatedRoute, router: Router) {
     this.store = AppInjector.get(Store).getInstance();
-    this.activeRouter = activeRouter;
     this.router = router;
+    this.activeRouter = activeRouter;
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       if (e instanceof NavigationEnd) {
         this.store.dispatch({ type: FETCH_PROJECTS_REQUESTED, data: this.parseQuery() });

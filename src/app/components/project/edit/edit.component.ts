@@ -1,5 +1,6 @@
 import * as _ from 'lodash';
-import { EDIT_PROJECT_REQUESTED, RENDER_EDIT_PROJECT_FORM_REQUESTED } from './edit.actions';
+import { EDIT_PROJECT_REQUESTED, RENDER_EDIT_PROJECT_FORM_REQUESTED, GET_PROJECT_REQUESTED } from './edit.actions';
+import { FETCH_PROJECT_DETAIL_REQUESTED } from '../detail/detail.actions';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { Store } from '../../../store/store.module';
@@ -22,6 +23,10 @@ export class EditComponent implements OnInit {
   }
 
   ngOnInit() {
+    // if (_.isUndefined(this.store.getState().Project.detail.item)) {
+    //   this.store.dispatch({ type: FETCH_PROJECT_DETAIL_REQUESTED, data: this.activatedRoute.snapshot.params.id });
+    // }
+
     let inputs: InputBase<any>[] = [
       new TextBox({
         key: 'name',
@@ -71,19 +76,11 @@ export class EditComponent implements OnInit {
         group_classes: ['col-12'],
         group: 4
       }),
-      new TextBox({
-        key: 'database',
-        label: 'Database Name',
-        classes: ['col'],
-        validators: [Validators.required],
-        group_classes: ['col-12'],
-        group: 5
-      }),
       new Dropdown({
         key: 'sql_manager',
         label: 'SQL',
         classes: ['col'],
-        validators: [Validators.required],
+        // validators: [Validators.required],
         group_classes: ['col-12'],
         group: 5
       }),
@@ -118,6 +115,14 @@ export class EditComponent implements OnInit {
         validators: [Validators.required],
         group_classes: ['col-12'],
         group: 7
+      }),
+      new Dropdown({
+        key: 'cloudflare',
+        label: 'Cloudflare',
+        classes: ['col'],
+        // validators: [Validators.required],
+        group_classes: ['col-12'],
+        group: 5,
       })
     ];
     this.store.dispatch({ type: RENDER_EDIT_PROJECT_FORM_REQUESTED, data: { project_id: this.activatedRoute.snapshot.params.id, inputs: inputs } });
@@ -140,7 +145,8 @@ export class EditComponent implements OnInit {
         git_remote: form.value.git_remote,
         git_branch: form.value.git_branch,
         git_application_key: form.value.git_application_key,
-        git_application_secret: form.value.git_application_secret
+        git_application_secret: form.value.git_application_secret,
+        cloudflare: form.value.cloudflare.value
       };
       store.dispatch({
         type: EDIT_PROJECT_REQUESTED,

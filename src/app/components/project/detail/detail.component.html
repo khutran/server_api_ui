@@ -108,6 +108,10 @@
                               <th class="text-strong">Status</th>
                               <td>{{ store.getState().Project.detail.item.status.name }}</td>
                             </tr>
+                            <tr *ngIf="store.getState().Project.detail.item.status">
+                              <th class="text-strong">Cloudflare</th>
+                              <td>{{ store.getState().Project.detail.item.cloudflare }}</td>
+                            </tr>
                           </tbody>
                         </table>
                       </div>

@@ -58,12 +58,15 @@ function* createProject(action) {
   const api = AppInjector.get(ApiService);
   const router = AppInjector.get(Router);
   try {
-    let serverData = yield api.server.getItemById(action.data.server_id).toPromise();
-    let data = {
-      name: action.data.name,
-      ip: serverData.ip
-    };
-    const [result, domainData] = yield all([api.project.create(action.data).toPromise(), api.project.domainPointingIP(data).toPromise()]);
+    const result = yield api.project.create(action.data).toPromise();
+    if (action.data.cloudflare === true) {
+      let serverData = yield api.server.getItemById(action.data.server_id).toPromise();
+      let data = {
+        name: action.data.name,
+        ip: serverData.ip
+      };
+      yield api.project.domainPointingIP(data).toPromise();
+    }
 
     yield put({ type: CREATE_PROJECT_SUCCEEDED, data: result });
 

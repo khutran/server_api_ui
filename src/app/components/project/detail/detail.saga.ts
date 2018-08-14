@@ -47,6 +47,9 @@ function* getProject(action) {
     call(fetchAllStatus),
     call(fetchAllCategory)
   ]);
+  if (_.isNil(project.cloudflare)) {
+    project.cloudflare = false;
+  }
   yield put({ type: FETCH_PROJECT_DETAIL_SUCCEEDED, data: project });
 }
 

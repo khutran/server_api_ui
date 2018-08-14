@@ -26,6 +26,14 @@ function* edit(action) {
   const router = AppInjector.get(Router);
   try {
     yield api.project.update(action.data).toPromise();
+    if (action.data.cloudflare === true) {
+      let serverData = yield api.server.getItemById(action.data.server_id).toPromise();
+      let data = {
+        name: action.data.name,
+        ip: serverData.ip
+      };
+      yield api.project.updateDomainPointingIP(data).toPromise();
+    }
     router.navigate(['projects']);
   } catch (e) {
     yield put({ type: API_CALL_ERROR, error: e });
@@ -51,6 +59,8 @@ function* getProject(action) {
     call(fetchAllCategory)
   ]);
   yield put({ type: GET_PROJECT_SUCCEEDED, data: project });
+  let availableCloudflare = [{ id: 1, label: 'true', key: 'true', value: true }, { id: 1, label: 'false', key: 'false', value: false }];
+
   const availablePackageManager = [{ id: 1, value: 'Composer', label: 'Composer' }, { id: 2, value: 'Yarn', label: 'Yarn' }];
   const availableSqlManager = [{ id: 1, value: 'MySQL', label: 'MySQL' }, { id: 2, value: 'Postgres', label: 'Postgres' }, { id: 3, value: 'MongoDB', label: 'MongoDB' }];
   yield put({ type: UPDATE_UPDATE_PROJECT_INPUT_OPTIONS, input: 'server', data: _.map(servers, item => _.assign(item, { value: item.name, label: item.name })) });
@@ -59,6 +69,7 @@ function* getProject(action) {
   yield put({ type: UPDATE_UPDATE_PROJECT_INPUT_OPTIONS, input: 'category', data: _.map(categories, item => _.assign(item, { value: item.name, label: item.name })) });
   yield put({ type: UPDATE_UPDATE_PROJECT_INPUT_OPTIONS, input: 'sql_manager', data: availableSqlManager });
   yield put({ type: UPDATE_UPDATE_PROJECT_INPUT_OPTIONS, input: 'package_manager', data: availablePackageManager });
+  yield put({ type: UPDATE_UPDATE_PROJECT_INPUT_OPTIONS, input: 'cloudflare', data: availableCloudflare });
   const data = {
     name: project.name,
     server: _.find(servers, item => item.id === project.host_id),
@@ -71,7 +82,8 @@ function* getProject(action) {
     git_remote: project.git_remote,
     git_branch: project.git_branch,
     git_application_key: project.git_application_key,
-    git_application_secret: project.git_application_secret
+    git_application_secret: project.git_application_secret,
+    cloudflare: _.find(availableCloudflare, { value: project.cloudflare })
   };
   yield put({ type: FILL_PROJECT_DETAIL_FORM, data: data });
 }

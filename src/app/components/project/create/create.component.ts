@@ -26,6 +26,7 @@ export class CreateComponent implements OnInit {
 
   ngOnInit() {
     const availablePackageManager = [{ id: 1, value: 'Composer', label: 'Composer' }, { id: 2, value: 'Yarn', label: 'Yarn' }];
+    const availableCloudflare = [{ id: 1, label: 'false', key: 'false', value: false }, { id: 1, label: 'true', key: 'true', value: true }];
     const availableSqlManager = [
       { id: 1, value: 'MySQL', label: 'MySQL', selected: true },
       { id: 2, value: 'Postgres', label: 'Postgres' },
@@ -82,14 +83,6 @@ export class CreateComponent implements OnInit {
         group_classes: ['col-12'],
         group: 4
       }),
-      new TextBox({
-        key: 'database',
-        label: 'Database Name',
-        classes: ['col'],
-        validators: [Validators.required],
-        group_classes: ['col-12'],
-        group: 5
-      }),
       new Dropdown({
         key: 'sql_manager',
         label: 'SQL',
@@ -131,6 +124,16 @@ export class CreateComponent implements OnInit {
         validators: [Validators.required],
         group_classes: ['col-12'],
         group: 7
+      }),
+      new Dropdown({
+        key: 'cloudflare',
+        label: 'Cloudflare',
+        value: _.head(availableCloudflare),
+        classes: ['col'],
+        validators: [Validators.required],
+        group_classes: ['col-12'],
+        group: 5,
+        options: availableCloudflare
       })
     ];
     this.store.dispatch({ type: RENDER_CREATE_PROJECT_FORM_REQUESTED, data: { inputs: inputs } });

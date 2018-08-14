@@ -26,6 +26,7 @@ export class DetailComponent implements OnInit {
     this.store.dispatch({ type: FETCH_PROJECT_DETAIL_REQUESTED, data: this.parseProjectId() });
     this.urlDownload_Db = this.service.apiUrl.getApiUrl('/api/v1/remote/project') + '/' + this.parseProjectId() + '/' + 'download/database';
     this.urlDownload_Source = this.service.apiUrl.getApiUrl('/api/v1/remote/project') + '/' + this.parseProjectId() + '/' + 'download/source';
+
   }
 
   parseProjectId() {
@@ -33,7 +34,7 @@ export class DetailComponent implements OnInit {
   }
 
   async buildItem(id, name, build_time) {
-    let text = `<div style='display:${build_time === 0 ? 'node' : 'inherit'}'><input type='checkbox' id='swal-input1' value=''> Import Database</div>`;
+    let text = `<div style='display:${build_time === 0 ? 'none' : 'inherit'}'><input type='checkbox' id='swal-input1' value=''> Import Database</div>`;
     const { value: accept } = await swal({
       type: 'warning',
       title: `Build project ${name}`,
