@@ -125,9 +125,10 @@ export class ServiceProvider {
     );
   }
 
-  getItemById(id): Observable<any> {
+  getItemById(id, params = {}): Observable<any> {
+    const queryParams = new HttpParams({ fromObject: params });
     this.preloader.show();
-    return this.http.get(this.apiUrl.getApiUrl(this.url) + '/' + id).pipe(
+    return this.http.get(this.apiUrl.getApiUrl(this.url) + '/' + id, { params: queryParams }).pipe(
       tap(result => {
         this.preloader.hide();
       }),

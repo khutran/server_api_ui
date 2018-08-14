@@ -25,7 +25,7 @@ function* fetchUserDetail(action) {
   try {
     AppInjector.get(PreloaderService).show();
     const result = yield AppInjector.get(ApiService)
-      .user.getItemById(action.data)
+      .user.getItemById(action.data, { includes: 'roles' })
       .toPromise();
 
     if (!_.isUndefined(action.com)) {
