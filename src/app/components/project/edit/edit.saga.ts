@@ -60,7 +60,6 @@ function* getProject(action) {
   ]);
   yield put({ type: GET_PROJECT_SUCCEEDED, data: project });
   let availableCloudflare = [{ id: 1, label: 'true', key: 'true', value: true }, { id: 1, label: 'false', key: 'false', value: false }];
-
   const availablePackageManager = [{ id: 1, value: 'Composer', label: 'Composer' }, { id: 2, value: 'Yarn', label: 'Yarn' }];
   const availableSqlManager = [{ id: 1, value: 'MySQL', label: 'MySQL' }, { id: 2, value: 'Postgres', label: 'Postgres' }, { id: 3, value: 'MongoDB', label: 'MongoDB' }];
   yield put({ type: UPDATE_UPDATE_PROJECT_INPUT_OPTIONS, input: 'server', data: _.map(servers, item => _.assign(item, { value: item.name, label: item.name })) });

@@ -23,10 +23,6 @@ export class EditComponent implements OnInit {
   }
 
   ngOnInit() {
-    // if (_.isUndefined(this.store.getState().Project.detail.item)) {
-    //   this.store.dispatch({ type: FETCH_PROJECT_DETAIL_REQUESTED, data: this.activatedRoute.snapshot.params.id });
-    // }
-
     let inputs: InputBase<any>[] = [
       new TextBox({
         key: 'name',
@@ -119,10 +115,12 @@ export class EditComponent implements OnInit {
       new Dropdown({
         key: 'cloudflare',
         label: 'Cloudflare',
+        // value: _.head(availableCloudflare),
         classes: ['col'],
         // validators: [Validators.required],
         group_classes: ['col-12'],
         group: 5,
+        // options: availableCloudflare
       })
     ];
     this.store.dispatch({ type: RENDER_EDIT_PROJECT_FORM_REQUESTED, data: { project_id: this.activatedRoute.snapshot.params.id, inputs: inputs } });
