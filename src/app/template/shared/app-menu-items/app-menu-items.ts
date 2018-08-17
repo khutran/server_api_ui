@@ -14,7 +14,7 @@ export interface ChildrenItems {
 }
 
 export interface MainMenuItems {
-  state: string;
+  states: string[];
   short_label?: string;
   main_state?: string;
   target?: boolean;
@@ -35,11 +35,12 @@ const MENUITEMS = [
     label: 'User',
     main: [
       {
-        state: 'users',
+        states: ['/', 'users'],
         short_label: 'U',
         name: 'User',
         type: 'link',
-        icon: 'fa fa-users'
+        icon: 'fa fa-users',
+        permissions: ['view.user', 'create.user', 'update.user', 'delete.user']
       }
     ]
   },
@@ -47,39 +48,44 @@ const MENUITEMS = [
     label: 'Project',
     main: [
       {
-        state: 'frameworks',
+        states: ['/', 'frameworks'],
         short_label: 'F',
         name: 'Framework',
         type: 'link',
-        icon: 'fa fa-list'
+        icon: 'fa fa-list',
+        permissions: ['view.framework', 'create.framework', 'update.framework', 'delete.framework']
       },
       {
-        state: 'status',
+        states: ['/', 'status'],
         short_label: 'S',
         name: 'Status',
         type: 'link',
-        icon: 'fa fa-list'
+        icon: 'fa fa-list',
+        permissions: ['view.status', 'create.status', 'update.status', 'delete.status']
       },
       {
-        state: 'categories',
+        states: ['/', 'categories'],
         short_label: 'C',
         name: 'Category',
         type: 'link',
-        icon: 'fa fa-list'
+        icon: 'fa fa-list',
+        permissions: ['view.category', 'create.category', 'update.category', 'delete.category']
       },
       {
-        state: 'servers',
+        states: ['/', 'servers'],
         short_label: 'SV',
         name: 'Server',
         type: 'link',
-        icon: 'fa fa-list'
+        icon: 'fa fa-list',
+        permissions: ['view.server', 'create.server', 'update.server', 'delete.server']
       },
       {
-        state: 'projects',
+        states: ['/', 'projects'],
         short_label: 'P',
         name: 'Projects',
         type: 'link',
-        icon: 'fa fa-tags'
+        icon: 'fa fa-tags',
+        permissions: ['view.project', 'create.project', 'update.project', 'delete.project']
       }
     ]
   },
@@ -87,12 +93,12 @@ const MENUITEMS = [
     label: 'ACL',
     main: [
       {
-        main_state: 'acl',
-        state: 'roles',
+        states: ['/', 'acl', 'roles'],
         short_label: 'R',
         name: 'Role',
         type: 'link',
-        icon: 'fa fa-book'
+        icon: 'fa fa-book',
+        permissions: ['view.role', 'create.role', 'update.role', 'delete.role']
       }
     ]
   }

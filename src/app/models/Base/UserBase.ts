@@ -1,9 +1,14 @@
-import Model from "../Model";
+import Model from '../Model';
 
-export default class UserBase extends Model {
-    constructor(options) {
-        super();
+interface UserInterface {
+  roles?: any[];
+}
 
-        this.bind(options);
-    }
+export default class UserBase extends Model implements UserInterface {
+  public roles;
+  constructor(options) {
+    super();
+
+    this.bind(options);
+  }
 }

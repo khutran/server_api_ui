@@ -276,11 +276,11 @@
                 </ul>
               </div>
             </div>
-            <perfect-scrollbar [style.max-width]="'235px'" [style.max-height]="sidebarFixedHeight" [config]="config">
-              <div *ngFor="let asideItems of menuItems.getAll()" class="d-color">
-                <div class="pcoded-navigation-label" [attr.menu-title-theme]="menuTitleTheme">{{asideItems.label}}</div>
+            <perfect-scrollbar [style.max-width]="'235px'" [style.max-height]="sidebarFixedHeight" [config]="config" *ngIf="store.getState().Auth.login.fetched">
+              <div *ngFor="let asideItems of menuItems.getAll()">
+                <div class="pcoded-navigation-label" [attr.menu-title-theme]="menuTitleTheme" *ngIf="store.getState().Auth.login.profile.hasOneOf(menuGroupPermissions(asideItems.main))">{{asideItems.label}}</div>
                 <ul class="pcoded-item pcoded-left-item" [attr.item-border]="itemBorder" [attr.item-border-style]="itemBorderStyle" [attr.subitem-border]="subItemBorder" *ngFor="let asideItem of asideItems.main" appAccordionLink group="{{asideItem.state}}">
-                  <li [routerLinkActive]="['active']" *ngIf="asideItem.type === 'external'" appAccordionLink group="{{asideItem.state}}">
+                  <li [routerLinkActive]="['active']" *ngIf="store.getState().Auth.login.profile.hasOneOf(asideItem.permissions) && asideItem.type === 'external'" appAccordionLink group="{{asideItem.state}}">
                     <a [routerLinkActive]="['active']" class="ripple" href="{{asideItem.external}}" target="{{asideItem.target ? '_blank' : '_self'}}" appAccordionToggle>
                       <span class="pcoded-micon">
                         <i class="{{ asideItem.icon }}"></i>
@@ -292,8 +292,17 @@
                     </a>
                   </li>
 
-                  <li [routerLinkActive]="['active']" *ngIf="asideItem.type === 'link'" appAccordionLink group="{{asideItem.state}}">
-                    <a [routerLinkActive]="['active']" class="ripple" [routerLink]="['/', asideItem.main_state, asideItem.state]" target="{{asideItem.target ? '_blank' : '_self'}}" appAccordionToggle *ngIf="asideItem.main_state; else mainContent">
+                  <li [routerLinkActive]="['active']" *ngIf="store.getState().Auth.login.profile.hasOneOf(asideItem.permissions) && asideItem.type === 'link'" appAccordionLink group="{{asideItem.state}}">
+                    <a [routerLinkActive]="['active']" class="ripple" [routerLink]="asideItem.states" target="{{asideItem.target ? '_blank' : '_self'}}" appAccordionToggle>
+                      <span class="pcoded-micon">
+                        <i class="{{ asideItem.icon }}"></i>
+                        <b>{{ asideItem.short_label }}</b>
+                      </span>
+                      <span class="pcoded-mtext">{{ asideItem.name }}</span>
+                      <span *ngFor="let asideBadge of asideItem.badge" class="pcoded-badge label label-{{ asideBadge.type }}">{{asideBadge.value}}</span>
+                      <span class="pcoded-mcaret"></span>
+                    </a>
+                    <!-- <a [routerLinkActive]="['active']" class="ripple" [routerLink]="['/', asideItem.main_state, asideItem.state]" target="{{asideItem.target ? '_blank' : '_self'}}" appAccordionToggle *ngIf="asideItem.main_state; else mainContent">
                       <span class="pcoded-micon">
                         <i class="{{ asideItem.icon }}"></i>
                         <b>{{ asideItem.short_label }}</b>
@@ -312,9 +321,9 @@
                         <span *ngFor="let asideBadge of asideItem.badge" class="pcoded-badge label label-{{ asideBadge.type }}">{{asideBadge.value}}</span>
                         <span class="pcoded-mcaret"></span>
                       </a>
-                    </ng-template>
+                    </ng-template> -->
                   </li>
-                  <li [routerLinkActive]="['active']" *ngIf="asideItem.type === 'sub'" class="pcoded-hasmenu" [attr.dropdown-icon]="dropDownIcon" [attr.subitem-icon]="subItemIcon" appAccordionLink group="{{asideItem.state}}">
+                  <li [routerLinkActive]="['active']" *ngIf="store.getState().Auth.login.profile.hasOneOf(asideItem.permissions) && asideItem.type === 'sub'" class="pcoded-hasmenu" [attr.dropdown-icon]="dropDownIcon" [attr.subitem-icon]="subItemIcon" appAccordionLink group="{{asideItem.state}}">
                     <a [routerLinkActive]="['active']" [routerLinkActive]="['active']" href="javascript:;" appAccordionToggle>
                       <div class="ripple menu-ripple"></div>
                       <span class="pcoded-micon">
