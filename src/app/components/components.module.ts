@@ -15,7 +15,6 @@ import { UserModule } from './user/user.module';
 import { UserComponent } from './user/user.component';
 import { SharedModule } from '../template/shared/shared.module';
 import { BreadcrumbsComponent } from '../template/layout/admin/breadcrumbs/breadcrumbs.component';
-import { AppMenuItems } from '../template/shared/app-menu-items/app-menu-items';
 import { SettingsModule } from './settings/settings.module';
 import { ProjectModule } from './project/project.module';
 import { ProjectComponent } from './project/project.component';
@@ -60,7 +59,6 @@ import { CategoryModule } from './category/category.module';
     SettingsModule,
     ProjectModule
   ],
-  providers: [AppMenuItems],
   exports: []
 })
 export class ComponentsModule {

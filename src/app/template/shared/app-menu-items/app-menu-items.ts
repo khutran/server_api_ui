@@ -1,5 +1,3 @@
-import { Injectable } from '@angular/core';
-
 export interface BadgeItem {
   type: string;
   value: string;
@@ -30,7 +28,7 @@ export interface Menu {
   main: MainMenuItems[];
 }
 
-const MENUITEMS = [
+export const AppMenunItems = [
   {
     label: 'User',
     main: [
@@ -103,10 +101,3 @@ const MENUITEMS = [
     ]
   }
 ];
-
-@Injectable()
-export class AppMenuItems {
-  getAll(): Menu[] {
-    return MENUITEMS;
-  }
-}

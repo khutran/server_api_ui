@@ -1,4 +1,4 @@
-import { fork, put, select, takeLatest } from 'redux-saga/effects';
+import { fork, put, takeLatest } from 'redux-saga/effects';
 import * as _ from 'lodash';
 import listUserSaga from './list/list.saga';
 import createUser from './create/create.saga';
@@ -15,8 +15,6 @@ import {
 } from './user.actions';
 import { API_CALL_ERROR } from '../../store/action';
 import { PROJECT_COMP } from '../project/project.const';
-import { NotificationService } from '../../common/services/notification/notification.service';
-import { Router } from '@angular/router';
 
 function* allSaga(action) {
   const api = AppInjector.get(ApiService);
