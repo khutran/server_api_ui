@@ -8,6 +8,7 @@ import { FETCH_LOGIN_DETAIL_REQUESTED } from './auth/login/login.actions';
 import { environment } from './../../environments/environment';
 import { Router } from '@angular/router';
 import * as Cookies from 'js-cookie';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-main',
@@ -148,6 +149,9 @@ export class MainComponent implements OnInit {
   public psDisabled: string;
 
   public config: any;
+  public menuGroupPermissions = function(items) {
+    return _.flatten(_.map(items, item => item.permissions));
+  };
 
   scroll = (): void => {
     const scrollPosition = window.pageYOffset;

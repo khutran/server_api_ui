@@ -1,10 +1,10 @@
-import { createStore, applyMiddleware, compose } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import logger from 'redux-logger';
 
 import reducer from './reducers';
 import sagas from './sagas';
-import { NgModule } from '../../../node_modules/@angular/core';
+import { NgModule } from '@angular/core';
 
 @NgModule({
   imports: [],
