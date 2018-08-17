@@ -1,7 +1,6 @@
 import { AppInjector } from './../app-injector';
 import { Component, OnInit, AfterViewInit, ComponentFactoryResolver, ViewContainerRef } from '@angular/core';
 import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
-import { AppMenuItems } from '../template/shared/app-menu-items/app-menu-items';
 import { NotificationService } from '../common/services/notification/notification.service';
 import { Store } from '../store/store.module';
 import { FETCH_LOGIN_DETAIL_REQUESTED } from './auth/login/login.actions';
@@ -9,6 +8,7 @@ import { environment } from './../../environments/environment';
 import { Router } from '@angular/router';
 import * as Cookies from 'js-cookie';
 import * as _ from 'lodash';
+import { AppMenunItems } from '../template/shared/app-menu-items/app-menu-items';
 
 @Component({
   selector: 'app-main',
@@ -169,7 +169,7 @@ export class MainComponent implements OnInit {
     // tslint:disable-next-line:semicolon
   };
 
-  constructor(public menuItems: AppMenuItems, private route: Router, private notification: NotificationService, private componentFactoryResolver: ComponentFactoryResolver) {
+  constructor(private route: Router, private notification: NotificationService, private componentFactoryResolver: ComponentFactoryResolver) {
     this.store = AppInjector.get(Store).getInstance();
     this.navType = 'st2';
     this.themeLayout = 'vertical';
