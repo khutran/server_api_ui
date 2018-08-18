@@ -72,6 +72,10 @@ class User extends UserBase {
   hasOneOf(permissions: String[]) {
     return this.isSuperAdmin() || _.intersection(permissions, this.getPermissions()).length > 0;
   }
+
+  can(permission: String) {
+    return this.isSuperAdmin() || !_.isUndefined(_.find(this.getPermissions(), item => item === permission));
+  }
 }
 
 export default User;

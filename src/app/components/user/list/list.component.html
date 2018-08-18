@@ -22,7 +22,7 @@
 
   <div class="row mgb-20">
     <div class="col s12 text-right">
-      <a class="btn btn-primary btn-md" routerLink="create">
+      <a class="btn btn-primary btn-md" routerLink="create" *ngIf="store.getState().Auth.login.fetched && store.getState().Auth.login.profile.can('create.user')">
         <i class="fa fa-plus" aria-hidden="true"></i> Create
       </a>
     </div>

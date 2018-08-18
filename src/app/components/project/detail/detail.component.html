@@ -41,7 +41,7 @@
               <i class="fa fa-align-justify"></i> Build
             </button>
             <swal #deleteBuild title="Delete" text="Do you want to delete all build of this project?" type="warning" [showCancelButton]="true" (confirm)="deleteBuildOfItem(store.getState().Project.detail.item.id)"></swal>
-            <button class="btn btn-danger btn-sm" [swal]="deleteBuild" title="delete">
+            <button class="btn btn-danger btn-sm" [swal]="deleteBuild" title="delete" *ngIf="store.getState().Auth.login.fetched && store.getState().Auth.login.profile.can('delete.project')">
               <i class="fa fa-trash"></i> Delete Build
             </button>
           </div>
