@@ -153,7 +153,8 @@ export class CreateComponent implements OnInit {
         git_remote: form.value.git_remote,
         git_branch: form.value.git_branch,
         git_application_key: form.value.git_application_key,
-        git_application_secret: form.value.git_application_secret
+        git_application_secret: form.value.git_application_secret,
+        cloudflare: form.value.cloudflare.value
       };
       store.dispatch({ type: CREATE_PROJECT_REQUESTED, data: data });
     }
