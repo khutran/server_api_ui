@@ -1,4 +1,4 @@
-import { GET_INFO_ENV_SUCCEEDED, EDIT_INFO_ENV_SUCCEEDED } from './env.actions';
+import { GET_INFO_ENV_SUCCEEDED, EDIT_INFO_ENV_SUCCEEDED, ADD_PROPERTIE_ENV_SUCCESSED } from './env.actions';
 import * as _ from 'lodash';
 import { InputBase } from '../../../common/nfreactive-form/models/InputBase';
 import { TextBox } from '../../../common/nfreactive-form/models/TextBox';
@@ -30,7 +30,7 @@ export const envedit = (
       });
       return _.assign({}, state, {
         fetched: true,
-        env: _.assign(action.data, { id_project: +action.id_project }),
+        env: action.data,
         inputs: inputs
       });
     case EDIT_INFO_ENV_SUCCEEDED:

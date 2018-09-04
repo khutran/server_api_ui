@@ -4,7 +4,6 @@ import Environment from '../../models/Env';
 import { Observable } from 'rxjs';
 import { tap, map, catchError } from 'rxjs/operators';
 
-
 @Injectable()
 export class EnvService extends ServiceProvider {
   public url = '/api/v1/remote/project';
@@ -23,9 +22,9 @@ export class EnvService extends ServiceProvider {
       })
     );
   }
-  updateEnvById(data): Observable<any> {
+  updateEnvById(data, id): Observable<any> {
     this.preloader.show();
-    return this.http.put(this.apiUrl.getApiUrl(this.url) + '/' + data.id + '/config', data).pipe(
+    return this.http.put(this.apiUrl.getApiUrl(this.url) + '/' + id + '/config', data).pipe(
       tap(result => {
         this.preloader.hide();
       }),

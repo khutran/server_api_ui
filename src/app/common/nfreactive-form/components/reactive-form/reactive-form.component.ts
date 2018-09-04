@@ -13,9 +13,12 @@ import * as _ from 'lodash';
 })
 export class ReactiveFormComponent implements OnInit, OnChanges {
   groups: InputBase<any>[] = [];
-  @Input() inputs: InputBase<any>[] = [];
-  @Input() onSubmit?: Function;
-  @Input() submitText?: String;
+  @Input()
+  inputs: InputBase<any>[] = [];
+  @Input()
+  onSubmit?: Function;
+  @Input()
+  submitText?: String;
   form: FormGroup;
   submitted: Boolean = false;
 
