@@ -12,6 +12,7 @@ import { API_CALL_ERROR } from './../../../store/action';
 import { ApiService } from './../../../api/api.service';
 import { AppInjector } from './../../../app-injector';
 import { NotificationService } from '../../../common/services/notification/notification.service';
+import _ from 'lodash';
 
 function* getEnv(action) {
   const api = AppInjector.get(ApiService);
@@ -33,7 +34,15 @@ function* editEnv(action) {
   const api = AppInjector.get(ApiService);
   const notification = AppInjector.get(NotificationService);
   try {
-    yield api.env.updateEnvById(action.data, action.id).toPromise();
+    let data = {};
+    _.forEach(action.data, item => {
+      if (item.key) {
+        let i = {};
+        i[item.key] = item.value;
+        data = _.assign(data, i);
+      }
+    });
+    yield api.env.updateEnvById(data, action.id).toPromise();
     yield put({ type: EDIT_INFO_ENV_SUCCEEDED });
     notification.show('success', 'Update environment file success', 3000);
   } catch (e) {
@@ -46,14 +55,8 @@ function* watchEditInfoEnvRequest() {
 }
 
 function* addNewEnv(action) {
-  const router = AppInjector.get(Router);
-  const api = AppInjector.get(ApiService);
-  const notification = AppInjector.get(NotificationService);
   try {
-    yield api.env.updateEnvById(action.data, action.id).toPromise();
-    yield put({ type: EDIT_INFO_ENV_SUCCEEDED });
-    notification.show('success', 'Add environment file success', 3000);
-    router.navigate([`projects/edit/36/environment`]);
+    yield put({ type: ADD_PROPERTIE_ENV_SUCCESSED, data: action.data, id: action.id });
   } catch (e) {
     yield put({ type: API_CALL_ERROR, error: e });
   }

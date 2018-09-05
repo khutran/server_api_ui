@@ -21,7 +21,6 @@ export class ReactiveFormComponent implements OnInit, OnChanges {
   submitText?: String;
   form: FormGroup;
   submitted: Boolean = false;
-
   constructor(private fcs: FormControlService) {}
 
   ngOnInit() {}

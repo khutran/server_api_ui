@@ -28,39 +28,34 @@ export class EnvComponent implements OnInit {
     });
   }
 
-  onSubmit(form) {
-    if (form.valid) {
-      const store = AppInjector.get(Store).getInstance();
-      const data = form.value;
-      store.dispatch({
-        type: EDIT_INFO_ENV_REQUESTED,
-        data: _.assign(data),
-        id: this.activatedRoute.snapshot.params.id
-      });
-    } else {
-      console.log('form is not valid');
-    }
+  onSubmit() {
+    const store = AppInjector.get(Store).getInstance();
+    const data = this.store.getState().Project.envedit.inputs;
+    store.dispatch({
+      type: EDIT_INFO_ENV_REQUESTED,
+      data: _.assign(data),
+      id: this.activatedRoute.snapshot.params.id
+    });
   }
 
   async addEnv() {
     const store = AppInjector.get(Store).getInstance();
     const { value: environment } = await swal({
       title: 'Add Environment env',
-      html: 'environment <input id="key" class="swal2-input">' + 'value <input id="value" class="swal2-input">',
-      focusConfirm: false,
+      input: 'text',
       showCancelButton: true,
-      preConfirm: () => {
-        return [(document.getElementById('key') as any).value, (document.getElementById('value') as any).value];
+      inputValidator: value => {
+        return !value && 'You need to write something!';
       }
     });
 
     if (environment) {
       let newEnvironment = {};
-      newEnvironment[environment[0]] = environment[1];
-      let data = store.getState().Project.envedit.env;
+      newEnvironment['label'] = environment;
+      newEnvironment['key'] = environment;
       store.dispatch({
         type: ADD_PROPERTIE_ENV_REQUESTED,
-        data: _.assign(_.assign(data, newEnvironment)),
+        data: newEnvironment,
         id: this.activatedRoute.snapshot.params.id
       });
     }

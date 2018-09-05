@@ -13,9 +13,10 @@ import { NFReactiveFormModule } from '../../common/nfreactive-form/nfreactive-fo
 import { EnvComponent } from './env/env.component';
 import { DetailComponent } from './detail/detail.component';
 import { CommandComponent } from './command/command.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-  imports: [CommonModule, ProjectRoutingModule, FormsModule, PipesModule, DirectivesModule, SweetAlert2Module, SharedModule, NFReactiveFormModule],
+  imports: [CommonModule, ProjectRoutingModule, FormsModule, PipesModule, DirectivesModule, SweetAlert2Module, SharedModule, NFReactiveFormModule, ReactiveFormsModule],
   declarations: [ListComponent, EditComponent, CreateComponent, EnvComponent, DetailComponent, CommandComponent]
 })
 export class ProjectModule {}
